@@ -5,12 +5,11 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/food_delivery_application";
+	private static final String URL =
+		    "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12834510?useSSL=false&serverTimezone=UTC";
 
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "karthik@405";
-
+		private static final String USERNAME = "sql12834510";
+		private static final String PASSWORD = "JGPRyZQthn";
     public static Connection getConnection() {
 
         Connection con = null;
