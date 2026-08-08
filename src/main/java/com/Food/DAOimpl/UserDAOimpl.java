@@ -187,43 +187,32 @@ public class UserDAOimpl implements UserDAO {
             "WHERE name LIKE ? " +
             "OR cuisineType LIKE ?";
 
-        try {
-            Connection con =
-                    DBConnection.getConnection();
-
-            PreparedStatement ps =
-                    con.prepareStatement(query);
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, "%" + keyword + "%");
             ps.setString(2, "%" + keyword + "%");
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                User u = new User();
+                    User u = new User();
 
-                u.setRestaurantID(
-                        rs.getInt("restaurantId"));
-                u.setName(
-                        rs.getString("name"));
-                u.setCuisineType(
-                        rs.getString("cuisineType"));
-                u.setAddress(
-                        rs.getString("address"));
-                u.setRating(
-                        rs.getFloat("rating"));
-                u.setDeliveryTime(
-                        rs.getString("deliveryTime"));
-                u.setPrice(
-                        rs.getInt("price"));
-                u.setImagePath(
-                        rs.getString("imagePath"));
+                    u.setRestaurantID(rs.getInt("restaurantId"));
+                    u.setName(rs.getString("name"));
+                    u.setCuisineType(rs.getString("cuisineType"));
+                    u.setAddress(rs.getString("address"));
+                    u.setRating(rs.getFloat("rating"));
+                    u.setDeliveryTime(rs.getString("deliveryTime"));
+                    u.setPrice(rs.getInt("price"));
+                    u.setImagePath(rs.getString("imagePath"));
 
-                list.add(u);
+                    list.add(u);
+                }
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -233,9 +222,8 @@ public class UserDAOimpl implements UserDAO {
     
     
     
-    
-    public List<User> searchRestaurant(String keyword)
-    {
+    public List<User> searchRestaurant(String keyword) {
+
         List<User> list = new ArrayList<>();
 
         String query =
@@ -247,45 +235,33 @@ public class UserDAOimpl implements UserDAO {
             "OR f.cuisineType LIKE ? " +
             "OR m.itemName LIKE ?";
 
-        try
-        {
-            Connection con = DBConnection.getConnection();
-
-            PreparedStatement ps =
-                    con.prepareStatement(query);
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, "%" + keyword + "%");
             ps.setString(2, "%" + keyword + "%");
             ps.setString(3, "%" + keyword + "%");
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            while(rs.next())
-            {
-                User user = new User();
+                while (rs.next()) {
 
-                user.setRestaurantID(
-                        rs.getInt("restaurantId"));
-                user.setName(
-                        rs.getString("name"));
-                user.setCuisineType(
-                        rs.getString("cuisineType"));
-                user.setAddress(
-                        rs.getString("address"));
-                user.setRating(
-                        rs.getFloat("rating"));
-                user.setDeliveryTime(
-                        rs.getString("deliveryTime"));
-                user.setPrice(
-                        rs.getInt("price"));
-                user.setImagePath(
-                        rs.getString("imagePath"));
+                    User user = new User();
 
-                list.add(user);
+                    user.setRestaurantID(rs.getInt("restaurantId"));
+                    user.setName(rs.getString("name"));
+                    user.setCuisineType(rs.getString("cuisineType"));
+                    user.setAddress(rs.getString("address"));
+                    user.setRating(rs.getFloat("rating"));
+                    user.setDeliveryTime(rs.getString("deliveryTime"));
+                    user.setPrice(rs.getInt("price"));
+                    user.setImagePath(rs.getString("imagePath"));
+
+                    list.add(user);
+                }
             }
-        }
-        catch(Exception e)
-        {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

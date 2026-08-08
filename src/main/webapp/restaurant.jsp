@@ -12,7 +12,7 @@ String userName = (String) session.getAttribute("userName");
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZestGo - Premium Food Delivery</title>
+<title>ZestGo - Food Delivery</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -653,7 +653,7 @@ String offer = offers[Math.abs(user.getRestaurantID()) % offers.length];
 </div>
 
 <footer>
-Copyright 2026 ZestGo - Premium Food Delivery
+Copyright 2026 ZestGo - Food Delivery
 </footer>
 
 <script>
