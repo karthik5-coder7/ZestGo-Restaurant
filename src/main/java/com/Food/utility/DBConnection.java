@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    private static final String URL =
-            "jdbc:mysql://mysql-51d7552-karthikmodemkondagalla-8c84k.aivencloud.com:26509/defaultdb"
-            + "?sslMode=REQUIRED&serverTimezone=UTC";
+	private static final String URL =
+	        "jdbc:mysql://mysql-51d7552-karthikmodemkondagalla-8c84.k.aivencloud.com:26509/food_delivery_application"
+	        + "?sslMode=REQUIRED&serverTimezone=UTC";
 
     private static final String USERNAME =
             System.getenv().getOrDefault("DB_USERNAME", "avnadmin");
