@@ -3,21 +3,18 @@ package com.Food.utility;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class DBConnector {
 
-	private static final String URL =
-		    "jdbc:mysql://host.docker.internal:3306/food_delivery_application?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private static final String URL =
+            "jdbc:mysql://mysql-51d7552-karthikmodemkondagalla-8c84k.aivencloud.com:26509/defaultdb"
+            + "?sslMode=REQUIRED&serverTimezone=UTC";
 
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "karthik@405";
-    
-    private static final Scanner scan = new Scanner(System.in);
-    
-    private static final String INSERT_QUERY =
-            "INSERT INTO register(name,email,address,password,role) VALUES(?,?,?,?,?)";
-    
+    private static final String USERNAME =
+            System.getenv().getOrDefault("DB_USERNAME", "avnadmin");
+
+    private static final String PASSWORD =
+            System.getenv("DB_PASSWORD");
 
     public static Connection getConnection() {
 
@@ -30,9 +27,10 @@ public class DBConnector {
             con = DriverManager.getConnection(
                     URL,
                     USERNAME,
-                    PASSWORD);
+                    PASSWORD
+            );
 
-            System.out.println("Database Connected Successfully");
+            System.out.println("AIVEN DATABASE CONNECTED SUCCESSFULLY");
 
         } catch (ClassNotFoundException e) {
 
