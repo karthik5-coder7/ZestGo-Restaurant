@@ -5,10 +5,15 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
-	private static final String URL =
-		    "jdbc:mysql://host.docker.internal:3306/food_delivery_application?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "karthik@405";
+    private static final String URL =
+            "jdbc:mysql://mysql-51d7552-karthikmodemkondagalla-8c84k.aivencloud.com:26509/defaultdb"
+            + "?sslMode=REQUIRED&serverTimezone=UTC";
+
+    private static final String USERNAME =
+            System.getenv().getOrDefault("DB_USERNAME", "avnadmin");
+
+    private static final String PASSWORD =
+            System.getenv("DB_PASSWORD");
 
     public static Connection getConnection() {
 
@@ -21,7 +26,10 @@ public class DBConnection {
             con = DriverManager.getConnection(
                     URL,
                     USERNAME,
-                    PASSWORD);
+                    PASSWORD
+            );
+
+            System.out.println("AIVEN DATABASE CONNECTED SUCCESSFULLY");
 
         } catch (Exception e) {
             e.printStackTrace();
