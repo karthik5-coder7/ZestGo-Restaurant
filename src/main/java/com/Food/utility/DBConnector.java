@@ -18,19 +18,18 @@ public class DBConnector {
 
     public static Connection getConnection() {
 
-        Connection con = null;
-
         try {
-
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            con = DriverManager.getConnection(
+            Connection con = DriverManager.getConnection(
                     URL,
                     USERNAME,
                     PASSWORD
             );
 
             System.out.println("AIVEN DATABASE CONNECTED SUCCESSFULLY");
+
+            return con;
 
         } catch (ClassNotFoundException e) {
 
@@ -43,6 +42,6 @@ public class DBConnector {
             e.printStackTrace();
         }
 
-        return con;
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package com.Food.utility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnection {
 
@@ -17,24 +18,40 @@ public class DBConnection {
 
     public static Connection getConnection() {
 
-        Connection con = null;
-
         try {
-
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            con = DriverManager.getConnection(
+            System.out.println("===== DB CONNECTION TEST =====");
+            System.out.println("DB USERNAME = " + USERNAME);
+            System.out.println("DB PASSWORD SET = "
+                    + (PASSWORD != null && !PASSWORD.isEmpty()));
+
+            Connection con = DriverManager.getConnection(
                     URL,
                     USERNAME,
                     PASSWORD
             );
 
+            System.out.println("=================================");
             System.out.println("AIVEN DATABASE CONNECTED SUCCESSFULLY");
+            System.out.println("=================================");
 
-        } catch (Exception e) {
+            return con;
+
+        } catch (ClassNotFoundException e) {
+
+            System.out.println("MYSQL JDBC DRIVER NOT FOUND");
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+
+            System.out.println("===== AIVEN DATABASE ERROR =====");
+            System.out.println("Error Code: " + e.getErrorCode());
+            System.out.println("SQL State: " + e.getSQLState());
+            System.out.println("Message: " + e.getMessage());
             e.printStackTrace();
         }
 
-        return con;
+        return null;
     }
 }
