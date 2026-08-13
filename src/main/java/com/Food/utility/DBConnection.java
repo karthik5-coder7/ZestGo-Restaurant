@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-	private static final String URL =
-	        "jdbc:mysql://mysql-51d7552-karthikmodemkondagalla-8c84.k.aivencloud.com:26509/food_delivery_application"
-	        + "?sslMode=REQUIRED&serverTimezone=UTC";
+    private static final String URL =
+            "jdbc:mysql://139.59.4.223:26509/food_delivery_application"
+            + "?sslMode=REQUIRED&serverTimezone=UTC";
 
     private static final String USERNAME =
             System.getenv().getOrDefault("DB_USERNAME", "avnadmin");
@@ -19,6 +19,7 @@ public class DBConnection {
     public static Connection getConnection() {
 
         try {
+
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             System.out.println("===== DB CONNECTION TEST =====");

@@ -1,7 +1,6 @@
 package com.Food.DAOimpl;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -19,37 +18,35 @@ public class OrderDAOimpl implements OrderDAO {
 
         List<Order> orders = new ArrayList<>();
 
-        try {
+        String query =
+                "SELECT * FROM orders " +
+                "WHERE email=? " +
+                "AND isDeleted=0 " +
+                "ORDER BY orderDate DESC";
 
-            Connection con =
-                    DBConnection.getConnection();
-
-            PreparedStatement ps =
-                    con.prepareStatement(
-                    "SELECT * FROM orders\r\n"
-                    + "WHERE email=?\r\n"
-                    + "AND isDeleted=0\r\n"
-                    + "ORDER BY orderDate DESC");
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, email);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                Order order = new Order();
+                    Order order = new Order();
 
-                order.setOrderId(rs.getInt("orderId"));
-                order.setCustomerName(rs.getString("customerName"));
-                order.setMobile(rs.getString("mobile"));
-                order.setAddress(rs.getString("address"));
-                order.setPaymentMethod(rs.getString("paymentMethod"));
-                order.setTotalAmount(rs.getDouble("totalAmount"));
-                order.setRestaurantId(rs.getInt("restaurantId"));
-                order.setRestaurantName(rs.getString("restaurantName"));
-                order.setOrderDate(rs.getTimestamp("orderDate"));
+                    order.setOrderId(rs.getInt("orderId"));
+                    order.setCustomerName(rs.getString("customerName"));
+                    order.setMobile(rs.getString("mobile"));
+                    order.setAddress(rs.getString("address"));
+                    order.setPaymentMethod(rs.getString("paymentMethod"));
+                    order.setTotalAmount(rs.getDouble("totalAmount"));
+                    order.setRestaurantId(rs.getInt("restaurantId"));
+                    order.setRestaurantName(rs.getString("restaurantName"));
+                    order.setOrderDate(rs.getTimestamp("orderDate"));
 
-                orders.add(order);
+                    orders.add(order);
+                }
             }
 
         } catch (Exception e) {
@@ -58,35 +55,32 @@ public class OrderDAOimpl implements OrderDAO {
 
         return orders;
     }
-    
-    
-    
+
     public List<OrderItem> getOrderItems(int orderId) {
 
         List<OrderItem> items = new ArrayList<>();
 
-        try {
+        String query =
+                "SELECT * FROM orders_items WHERE orderId=?";
 
-            Connection con = DBConnection.getConnection();
-
-            PreparedStatement ps =
-                    con.prepareStatement(
-                            "select * from orders_items where orderId=?");
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, orderId);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                OrderItem item = new OrderItem();
+                    OrderItem item = new OrderItem();
 
-                item.setItemName(rs.getString("itemName"));
-                item.setPrice(rs.getDouble("price"));
-                item.setQuantity(rs.getInt("quantity"));
-                item.setImagePath(rs.getString("imagePath"));
+                    item.setItemName(rs.getString("itemName"));
+                    item.setPrice(rs.getDouble("price"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setImagePath(rs.getString("imagePath"));
 
-                items.add(item);
+                    items.add(item);
+                }
             }
 
         } catch (Exception e) {
@@ -95,28 +89,19 @@ public class OrderDAOimpl implements OrderDAO {
 
         return items;
     }
-    
-    
-    public void deleteOrder(int orderId)
-    {
-        try
-        {
-            Connection con =
-                    DBConnection.getConnection();
 
-            PreparedStatement ps =
-                    con.prepareStatement(
-                    "UPDATE orders SET isDeleted=1 WHERE orderId=?");
+    public void deleteOrder(int orderId) {
+
+        String query =
+                "UPDATE orders SET isDeleted=1 WHERE orderId=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, orderId);
-
             ps.executeUpdate();
 
-            ps.close();
-            con.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

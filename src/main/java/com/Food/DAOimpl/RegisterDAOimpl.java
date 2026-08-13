@@ -1,7 +1,6 @@
 package com.Food.DAOimpl;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 
 import com.Food.Model.Register;
@@ -14,16 +13,12 @@ public class RegisterDAOimpl {
 
     public int addUser(Register register) {
 
-        try {
-        	
-        	  System.out.println("DAO Called");
+        System.out.println("DAO Called");
 
-            Connection con = DBConnector.getConnection();
-            
+        try (Connection con = DBConnector.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(INSERT_QUERY)) {
+
             System.out.println("Connection = " + con);
-
-            PreparedStatement pstmt =
-                    con.prepareStatement(INSERT_QUERY);
 
             pstmt.setString(1, register.getName());
             pstmt.setString(2, register.getEmail());
@@ -38,10 +33,9 @@ public class RegisterDAOimpl {
             return result;
 
         } catch (Exception e) {
-
+            System.out.println("===== REGISTER ERROR =====");
             e.printStackTrace();
+            return 0;
         }
-
-        return 0;
     }
 }

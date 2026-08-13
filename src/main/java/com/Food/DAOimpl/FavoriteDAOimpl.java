@@ -9,152 +9,111 @@ import java.util.List;
 import com.Food.Model.User;
 import com.Food.utility.DBConnection;
 
-
 public class FavoriteDAOimpl {
-	
-	public List<User> getFavorites(String userName)
-	{
-	    List<User> list = new ArrayList<>();
 
-	    String query =
-	            "SELECT f.* FROM food_app f " +
-	            "JOIN favorites fa " +
-	            "ON f.restaurantId = fa.restaurantId " +
-	            "WHERE fa.userName=?";
+    public List<User> getFavorites(String userName) {
 
-	    try {
-	        Connection con =
-	                DBConnection.getConnection();
+        List<User> list = new ArrayList<>();
 
-	        PreparedStatement ps =
-	                con.prepareStatement(query);
+        String query =
+                "SELECT f.* FROM food_app f " +
+                "JOIN favorites fa ON f.restaurantId = fa.restaurantId " +
+                "WHERE fa.userName=?";
 
-	        ps.setString(1, userName);
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
-	        ResultSet rs =
-	                ps.executeQuery();
+            ps.setString(1, userName);
 
-	        while(rs.next())
-	        {
-	            User u = new User();
+            try (ResultSet rs = ps.executeQuery()) {
 
-	            u.setRestaurantID(
-	                    rs.getInt("restaurantId"));
-	            u.setName(
-	                    rs.getString("name"));
-	            u.setCuisineType(
-	                    rs.getString("cuisineType"));
-	            u.setAddress(
-	                    rs.getString("address"));
-	            u.setRating(
-	                    rs.getFloat("rating"));
-	            u.setDeliveryTime(
-	                    rs.getString("deliveryTime"));
-	            u.setPrice(
-	                    rs.getInt("price"));
-	            u.setImagePath(
-	                    rs.getString("imagePath"));
+                while (rs.next()) {
 
-	            list.add(u);
-	        }
-	    }
-	    catch(Exception e)
-	    {
-	        e.printStackTrace();
-	    }
+                    User u = new User();
 
-	    return list;
-	}
+                    u.setRestaurantID(rs.getInt("restaurantId"));
+                    u.setName(rs.getString("name"));
+                    u.setCuisineType(rs.getString("cuisineType"));
+                    u.setAddress(rs.getString("address"));
+                    u.setRating(rs.getFloat("rating"));
+                    u.setDeliveryTime(rs.getString("deliveryTime"));
+                    u.setPrice(rs.getInt("price"));
+                    u.setImagePath(rs.getString("imagePath"));
 
-	public void addFavorite(String userName,
-            int restaurantId)
-{
-String query =
-"INSERT INTO favorites(userName, restaurantId) " +
-"SELECT ?, ? " +
-"WHERE NOT EXISTS (" +
-"SELECT * FROM favorites " +
-"WHERE userName=? AND restaurantId=?)";
+                    list.add(u);
+                }
+            }
 
-try {
-Connection con =
-    DBConnection.getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-PreparedStatement ps =
-    con.prepareStatement(query);
+        return list;
+    }
 
-ps.setString(1, userName);
-ps.setInt(2, restaurantId);
-ps.setString(3, userName);
-ps.setInt(4, restaurantId);
+    public void addFavorite(String userName, int restaurantId) {
 
-ps.executeUpdate();
+        String query =
+                "INSERT INTO favorites(userName, restaurantId) " +
+                "SELECT ?, ? " +
+                "WHERE NOT EXISTS (" +
+                "SELECT * FROM favorites " +
+                "WHERE userName=? AND restaurantId=?)";
 
-} catch (Exception e) {
-e.printStackTrace();
-}
-}
-	
-	
-	public void removeFavorite(String userName,
-            int restaurantId)
-{
-String query =
-"DELETE FROM favorites " +
-"WHERE userName=? " +
-"AND restaurantId=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
-try {
-Connection con =
- DBConnection.getConnection();
+            ps.setString(1, userName);
+            ps.setInt(2, restaurantId);
+            ps.setString(3, userName);
+            ps.setInt(4, restaurantId);
 
-PreparedStatement ps =
- con.prepareStatement(query);
+            ps.executeUpdate();
 
-ps.setString(1, userName);
-ps.setInt(2, restaurantId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-ps.executeUpdate();
-}
-catch(Exception e)
-{
-e.printStackTrace();
-}
-}
-	
-	
-	
-	
-	
-	public boolean isFavorite(String userName,
-            int restaurantId)
-{
-String query =
-"SELECT * FROM favorites " +
-"WHERE userName=? " +
-"AND restaurantId=?";
+    public void removeFavorite(String userName, int restaurantId) {
 
-try {
-Connection con =
-  DBConnection.getConnection();
+        String query =
+                "DELETE FROM favorites " +
+                "WHERE userName=? AND restaurantId=?";
 
-PreparedStatement ps =
-  con.prepareStatement(query);
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
-ps.setString(1, userName);
-ps.setInt(2, restaurantId);
+            ps.setString(1, userName);
+            ps.setInt(2, restaurantId);
 
-ResultSet rs =
-  ps.executeQuery();
+            ps.executeUpdate();
 
-return rs.next();
-}
-catch(Exception e)
-{
-e.printStackTrace();
-}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-return false;
-}
+    public boolean isFavorite(String userName, int restaurantId) {
 
+        String query =
+                "SELECT * FROM favorites " +
+                "WHERE userName=? AND restaurantId=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, userName);
+            ps.setInt(2, restaurantId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

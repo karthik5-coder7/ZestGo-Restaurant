@@ -12,11 +12,9 @@ import com.Food.utility.DBConnection;
 
 public class MenuDAOimpl implements MenuDAO {
 
-    // Get all menu items of a restaurant
     private static final String SELECT_QUERY =
             "SELECT * FROM menu WHERE RestaurantID=?";
 
-    // Get a single menu item
     private static final String SELECT_MENU_QUERY =
             "SELECT * FROM menu WHERE MenuID=?";
 
@@ -30,21 +28,22 @@ public class MenuDAOimpl implements MenuDAO {
 
             pstmt.setInt(1, restaurantId);
 
-            ResultSet res = pstmt.executeQuery();
+            try (ResultSet res = pstmt.executeQuery()) {
 
-            while (res.next()) {
+                while (res.next()) {
 
-                Menu menu = new Menu();
+                    Menu menu = new Menu();
 
-                menu.setMenuId(res.getInt("MenuID"));
-                menu.setRestaurantId(res.getInt("RestaurantID"));
-                menu.setItemName(res.getString("ItemName"));
-                menu.setPrice(res.getInt("Price"));
-                menu.setDescription(res.getString("Description"));
-                menu.setImagePath(res.getString("ImagePath"));
-                menu.setRating(res.getFloat("Rating"));
+                    menu.setMenuId(res.getInt("MenuID"));
+                    menu.setRestaurantId(res.getInt("RestaurantID"));
+                    menu.setItemName(res.getString("ItemName"));
+                    menu.setPrice(res.getInt("Price"));
+                    menu.setDescription(res.getString("Description"));
+                    menu.setImagePath(res.getString("ImagePath"));
+                    menu.setRating(res.getFloat("Rating"));
 
-                menuList.add(menu);
+                    menuList.add(menu);
+                }
             }
 
         } catch (Exception e) {
@@ -64,19 +63,20 @@ public class MenuDAOimpl implements MenuDAO {
 
             pstmt.setInt(1, menuId);
 
-            ResultSet res = pstmt.executeQuery();
+            try (ResultSet res = pstmt.executeQuery()) {
 
-            if (res.next()) {
+                if (res.next()) {
 
-                menu = new Menu();
+                    menu = new Menu();
 
-                menu.setMenuId(res.getInt("MenuID"));
-                menu.setRestaurantId(res.getInt("RestaurantID"));
-                menu.setItemName(res.getString("ItemName"));
-                menu.setPrice(res.getInt("Price"));
-                menu.setDescription(res.getString("Description"));
-                menu.setImagePath(res.getString("ImagePath"));
-                menu.setRating(res.getFloat("Rating"));
+                    menu.setMenuId(res.getInt("MenuID"));
+                    menu.setRestaurantId(res.getInt("RestaurantID"));
+                    menu.setItemName(res.getString("ItemName"));
+                    menu.setPrice(res.getInt("Price"));
+                    menu.setDescription(res.getString("Description"));
+                    menu.setImagePath(res.getString("ImagePath"));
+                    menu.setRating(res.getFloat("Rating"));
+                }
             }
 
         } catch (Exception e) {
@@ -86,7 +86,6 @@ public class MenuDAOimpl implements MenuDAO {
         return menu;
     }
 
-    // Search menu items
     @Override
     public List<Menu> searchMenu(String keyword) {
 
@@ -99,21 +98,22 @@ public class MenuDAOimpl implements MenuDAO {
 
             ps.setString(1, "%" + keyword + "%");
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                Menu menu = new Menu();
+                    Menu menu = new Menu();
 
-                menu.setMenuId(rs.getInt("MenuID"));
-                menu.setRestaurantId(rs.getInt("RestaurantID"));
-                menu.setItemName(rs.getString("ItemName"));
-                menu.setPrice(rs.getInt("Price"));
-                menu.setDescription(rs.getString("Description"));
-                menu.setImagePath(rs.getString("ImagePath"));
-                menu.setRating(rs.getFloat("Rating"));
+                    menu.setMenuId(rs.getInt("MenuID"));
+                    menu.setRestaurantId(rs.getInt("RestaurantID"));
+                    menu.setItemName(rs.getString("ItemName"));
+                    menu.setPrice(rs.getInt("Price"));
+                    menu.setDescription(rs.getString("Description"));
+                    menu.setImagePath(rs.getString("ImagePath"));
+                    menu.setRating(rs.getFloat("Rating"));
 
-                list.add(menu);
+                    list.add(menu);
+                }
             }
 
         } catch (Exception e) {

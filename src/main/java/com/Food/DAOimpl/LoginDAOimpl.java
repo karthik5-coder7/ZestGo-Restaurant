@@ -12,12 +12,6 @@ import com.Food.utility.DBConnection;
 
 public class LoginDAOimpl implements LoginDAO {
 
-    private Connection connection;
-
-    public LoginDAOimpl() {
-        connection = DBConnection.getConnection();
-    }
-
     @Override
     public Login validateUser(String email, String password) {
 
@@ -25,79 +19,88 @@ public class LoginDAOimpl implements LoginDAO {
 
         String query = "SELECT * FROM register WHERE email=?";
 
-        try {
-
-            PreparedStatement pstmt =
-                    connection.prepareStatement(query);
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
 
             pstmt.setString(1, email);
 
-            ResultSet rs = pstmt.executeQuery();
+            try (ResultSet rs = pstmt.executeQuery()) {
 
-            if (rs.next()) {
+                if (rs.next()) {
 
-                String dbPassword =
-                        rs.getString("password");
+                    String dbPassword = rs.getString("password");
 
-                if (BCrypt.checkpw(password, dbPassword)) {
+                    if (dbPassword != null
+                            && BCrypt.checkpw(password, dbPassword)) {
 
-                    user = new Login();
+                        user = new Login();
 
-                    user.setRegister_id(rs.getInt("register_id"));
-                    user.setName(rs.getString("name"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(dbPassword);
-
-                    // Comment these lines if columns don't exist
-                    // user.setPhone(rs.getString("phone"));
-                    // user.setAddress(rs.getString("address"));
+                        user.setRegister_id(rs.getInt("register_id"));
+                        user.setName(rs.getString("name"));
+                        user.setEmail(rs.getString("email"));
+                        user.setPassword(dbPassword);
+                    }
                 }
             }
 
         } catch (Exception e) {
+            System.out.println("===== LOGIN ERROR =====");
             e.printStackTrace();
         }
 
         return user;
     }
-    
-    
-    
-    
+
+    /*
+     * This method is intentionally not annotated with @Override because
+     * LoginDAO currently declares only validateUser().
+     */
     public boolean changePassword(
             String email,
             String oldPassword,
-            String newPassword)
-    {
-        String query =
-                "UPDATE login " +
-                "SET password=? " +
-                "WHERE email=? " +
-                "AND password=?";
+            String newPassword) {
 
-        try
-        {
-            Connection con =
-                    DBConnection.getConnection();
+        String selectQuery =
+                "SELECT password FROM register WHERE email=?";
 
-            PreparedStatement ps =
-                    con.prepareStatement(query);
+        String updateQuery =
+                "UPDATE register SET password=? WHERE email=?";
 
-            ps.setString(1, newPassword);
-            ps.setString(2, email);
-            ps.setString(3, oldPassword);
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement selectPs = con.prepareStatement(selectQuery)) {
 
-            int rows =
-                    ps.executeUpdate();
+            selectPs.setString(1, email);
 
-            return rows > 0;
-        }
-        catch(Exception e)
-        {
+            String dbPassword;
+
+            try (ResultSet rs = selectPs.executeQuery()) {
+                if (!rs.next()) {
+                    return false;
+                }
+                dbPassword = rs.getString("password");
+            }
+
+            if (dbPassword == null
+                    || !BCrypt.checkpw(oldPassword, dbPassword)) {
+                return false;
+            }
+
+            String hashedNewPassword =
+                    BCrypt.hashpw(newPassword, BCrypt.gensalt(12));
+
+            try (PreparedStatement updatePs =
+                         con.prepareStatement(updateQuery)) {
+
+                updatePs.setString(1, hashedNewPassword);
+                updatePs.setString(2, email);
+
+                return updatePs.executeUpdate() > 0;
+            }
+
+        } catch (Exception e) {
+            System.out.println("===== CHANGE PASSWORD ERROR =====");
             e.printStackTrace();
+            return false;
         }
-
-        return false;
     }
-    
 }
