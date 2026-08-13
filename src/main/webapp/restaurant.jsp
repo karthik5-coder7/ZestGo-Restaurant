@@ -1,7 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
-<%@page import="java.util.List, com.Food.Model.User"%>
-<%@page import="com.Food.DAOimpl.FavoriteDAOimpl"%>
+<%@ page import="java.util.List, com.Food.Model.User" %>
+<%@ page import="com.Food.DAOimpl.FavoriteDAOimpl" %>
 
 <%
 String userName = (String) session.getAttribute("userName");
@@ -9,852 +10,2791 @@ String userName = (String) session.getAttribute("userName");
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>ZestGo - Food Delivery</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
 :root{
     --ink:#0F2A2E;
     --teal:#123B3F;
+    --teal-light:#1a4b50;
     --gold:#C9A24B;
     --coral:#E4572E;
     --paper:#EFE9DC;
     --accent-blue:#2E9CDB;
 }
 
+
+/* =========================================================
+   RESET
+========================================================= */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Space Grotesk', sans-serif;
+    font-family:'Space Grotesk',sans-serif;
 }
 
-html, body{
+
+html,
+body{
     width:100%;
-    height:100%;
+    min-height:100%;
     overflow-x:hidden;
 }
 
+
 body{
-    background: var(--paper);
+    background:var(--paper);
     color:var(--ink);
 }
+
+
+/* =========================================================
+   3D CANVAS
+========================================================= */
 
 #canvas3d{
     position:fixed;
+
     top:0;
     left:0;
+
     width:100%;
     height:100vh;
+
     z-index:-1;
-    background: linear-gradient(135deg, #0a1f22 0%, #0f2a2e 50%, #1a4b50 100%);
+
+    background:
+        linear-gradient(
+            135deg,
+            #0a1f22 0%,
+            #0f2a2e 50%,
+            #1a4b50 100%
+        );
 }
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
 
 .navbar{
-    background: rgba(15,42,46,0.88);
-    backdrop-filter: blur(20px);
+
+    background:rgba(15,42,46,0.88);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
     display:flex;
+
     justify-content:space-between;
     align-items:center;
+
     padding:16px 50px;
+
     position:sticky;
+
     top:0;
+
     z-index:1000;
-    border-bottom:1px solid rgba(201,162,75,0.3);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+
+    border-bottom:
+        1px solid rgba(201,162,75,0.3);
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,0.2);
 }
+
+
+/* =========================================================
+   LOGO
+========================================================= */
 
 .logo-wrap{
+
     display:flex;
+
     align-items:center;
+
     gap:14px;
+
     text-decoration:none;
+
+    min-width:0;
 }
+
 
 .logo-img{
+
     width:60px;
     height:60px;
+
     border-radius:50%;
+
     object-fit:cover;
-    background: linear-gradient(135deg, var(--gold), var(--coral));
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--coral)
+        );
+
     border:3px solid #ffffff;
-    box-shadow:0 4px 20px rgba(201,162,75,0.4);
-    animation: float 3s ease-in-out infinite;
+
+    box-shadow:
+        0 4px 20px rgba(201,162,75,0.4);
+
+    animation:
+        float 3s ease-in-out infinite;
 }
+
 
 @keyframes float{
-    0%, 100%{ transform: translateY(0px); }
-    50%{ transform: translateY(-8px); }
+
+    0%,
+    100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
 }
 
+
 .logo-text{
+
     font-size:26px;
+
     font-weight:800;
-    background: linear-gradient(135deg, var(--gold), var(--coral));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--coral)
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    background-clip:text;
+
     letter-spacing:2px;
 }
 
+
+/* =========================================================
+   DESKTOP NAV
+========================================================= */
+
 .nav-links{
+
     display:flex;
+
     align-items:center;
+
     gap:8px;
 }
 
+
 .nav-links a{
+
     text-decoration:none;
-    color: rgba(239,233,220,0.7);
+
+    color:
+        rgba(239,233,220,0.7);
+
     padding:10px 16px;
+
     border-radius:8px;
+
     font-weight:600;
+
     font-size:14px;
+
     transition:0.3s;
 }
+
 
 .nav-links a:hover{
+
     color:var(--gold);
-    background: rgba(201,162,75,0.1);
+
+    background:
+        rgba(201,162,75,0.1);
 }
 
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
 .avatar-wrap{
+
     position:relative;
+
     display:flex;
+
     align-items:center;
+
     gap:12px;
+
     padding:8px 12px;
+
     border-radius:12px;
-    background: rgba(201,162,75,0.1);
+
+    background:
+        rgba(201,162,75,0.1);
+
     cursor:pointer;
+
     transition:0.3s;
 }
 
+
 .avatar-wrap:hover{
-    background: rgba(201,162,75,0.15);
+
+    background:
+        rgba(201,162,75,0.15);
 }
 
+
 .profile-info{
+
     display:flex;
+
     flex-direction:column;
+
     align-items:flex-start;
 }
 
+
 .profile-name{
+
     font-size:13px;
+
     font-weight:700;
+
     color:var(--paper);
+
     letter-spacing:0.5px;
+
+    max-width:150px;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
 }
 
+
 .profile-label{
+
     font-size:10px;
+
     color:var(--gold);
-    font-family:'JetBrains Mono', monospace;
+
+    font-family:'JetBrains Mono',monospace;
+
     letter-spacing:0.08em;
+
     text-transform:uppercase;
+
     font-weight:600;
 }
 
+
 .avatar-btn{
+
     width:44px;
     height:44px;
+
     border-radius:50%;
+
     border:2px solid var(--gold);
+
     cursor:pointer;
-    background: conic-gradient(from 210deg, var(--coral), var(--gold), var(--accent-blue), var(--coral));
+
+    background:
+        conic-gradient(
+            from 210deg,
+            var(--coral),
+            var(--gold),
+            var(--accent-blue),
+            var(--coral)
+        );
+
     color:var(--ink);
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
-    box-shadow:0 0 20px rgba(201,162,75,0.4);
+
+    box-shadow:
+        0 0 20px rgba(201,162,75,0.4);
+
     transition:0.3s;
+
     font-weight:700;
+
     font-size:14px;
+
     flex-shrink:0;
 }
 
+
 .avatar-btn:hover{
-    transform: scale(1.1);
-    box-shadow:0 0 30px rgba(201,162,75,0.8);
+
+    transform:scale(1.1);
+
+    box-shadow:
+        0 0 30px rgba(201,162,75,0.8);
 }
 
+
+/* =========================================================
+   DESKTOP DROPDOWN
+========================================================= */
+
 .dropdown{
+
     position:absolute;
+
     top:60px;
+
     right:0;
+
     width:260px;
-    background: rgba(15,42,46,0.95);
-    backdrop-filter: blur(20px);
-    border:1px solid rgba(201,162,75,0.4);
+
+    background:
+        rgba(15,42,46,0.97);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    border:
+        1px solid rgba(201,162,75,0.4);
+
     border-radius:16px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.4);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.4);
+
     padding:12px;
+
     display:none;
+
     flex-direction:column;
+
     z-index:1100;
-    animation: slideDown 0.4s ease;
+
+    animation:
+        slideDown 0.3s ease;
 }
+
 
 .dropdown.show{
     display:flex;
 }
 
+
 @keyframes slideDown{
+
     from{
         opacity:0;
         transform:translateY(-10px);
     }
+
     to{
         opacity:1;
         transform:translateY(0);
     }
+
 }
 
+
 .dropdown .mail{
-    font-family:'JetBrains Mono', monospace;
+
+    font-family:'JetBrains Mono',monospace;
+
     font-size:11px;
-    color: rgba(239,233,220,0.6);
+
+    color:
+        rgba(239,233,220,0.6);
+
     padding:12px 14px;
-    border-bottom:1px solid rgba(201,162,75,0.2);
+
+    border-bottom:
+        1px solid rgba(201,162,75,0.2);
+
     margin-bottom:8px;
+
     word-break:break-all;
+
     font-weight:700;
 }
 
+
 .dropdown a{
+
     text-decoration:none;
-    color: rgba(239,233,220,0.85);
+
+    color:
+        rgba(239,233,220,0.85);
+
     font-size:14px;
+
     font-weight:600;
+
     padding:12px 14px;
+
     border-radius:10px;
+
     transition:0.2s;
 }
 
+
 .dropdown a:hover{
-    background: rgba(201,162,75,0.15);
+
+    background:
+        rgba(201,162,75,0.15);
+
     color:var(--gold);
+
     padding-left:18px;
 }
 
+
 .dropdown a.logout{
+
     color:var(--coral);
+
     margin-top:8px;
-    border-top:1px solid rgba(228,87,46,0.2);
+
+    border-top:
+        1px solid rgba(228,87,46,0.2);
+
     padding-top:12px;
 }
 
+
 .dropdown a.logout:hover{
-    background: rgba(228,87,46,0.15);
+
+    background:
+        rgba(228,87,46,0.15);
 }
 
-.hero{
-    padding:120px 24px 90px;
-    text-align:center;
-    background: transparent;
-    position:relative;
-    z-index:10;
-    min-height:60vh;
-    display:flex;
-    flex-direction:column;
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.mobile-menu-btn{
+
+    display:none;
+
+    width:44px;
+    height:44px;
+
+    border:
+        1px solid rgba(201,162,75,0.4);
+
+    border-radius:10px;
+
+    background:
+        rgba(201,162,75,0.10);
+
+    color:var(--gold);
+
+    font-size:24px;
+
+    cursor:pointer;
+
+    align-items:center;
+
     justify-content:center;
+
+    transition:0.25s;
+
+    flex-shrink:0;
+}
+
+
+.mobile-menu-btn:hover{
+
+    background:
+        rgba(201,162,75,0.20);
+
+    transform:scale(1.05);
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+.mobile-nav{
+
+    display:none;
+
+    position:fixed;
+
+    top:78px;
+
+    left:12px;
+    right:12px;
+
+    background:
+        rgba(15,42,46,0.97);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    border:
+        1px solid rgba(201,162,75,0.35);
+
+    border-radius:16px;
+
+    padding:10px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.45),
+        0 0 30px rgba(201,162,75,0.08);
+
+    flex-direction:column;
+
+    z-index:2000;
+}
+
+
+.mobile-nav.show{
+
+    display:flex;
+
+    animation:
+        mobileMenuOpen 0.25s ease;
+}
+
+
+@keyframes mobileMenuOpen{
+
+    from{
+        opacity:0;
+        transform:
+            translateY(-8px)
+            scale(0.98);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+
+.mobile-nav a{
+
+    text-decoration:none;
+
+    color:
+        rgba(239,233,220,0.85);
+
+    padding:14px 16px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:0.2s;
+}
+
+
+.mobile-nav a:hover{
+
+    background:
+        rgba(201,162,75,0.14);
+
+    color:var(--gold);
+
+    padding-left:21px;
+}
+
+
+.mobile-user{
+
+    padding:13px 16px;
+
+    margin-bottom:6px;
+
+    border-bottom:
+        1px solid rgba(201,162,75,0.2);
+
+    color:var(--gold);
+
+    font-family:'JetBrains Mono',monospace;
+
+    font-size:11px;
+
+    word-break:break-all;
+}
+
+
+.mobile-nav .mobile-logout{
+
+    color:var(--coral);
+
+    border-top:
+        1px solid rgba(228,87,46,0.2);
+
+    margin-top:5px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    padding:120px 24px 90px;
+
+    text-align:center;
+
+    background:transparent;
+
+    position:relative;
+
+    z-index:10;
+
+    min-height:60vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
     align-items:center;
 }
 
-.hero h1{
-    font-size:56px;
-    font-weight:800;
-    background: linear-gradient(135deg, var(--paper), var(--gold), var(--coral));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom:12px;
-    animation: fadeInUp 0.9s ease 0.2s both;
+
+.hero > div{
+
+    width:100%;
 }
 
+
+.hero h1{
+
+    font-size:56px;
+
+    font-weight:800;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--paper),
+            var(--gold),
+            var(--coral)
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    background-clip:text;
+
+    margin-bottom:12px;
+
+    animation:
+        fadeInUp 0.9s ease 0.2s both;
+}
+
+
 .hero .eyebrow{
-    font-family:'JetBrains Mono', monospace;
+
+    font-family:'JetBrains Mono',monospace;
+
     font-size:12px;
+
     letter-spacing:0.2em;
+
     text-transform:uppercase;
+
     color:var(--gold);
+
     margin-bottom:16px;
-    animation: fadeInUp 0.9s ease 0.05s both;
+
+    animation:
+        fadeInUp 0.9s ease 0.05s both;
+
     font-weight:700;
 }
 
+
 @keyframes fadeInUp{
+
     from{
         opacity:0;
         transform:translateY(30px);
     }
+
     to{
         opacity:1;
         transform:translateY(0);
     }
+
 }
 
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
 .search-box{
+
     margin-top:32px;
+
     width:560px;
+
     max-width:95%;
+
     padding:16px 24px;
+
     border-radius:14px;
-    border:2px solid rgba(201,162,75,0.3);
-    background: rgba(239,233,220,0.08);
+
+    border:
+        2px solid rgba(201,162,75,0.3);
+
+    background:
+        rgba(239,233,220,0.08);
+
     color:var(--paper);
+
     outline:none;
+
     font-size:15px;
+
     transition:0.4s;
-    animation: fadeInUp 0.9s ease 0.5s both;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+
+    animation:
+        fadeInUp 0.9s ease 0.5s both;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,0.15);
+
     font-weight:600;
 }
 
+
 .search-box::placeholder{
-    color: rgba(239,233,220,0.45);
+
+    color:
+        rgba(239,233,220,0.45);
 }
+
 
 .search-box:focus{
+
     border-color:var(--gold);
-    background: rgba(239,233,220,0.12);
-    box-shadow: 0 8px 32px rgba(201,162,75,0.25);
+
+    background:
+        rgba(239,233,220,0.12);
+
+    box-shadow:
+        0 8px 32px rgba(201,162,75,0.25);
 }
 
+
+/* =========================================================
+   RESTAURANT GRID
+========================================================= */
+
 .restaurant-grid{
+
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(300px,1fr)
+        );
+
     gap:32px;
+
     padding:60px 50px;
+
     position:relative;
+
     z-index:5;
 }
 
+
+/* =========================================================
+   RESTAURANT CARD
+========================================================= */
+
 .card{
-    background:rgba(255,255,255,0.95);
-    backdrop-filter: blur(12px);
+
+    background:
+        rgba(255,255,255,0.95);
+
+    backdrop-filter:blur(12px);
+
     border-radius:20px;
+
     overflow:hidden;
+
     position:relative;
-    box-shadow:0 15px 50px rgba(15,42,46,0.3);
-    border:2px solid rgba(201,162,75,0.4);
+
+    box-shadow:
+        0 15px 50px rgba(15,42,46,0.3);
+
+    border:
+        2px solid rgba(201,162,75,0.4);
+
     transition:0.5s ease;
-    animation: slideUp 0.8s ease-out both;
+
+    animation:
+        slideUp 0.8s ease-out both;
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(50px);
+
+@keyframes slideUp{
+
+    from{
+        opacity:0;
+        transform:translateY(50px);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    to{
+        opacity:1;
+        transform:translateY(0);
     }
+
 }
 
-.card:nth-child(1) { animation-delay: 0.1s; }
-.card:nth-child(2) { animation-delay: 0.2s; }
-.card:nth-child(3) { animation-delay: 0.3s; }
-.card:nth-child(4) { animation-delay: 0.4s; }
-.card:nth-child(5) { animation-delay: 0.5s; }
-.card:nth-child(6) { animation-delay: 0.6s; }
+
+.card:nth-child(1){
+    animation-delay:0.1s;
+}
+
+.card:nth-child(2){
+    animation-delay:0.2s;
+}
+
+.card:nth-child(3){
+    animation-delay:0.3s;
+}
+
+.card:nth-child(4){
+    animation-delay:0.4s;
+}
+
+.card:nth-child(5){
+    animation-delay:0.5s;
+}
+
+.card:nth-child(6){
+    animation-delay:0.6s;
+}
+
 
 .card:hover{
+
     transform:translateY(-12px);
-    box-shadow:0 30px 80px rgba(15,42,46,0.4), 0 0 60px rgba(201,162,75,0.4);
-    border-color: rgba(201,162,75,0.8);
+
+    box-shadow:
+        0 30px 80px rgba(15,42,46,0.4),
+        0 0 60px rgba(201,162,75,0.4);
+
+    border-color:
+        rgba(201,162,75,0.8);
 }
 
+
 .card img{
+
     width:100%;
+
     height:240px;
+
     object-fit:cover;
+
     display:block;
+
     transition:0.6s ease;
 }
 
-.card:hover img {
-    transform: scale(1.08);
+
+.card:hover img{
+
+    transform:scale(1.08);
 }
+
+
+/* =========================================================
+   OFFER
+========================================================= */
 
 .offer{
+
     position:absolute;
+
     top:16px;
     left:16px;
-    background: linear-gradient(135deg, var(--coral), var(--gold));
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--coral),
+            var(--gold)
+        );
+
     color:#fff;
+
     padding:10px 16px;
+
     border-radius:10px;
-    font-family:'JetBrains Mono', monospace;
+
+    font-family:'JetBrains Mono',monospace;
+
     font-size:11px;
+
     letter-spacing:0.1em;
+
     text-transform:uppercase;
-    border:2px solid rgba(255,255,255,0.3);
+
+    border:
+        2px solid rgba(255,255,255,0.3);
+
     font-weight:800;
-    box-shadow: 0 6px 20px rgba(201,162,75,0.35);
+
+    box-shadow:
+        0 6px 20px rgba(201,162,75,0.35);
+
     z-index:3;
 }
+
+
+/* =========================================================
+   FAVORITE
+========================================================= */
 
 .favorite{
+
     position:absolute;
+
     top:16px;
     right:16px;
+
     width:48px;
     height:48px;
-    border:2px solid rgba(228,87,46,0.4);
+
+    border:
+        2px solid rgba(228,87,46,0.4);
+
     border-radius:50%;
-    background: rgba(255,255,255,0.96);
+
+    background:
+        rgba(255,255,255,0.96);
+
     color:var(--coral);
+
     cursor:pointer;
+
     font-size:22px;
+
     transition:0.3s ease;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
-    box-shadow:0 6px 20px rgba(0,0,0,0.12);
+
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.12);
+
     z-index:3;
+
     font-weight:700;
-    border:none;
 }
+
 
 .favorite:hover{
+
     transform:scale(1.15);
+
     background:var(--coral);
+
     color:#fff;
-    box-shadow:0 8px 30px rgba(228,87,46,0.35);
+
+    box-shadow:
+        0 8px 30px rgba(228,87,46,0.35);
 }
 
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
 .card-content{
+
     padding:22px 20px 20px;
+
     position:relative;
 }
 
+
 .card-content::before{
+
     content:"";
+
     position:absolute;
-    top:0; left:0; right:0;
+
+    top:0;
+    left:0;
+    right:0;
+
     height:2px;
-    background: linear-gradient(90deg, transparent, rgba(201,162,75,0.3), transparent);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(201,162,75,0.3),
+            transparent
+        );
 }
 
+
 .title-rating{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:flex-start;
+
     gap:12px;
+
     margin-top:8px;
 }
 
+
 .title-rating h3{
+
     font-size:18px;
+
     font-weight:800;
 }
+
 
 .rating{
-    background: linear-gradient(135deg, var(--coral), var(--gold));
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--coral),
+            var(--gold)
+        );
+
     color:#fff;
+
     padding:6px 12px;
+
     border-radius:10px;
-    font-family:'JetBrains Mono', monospace;
+
+    font-family:'JetBrains Mono',monospace;
+
     font-size:12px;
+
     white-space:nowrap;
+
     font-weight:800;
 }
 
+
 .card-content p{
+
     color:#475569;
+
     font-size:13px;
+
     margin-top:10px;
+
     font-weight:600;
 }
 
+
 .card-content small{
+
     display:block;
+
     margin-top:12px;
-    font-family:'JetBrains Mono', monospace;
+
+    font-family:'JetBrains Mono',monospace;
+
     font-size:11px;
-    color: var(--gold);
+
+    color:var(--gold);
+
     font-weight:700;
 }
 
+
 .card-link{
+
     text-decoration:none;
+
     color:inherit;
+
     display:block;
 }
 
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
 footer{
+
     text-align:center;
+
     padding:32px;
-    background: rgba(15,42,46,0.92);
-    backdrop-filter: blur(20px);
-    color: rgba(239,233,220,0.6);
-    font-family:'JetBrains Mono', monospace;
+
+    background:
+        rgba(15,42,46,0.92);
+
+    backdrop-filter:blur(20px);
+
+    color:
+        rgba(239,233,220,0.6);
+
+    font-family:'JetBrains Mono',monospace;
+
     font-size:12px;
-    border-top:1px solid rgba(201,162,75,0.2);
+
+    border-top:
+        1px solid rgba(201,162,75,0.2);
+
     position:relative;
+
     z-index:5;
+
     font-weight:600;
 }
 
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+
 @media(max-width:768px){
-    .navbar{ padding:12px 16px; flex-wrap:wrap; }
-    .nav-links{ flex-wrap:wrap; justify-content:center; }
-    .avatar-wrap{ flex-direction:column; gap:8px; }
-    .profile-info{ align-items:center; }
-    .profile-name{ font-size:12px; }
-    .avatar-btn{ width:40px; height:40px; font-size:12px; }
-    .hero{ padding:60px 16px 50px; }
-    .hero h1{ font-size:32px; }
-    .search-box{ width:100%; }
-    .restaurant-grid{ padding:30px 16px; gap:20px; }
+
+    /* Navbar */
+
+    .navbar{
+
+        padding:10px 14px;
+
+        min-height:68px;
+
+        flex-wrap:nowrap;
+    }
+
+
+    .logo-wrap{
+
+        gap:8px;
+
+        min-width:0;
+    }
+
+
+    .logo-img{
+
+        width:44px;
+        height:44px;
+    }
+
+
+    .logo-text{
+
+        font-size:20px;
+
+        letter-spacing:1px;
+    }
+
+
+    /* Hide desktop navigation */
+
+    .nav-links{
+
+        display:none;
+    }
+
+
+    /* Show hamburger */
+
+    .mobile-menu-btn{
+
+        display:flex;
+
+        margin-left:auto;
+    }
+
+
+    /* Hero */
+
+    .hero{
+
+        padding:60px 16px 50px;
+
+        min-height:55vh;
+    }
+
+
+    .hero h1{
+
+        font-size:32px;
+
+        line-height:1.15;
+    }
+
+
+    .hero .eyebrow{
+
+        font-size:10px;
+
+        letter-spacing:0.14em;
+    }
+
+
+    .search-box{
+
+        width:100%;
+
+        max-width:100%;
+
+        padding:14px 18px;
+
+        font-size:14px;
+    }
+
+
+    /* Restaurant cards */
+
+    .restaurant-grid{
+
+        grid-template-columns:1fr;
+
+        padding:30px 16px;
+
+        gap:20px;
+    }
+
+
+    .card img{
+
+        height:220px;
+    }
+
+
+    /* 3D background */
+
+    #canvas3d{
+
+        position:fixed;
+
+        top:0;
+        left:0;
+
+        width:100%;
+        height:100vh;
+    }
+
 }
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media(max-width:400px){
+
+    .logo-text{
+
+        font-size:18px;
+    }
+
+
+    .logo-img{
+
+        width:40px;
+        height:40px;
+    }
+
+
+    .mobile-menu-btn{
+
+        width:40px;
+        height:40px;
+
+        font-size:21px;
+    }
+
+
+    .hero h1{
+
+        font-size:28px;
+    }
+
+
+    .hero{
+
+        padding-top:45px;
+    }
+
+
+    .card img{
+
+        height:200px;
+    }
+
+
+    .card-content{
+
+        padding:18px 16px;
+    }
+
+
+    .title-rating h3{
+
+        font-size:16px;
+    }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
+<!-- =====================================================
+     3D BACKGROUND
+===================================================== -->
+
 <canvas id="canvas3d"></canvas>
 
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
 <nav class="navbar">
-    <a href="callRestaurantServlet" class="logo-wrap">
-        <img src="Image/ZestGo.png" class="logo-img" alt="ZestGo Logo">
-        <div class="logo-text">ZestGo</div>
-    </a>
 
-    <div class="nav-links">
-        <a href="callRestaurantServlet">Home</a>
 
-        <% if(userName == null){ %>
-            <a href="login.jsp">Login</a>
-            <a href="register.jsp">Sign Up</a>
-        <% } else { %>
-            <div class="avatar-wrap" id="avatarBtn">
-                <div class="profile-info">
-                    <div class="profile-label">User</div>
-                    <div class="profile-name"><%= userName %></div>
-                </div>
-                <button type="button" class="avatar-btn">
-                    <% 
-                        String initials = "";
-                        if(userName != null && userName.length() > 0) {
-                            String[] names = userName.split(" ");
-                            initials = names[0].substring(0, 1).toUpperCase();
-                            if(names.length > 1) {
-                                initials += names[names.length-1].substring(0, 1).toUpperCase();
-                            }
-                        }
-                    %>
-                    <%= initials %>
-                </button>
+    <!-- LOGO -->
 
-                <div class="dropdown" id="avatarDropdown">
-                    <div class="mail"><%= userName %></div>
-                    <a href="profile.jsp">My Profile</a>
-                    <a href="orderHistory">My Orders</a>
-                    <a href="favorites">Favorites</a>
-                    <a href="cart.jsp">Cart</a>
-                    <a href="logout" class="logout">Logout</a>
-                </div>
-            </div>
-        <% } %>
-    </div>
-</nav>
+    <a href="callRestaurantServlet"
+       class="logo-wrap">
 
-<section class="hero">
-    <div>
-        <span class="eyebrow">ZestGo Premium Delivery</span>
-        <h1>Every Craving, One Destination.</h1>
+        <img src="Image/ZestGo.png"
+             class="logo-img"
+             alt="ZestGo Logo">
 
-        <form action="callRestaurantServlet" method="get">
-            <input type="text" name="keyword" class="search-box" placeholder="Search restaurants, cuisines, or dishes...">
-        </form>
-    </div>
-</section>
-
-<div class="restaurant-grid">
-
-<%
-FavoriteDAOimpl favDao = new FavoriteDAOimpl();
-List<User> allUsers = (List<User>) request.getAttribute("allUsers");
-
-for(User user : allUsers){
-    boolean favorite = false;
-    if(userName != null){
-        favorite = favDao.isFavorite(userName, user.getRestaurantID());
-    }
-%>
-
-<div class="card">
-
-    <% if(favorite){ %>
-        <form action="removeFavorite" method="get" style="position:absolute; top:16px; right:16px; z-index:3; margin:0;">
-            <input type="hidden" name="restaurantId" value="<%= user.getRestaurantID() %>">
-            <button class="favorite" type="submit">Heart</button>
-        </form>
-    <% } else { %>
-        <form action="addFavorite" method="get" style="position:absolute; top:16px; right:16px; z-index:3; margin:0;">
-            <input type="hidden" name="restaurantId" value="<%= user.getRestaurantID() %>">
-            <button class="favorite" type="submit">Like</button>
-        </form>
-    <% } %>
-
-    <a class="card-link" href="menu?restaurantId=<%= user.getRestaurantID() %>&Name=<%= user.getName() %>&CuisineType=<%= user.getCuisineType() %>&Rating=<%= user.getRating() %>">
-
-        <%
-String[] offers = {
-    "50% OFF",
-    "40% OFF",
-    "FREE DELIVERY",
-    "125 OFF",
-    "BUY 1 GET 1",
-    "30% OFF",
-    "100 CASHBACK",
-    "20% OFF",
-    "FREE DESSERT",
-    "COMBO 199",
-    "Flat 99 OFF",
-    "Extra 15% OFF",
-    "Free Coke",
-    "Family Pack",
-    "Free Cake"
-};
-
-String offer = offers[Math.abs(user.getRestaurantID()) % offers.length];
-%>
-
-        <span class="offer"><%= offer %></span>
-
-        <img src="<%= user.getImagePath() %>" alt="<%= user.getName() %>">
-
-        <div class="card-content">
-            <div class="title-rating">
-                <h3><%= user.getName() %></h3>
-                <span class="rating"><%= user.getRating() %></span>
-            </div>
-
-            <p><%= user.getCuisineType() %></p>
-            <p><%= user.getAddress() %></p>
-            <small><%= user.getDeliveryTime() %></small>
+        <div class="logo-text">
+            ZestGo
         </div>
 
     </a>
 
+
+    <!-- DESKTOP NAVIGATION -->
+
+    <div class="nav-links">
+
+        <a href="callRestaurantServlet">
+            Home
+        </a>
+
+
+        <% if(userName == null){ %>
+
+            <a href="login.jsp">
+                Login
+            </a>
+
+            <a href="register.jsp">
+                Sign Up
+            </a>
+
+
+        <% } else { %>
+
+
+            <!-- PROFILE -->
+
+            <div class="avatar-wrap"
+                 id="avatarBtn">
+
+
+                <div class="profile-info">
+
+                    <div class="profile-label">
+                        User
+                    </div>
+
+                    <div class="profile-name">
+                        <%= userName %>
+                    </div>
+
+                </div>
+
+
+                <button type="button"
+                        class="avatar-btn">
+
+                    <%
+
+                    String initials = "";
+
+                    if(userName != null
+                       && userName.length() > 0){
+
+                        String[] names =
+                            userName.split(" ");
+
+                        initials =
+                            names[0]
+                            .substring(0,1)
+                            .toUpperCase();
+
+                        if(names.length > 1){
+
+                            initials +=
+                                names[names.length-1]
+                                .substring(0,1)
+                                .toUpperCase();
+
+                        }
+
+                    }
+
+                    %>
+
+                    <%= initials %>
+
+                </button>
+
+
+                <!-- DESKTOP DROPDOWN -->
+
+                <div class="dropdown"
+                     id="avatarDropdown">
+
+
+                    <div class="mail">
+                        <%= userName %>
+                    </div>
+
+
+                    <a href="profile.jsp">
+                        👤 My Profile
+                    </a>
+
+
+                    <a href="orderHistory">
+                        📦 My Orders
+                    </a>
+
+
+                    <a href="favorites">
+                        ❤️ Favorites
+                    </a>
+
+
+                    <a href="cart.jsp">
+                        🛒 Cart
+                    </a>
+
+
+                    <a href="logout"
+                       class="logout">
+
+                        🚪 Logout
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        <% } %>
+
+    </div>
+
+
+    <!-- MOBILE HAMBURGER -->
+
+    <button class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            type="button"
+            aria-label="Open menu">
+
+        ☰
+
+    </button>
+
+</nav>
+
+
+<!-- =====================================================
+     MOBILE NAVIGATION
+===================================================== -->
+
+<div class="mobile-nav"
+     id="mobileNav">
+
+
+    <% if(userName == null){ %>
+
+
+        <a href="callRestaurantServlet">
+            🏠 Home
+        </a>
+
+
+        <a href="login.jsp">
+            🔐 Login
+        </a>
+
+
+        <a href="register.jsp">
+            ✨ Sign Up
+        </a>
+
+
+    <% } else { %>
+
+
+        <div class="mobile-user">
+            👤 <%= userName %>
+        </div>
+
+
+        <a href="callRestaurantServlet">
+            🏠 Home
+        </a>
+
+
+        <a href="profile.jsp">
+            👤 My Profile
+        </a>
+
+
+        <a href="orderHistory">
+            📦 My Orders
+        </a>
+
+
+        <a href="favorites">
+            ❤️ Favorites
+        </a>
+
+
+        <a href="cart.jsp">
+            🛒 Cart
+        </a>
+
+
+        <a href="logout"
+           class="mobile-logout">
+
+            🚪 Logout
+
+        </a>
+
+
+    <% } %>
+
 </div>
 
-<% } %>
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div>
+
+        <span class="eyebrow">
+            ZestGo Premium Delivery
+        </span>
+
+
+        <h1>
+            Every Craving, One Destination.
+        </h1>
+
+
+        <form action="callRestaurantServlet"
+              method="get">
+
+            <input type="text"
+                   name="keyword"
+                   class="search-box"
+                   placeholder="Search restaurants, cuisines, or dishes...">
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     RESTAURANT GRID
+===================================================== -->
+
+<div class="restaurant-grid">
+
+
+<%
+
+FavoriteDAOimpl favDao =
+    new FavoriteDAOimpl();
+
+List<User> allUsers =
+    (List<User>)
+    request.getAttribute("allUsers");
+
+
+if(allUsers != null){
+
+    for(User user : allUsers){
+
+        boolean favorite = false;
+
+
+        if(userName != null){
+
+            favorite =
+                favDao.isFavorite(
+                    userName,
+                    user.getRestaurantID()
+                );
+
+        }
+
+%>
+
+
+<div class="card">
+
+
+    <!-- FAVORITE BUTTON -->
+
+    <% if(favorite){ %>
+
+
+        <form action="removeFavorite"
+              method="get"
+              style="
+                  position:absolute;
+                  top:16px;
+                  right:16px;
+                  z-index:3;
+                  margin:0;
+              ">
+
+            <input type="hidden"
+                   name="restaurantId"
+                   value="<%= user.getRestaurantID() %>">
+
+
+            <button class="favorite"
+                    type="submit">
+
+                ❤️
+
+            </button>
+
+        </form>
+
+
+    <% } else { %>
+
+
+        <form action="addFavorite"
+              method="get"
+              style="
+                  position:absolute;
+                  top:16px;
+                  right:16px;
+                  z-index:3;
+                  margin:0;
+              ">
+
+            <input type="hidden"
+                   name="restaurantId"
+                   value="<%= user.getRestaurantID() %>">
+
+
+            <button class="favorite"
+                    type="submit">
+
+                ♡
+
+            </button>
+
+        </form>
+
+
+    <% } %>
+
+
+    <!-- RESTAURANT LINK -->
+
+    <a class="card-link"
+       href="menu?restaurantId=<%= user.getRestaurantID() %>&Name=<%= user.getName() %>&CuisineType=<%= user.getCuisineType() %>&Rating=<%= user.getRating() %>">
+
+
+        <%
+
+        String[] offers = {
+
+            "50% OFF",
+            "40% OFF",
+            "FREE DELIVERY",
+            "125 OFF",
+            "BUY 1 GET 1",
+            "30% OFF",
+            "100 CASHBACK",
+            "20% OFF",
+            "FREE DESSERT",
+            "COMBO 199",
+            "Flat 99 OFF",
+            "Extra 15% OFF",
+            "Free Coke",
+            "Family Pack",
+            "Free Cake"
+
+        };
+
+
+        String offer =
+            offers[
+                Math.abs(
+                    user.getRestaurantID()
+                )
+                % offers.length
+            ];
+
+        %>
+
+
+        <span class="offer">
+            <%= offer %>
+        </span>
+
+
+        <img src="<%= user.getImagePath() %>"
+             alt="<%= user.getName() %>">
+
+
+        <div class="card-content">
+
+
+            <div class="title-rating">
+
+
+                <h3>
+                    <%= user.getName() %>
+                </h3>
+
+
+                <span class="rating">
+
+                    ⭐ <%= user.getRating() %>
+
+                </span>
+
+
+            </div>
+
+
+            <p>
+                🍽️ <%= user.getCuisineType() %>
+            </p>
+
+
+            <p>
+                📍 <%= user.getAddress() %>
+            </p>
+
+
+            <small>
+                ⏱ <%= user.getDeliveryTime() %>
+            </small>
+
+
+        </div>
+
+
+    </a>
+
 
 </div>
+
+
+<%
+
+    }
+
+}
+
+%>
+
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer>
-Copyright 2026 ZestGo - Food Delivery
+
+    Copyright 2026 ZestGo - Food Delivery
+
 </footer>
 
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
 <script>
-let scene, camera, renderer;
-let particles, torusKnot, spheres;
+
+
+/* =====================================================
+   3D VARIABLES
+===================================================== */
+
+let scene;
+let camera;
+let renderer;
+
+let particles;
+let torusKnot;
+let spheres = [];
+
 let time = 0;
 
-function init3D() {
-    try {
-        const canvas = document.getElementById('canvas3d');
-        if (!canvas) return;
-        
-        scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a1f22);
-        scene.fog = new THREE.Fog(0x0a1f22, 150, 300);
-        
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: false, antialias: true, powerPreference: 'high-performance' });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setClearColor(0x0a1f22, 1);
-        
+
+/* =====================================================
+   INITIALIZE 3D
+===================================================== */
+
+function init3D(){
+
+    try{
+
+        const canvas =
+            document.getElementById("canvas3d");
+
+
+        if(!canvas){
+            return;
+        }
+
+
+        scene =
+            new THREE.Scene();
+
+
+        scene.background =
+            new THREE.Color(0x0a1f22);
+
+
+        scene.fog =
+            new THREE.Fog(
+                0x0a1f22,
+                150,
+                300
+            );
+
+
+        camera =
+            new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth /
+                window.innerHeight,
+                0.1,
+                1000
+            );
+
+
+        renderer =
+            new THREE.WebGLRenderer({
+
+                canvas:canvas,
+
+                alpha:false,
+
+                antialias:true,
+
+                powerPreference:
+                    "high-performance"
+
+            });
+
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+
+        renderer.setPixelRatio(
+            Math.min(
+                window.devicePixelRatio,
+                1.5
+            )
+        );
+
+
+        renderer.setClearColor(
+            0x0a1f22,
+            1
+        );
+
+
         camera.position.z = 40;
 
+
         createParticles();
+
         createTorusKnot();
+
         createSpheres();
+
         setupLighting();
-        
+
+
         animate();
-        
-        window.addEventListener('resize', onWindowResize);
-    } catch (error) {
-        console.error('3D Error:', error);
+
+
+        window.addEventListener(
+            "resize",
+            onWindowResize
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "3D Error:",
+            error
+        );
+
     }
+
 }
 
-function createParticles() {
-    const geometry = new THREE.BufferGeometry();
-    const particleCount = 150;
-    const positions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
 
-    for (let i = 0; i < particleCount * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 100;
-        positions[i + 1] = (Math.random() - 0.5) * 100;
-        positions[i + 2] = (Math.random() - 0.5) * 100;
+/* =====================================================
+   PARTICLES
+===================================================== */
 
-        velocities[i] = (Math.random() - 0.5) * 0.15;
-        velocities[i + 1] = (Math.random() - 0.5) * 0.15;
-        velocities[i + 2] = (Math.random() - 0.5) * 0.15;
+function createParticles(){
+
+    const geometry =
+        new THREE.BufferGeometry();
+
+
+    const particleCount = 120;
+
+
+    const positions =
+        new Float32Array(
+            particleCount * 3
+        );
+
+
+    const velocities =
+        new Float32Array(
+            particleCount * 3
+        );
+
+
+    for(
+        let i = 0;
+        i < particleCount * 3;
+        i += 3
+    ){
+
+        positions[i] =
+            (Math.random()-0.5)*100;
+
+        positions[i+1] =
+            (Math.random()-0.5)*100;
+
+        positions[i+2] =
+            (Math.random()-0.5)*100;
+
+
+        velocities[i] =
+            (Math.random()-0.5)*0.08;
+
+        velocities[i+1] =
+            (Math.random()-0.5)*0.08;
+
+        velocities[i+2] =
+            (Math.random()-0.5)*0.08;
+
     }
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.userData.velocities = velocities;
 
-    const canvas = document.createElement('canvas');
-    canvas.width = 32;
-    canvas.height = 32;
-    const ctx = canvas.getContext('2d');
-    
-    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    gradient.addColorStop(1, 'rgba(201, 162, 75, 0)');
+    geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(
+            positions,
+            3
+        )
+    );
+
+
+    geometry.userData.velocities =
+        velocities;
+
+
+    const textureCanvas =
+        document.createElement("canvas");
+
+
+    textureCanvas.width = 32;
+    textureCanvas.height = 32;
+
+
+    const ctx =
+        textureCanvas.getContext("2d");
+
+
+    const gradient =
+        ctx.createRadialGradient(
+            16,
+            16,
+            0,
+            16,
+            16,
+            16
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "rgba(255,255,255,1)"
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "rgba(201,162,75,0)"
+    );
+
+
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 32, 32);
 
-    const texture = new THREE.CanvasTexture(canvas);
-    const material = new THREE.PointsMaterial({
-        map: texture,
-        sizeAttenuation: true,
-        transparent: true,
-        opacity: 0.5,
-        size: 1
-    });
+    ctx.fillRect(
+        0,
+        0,
+        32,
+        32
+    );
 
-    particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-}
 
-function createTorusKnot() {
-    const geometry = new THREE.TorusKnotGeometry(8, 2.5, 100, 20);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0x2E9CDB,
-        emissive: 0xC9A24B,
-        emissiveIntensity: 0.2,
-        shininess: 50
-    });
+    const texture =
+        new THREE.CanvasTexture(
+            textureCanvas
+        );
 
-    torusKnot = new THREE.Mesh(geometry, material);
-    torusKnot.position.z = -10;
-    scene.add(torusKnot);
-}
 
-function createSpheres() {
-    spheres = [];
-    const sphereGeometry = new THREE.IcosahedronGeometry(2, 3);
-    const colors = [0xC9A24B, 0xE4572E, 0x2E9CDB];
-    
-    for (let i = 0; i < 3; i++) {
-        const material = new THREE.MeshPhongMaterial({
-            color: colors[i],
-            emissive: colors[i],
-            emissiveIntensity: 0.15,
-            shininess: 50
+    const material =
+        new THREE.PointsMaterial({
+
+            map:texture,
+
+            sizeAttenuation:true,
+
+            transparent:true,
+
+            opacity:0.45,
+
+            size:1
+
         });
-        
-        const sphere = new THREE.Mesh(sphereGeometry, material);
-        sphere.userData.angle = (Math.PI * 2 / 3) * i;
-        sphere.userData.radius = 18;
-        
-        scene.add(sphere);
-        spheres.push(sphere);
+
+
+    particles =
+        new THREE.Points(
+            geometry,
+            material
+        );
+
+
+    scene.add(
+        particles
+    );
+
+}
+
+
+/* =====================================================
+   TORUS KNOT
+===================================================== */
+
+function createTorusKnot(){
+
+    const geometry =
+        new THREE.TorusKnotGeometry(
+            8,
+            2.5,
+            100,
+            20
+        );
+
+
+    const material =
+        new THREE.MeshPhongMaterial({
+
+            color:0x2E9CDB,
+
+            emissive:0xC9A24B,
+
+            emissiveIntensity:0.18,
+
+            shininess:50
+
+        });
+
+
+    torusKnot =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+
+    torusKnot.position.z =
+        -10;
+
+
+    scene.add(
+        torusKnot
+    );
+
+}
+
+
+/* =====================================================
+   SPHERES
+===================================================== */
+
+function createSpheres(){
+
+    spheres = [];
+
+
+    const sphereGeometry =
+        new THREE.IcosahedronGeometry(
+            2,
+            2
+        );
+
+
+    const colors = [
+
+        0xC9A24B,
+        0xE4572E,
+        0x2E9CDB
+
+    ];
+
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        const material =
+            new THREE.MeshPhongMaterial({
+
+                color:colors[i],
+
+                emissive:colors[i],
+
+                emissiveIntensity:0.12,
+
+                shininess:50
+
+            });
+
+
+        const sphere =
+            new THREE.Mesh(
+                sphereGeometry,
+                material
+            );
+
+
+        sphere.userData.angle =
+            (Math.PI * 2 / 3) * i;
+
+
+        sphere.userData.radius =
+            18;
+
+
+        scene.add(
+            sphere
+        );
+
+
+        spheres.push(
+            sphere
+        );
+
     }
+
 }
 
-function setupLighting() {
-    const mainLight = new THREE.PointLight(0xC9A24B, 1, 120);
-    mainLight.position.set(30, 30, 30);
-    scene.add(mainLight);
 
-    const secondLight = new THREE.PointLight(0xE4572E, 0.8, 120);
-    secondLight.position.set(-30, -20, 20);
-    scene.add(secondLight);
+/* =====================================================
+   LIGHTING
+===================================================== */
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
+function setupLighting(){
+
+    const mainLight =
+        new THREE.PointLight(
+            0xC9A24B,
+            1,
+            120
+        );
+
+
+    mainLight.position.set(
+        30,
+        30,
+        30
+    );
+
+
+    scene.add(
+        mainLight
+    );
+
+
+    const secondLight =
+        new THREE.PointLight(
+            0xE4572E,
+            0.8,
+            120
+        );
+
+
+    secondLight.position.set(
+        -30,
+        -20,
+        20
+    );
+
+
+    scene.add(
+        secondLight
+    );
+
+
+    const ambientLight =
+        new THREE.AmbientLight(
+            0xffffff,
+            0.4
+        );
+
+
+    scene.add(
+        ambientLight
+    );
+
 }
 
-function animate() {
-    requestAnimationFrame(animate);
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+
     time += 0.005;
 
-    if (torusKnot) {
-        torusKnot.rotation.x += 0.001;
-        torusKnot.rotation.y += 0.002;
+
+    /* Torus */
+
+    if(torusKnot){
+
+        torusKnot.rotation.x +=
+            0.001;
+
+        torusKnot.rotation.y +=
+            0.002;
+
     }
 
-    spheres.forEach((sphere, i) => {
-        sphere.userData.angle += 0.005;
-        sphere.position.x = Math.cos(sphere.userData.angle) * sphere.userData.radius;
-        sphere.position.z = Math.sin(sphere.userData.angle) * sphere.userData.radius;
-        sphere.position.y = Math.cos(time * 0.3 + i) * 2;
-    });
 
-    if (particles) {
-        particles.rotation.y += 0.0001;
-        
-        const positions = particles.geometry.getAttribute('position').array;
-        const velocities = particles.geometry.userData.velocities;
+    /* Spheres */
 
-        for (let i = 0; i < positions.length; i += 3) {
-            positions[i] += velocities[i];
-            positions[i + 1] += velocities[i + 1];
-            positions[i + 2] += velocities[i + 2];
+    spheres.forEach(
+        function(sphere,i){
 
-            if (Math.abs(positions[i]) > 50) velocities[i] *= -1;
-            if (Math.abs(positions[i + 1]) > 50) velocities[i + 1] *= -1;
-            if (Math.abs(positions[i + 2]) > 50) velocities[i + 2] *= -1;
+            sphere.userData.angle +=
+                0.004;
+
+
+            sphere.position.x =
+                Math.cos(
+                    sphere.userData.angle
+                )
+                *
+                sphere.userData.radius;
+
+
+            sphere.position.z =
+                Math.sin(
+                    sphere.userData.angle
+                )
+                *
+                sphere.userData.radius;
+
+
+            sphere.position.y =
+                Math.cos(
+                    time * 0.3 + i
+                ) * 2;
+
+
+            sphere.rotation.x +=
+                0.002;
+
+            sphere.rotation.y +=
+                0.003;
+
+        }
+    );
+
+
+    /* Particles */
+
+    if(particles){
+
+        particles.rotation.y +=
+            0.0002;
+
+
+        const positions =
+            particles.geometry
+            .getAttribute("position")
+            .array;
+
+
+        const velocities =
+            particles.geometry
+            .userData.velocities;
+
+
+        for(
+            let i=0;
+            i<positions.length;
+            i+=3
+        ){
+
+            positions[i] +=
+                velocities[i];
+
+            positions[i+1] +=
+                velocities[i+1];
+
+            positions[i+2] +=
+                velocities[i+2];
+
+
+            if(
+                Math.abs(
+                    positions[i]
+                ) > 50
+            ){
+
+                velocities[i] *= -1;
+
+            }
+
+
+            if(
+                Math.abs(
+                    positions[i+1]
+                ) > 50
+            ){
+
+                velocities[i+1] *= -1;
+
+            }
+
+
+            if(
+                Math.abs(
+                    positions[i+2]
+                ) > 50
+            ){
+
+                velocities[i+2] *= -1;
+
+            }
+
         }
 
-        particles.geometry.getAttribute('position').needsUpdate = true;
+
+        particles.geometry
+            .getAttribute("position")
+            .needsUpdate = true;
+
     }
 
-    renderer.render(scene, camera);
+
+    renderer.render(
+        scene,
+        camera
+    );
+
 }
 
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+function onWindowResize(){
+
+    if(!camera || !renderer){
+        return;
+    }
+
+
+    camera.aspect =
+        window.innerWidth /
+        window.innerHeight;
+
+
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            window.devicePixelRatio,
+            1.5
+        )
+    );
+
 }
 
-const avatarBtn = document.getElementById('avatarBtn');
-if (avatarBtn) {
-    avatarBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const dropdown = document.getElementById('avatarDropdown');
-        if (dropdown) {
-            dropdown.classList.toggle('show');
+
+/* =====================================================
+   DESKTOP PROFILE DROPDOWN
+===================================================== */
+
+const avatarBtn =
+    document.getElementById(
+        "avatarBtn"
+    );
+
+
+if(avatarBtn){
+
+    avatarBtn.addEventListener(
+        "click",
+        function(e){
+
+            e.stopPropagation();
+
+
+            const dropdown =
+                document.getElementById(
+                    "avatarDropdown"
+                );
+
+
+            if(dropdown){
+
+                dropdown.classList.toggle(
+                    "show"
+                );
+
+            }
+
         }
-    });
+    );
+
 }
 
-document.addEventListener('click', function(event) {
-    const dropdown = document.getElementById('avatarDropdown');
-    const avatarWrap = document.getElementById('avatarBtn');
-    if (dropdown && !event.target.closest('.avatar-wrap') && avatarWrap) {
-        dropdown.classList.remove('show');
+
+/* Close desktop dropdown */
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        const dropdown =
+            document.getElementById(
+                "avatarDropdown"
+            );
+
+
+        const avatarWrap =
+            document.getElementById(
+                "avatarBtn"
+            );
+
+
+        if(
+            dropdown &&
+            !event.target.closest(
+                ".avatar-wrap"
+            ) &&
+            avatarWrap
+        ){
+
+            dropdown.classList.remove(
+                "show"
+            );
+
+        }
+
     }
-});
+);
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(() => init3D(), 100);
-    });
-} else {
-    setTimeout(() => init3D(), 100);
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+const mobileMenuBtn =
+    document.getElementById(
+        "mobileMenuBtn"
+    );
+
+
+const mobileNav =
+    document.getElementById(
+        "mobileNav"
+    );
+
+
+if(
+    mobileMenuBtn &&
+    mobileNav
+){
+
+    mobileMenuBtn.addEventListener(
+        "click",
+        function(e){
+
+            e.stopPropagation();
+
+
+            mobileNav.classList.toggle(
+                "show"
+            );
+
+
+            if(
+                mobileNav.classList.contains(
+                    "show"
+                )
+            ){
+
+                mobileMenuBtn.innerHTML =
+                    "✕";
+
+                mobileMenuBtn.setAttribute(
+                    "aria-label",
+                    "Close menu"
+                );
+
+            }else{
+
+                mobileMenuBtn.innerHTML =
+                    "☰";
+
+                mobileMenuBtn.setAttribute(
+                    "aria-label",
+                    "Open menu"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* Close when clicking outside */
+
+    document.addEventListener(
+        "click",
+        function(e){
+
+            if(
+
+                mobileNav.classList.contains(
+                    "show"
+                )
+
+                &&
+
+                !mobileNav.contains(
+                    e.target
+                )
+
+                &&
+
+                !mobileMenuBtn.contains(
+                    e.target
+                )
+
+            ){
+
+                mobileNav.classList.remove(
+                    "show"
+                );
+
+
+                mobileMenuBtn.innerHTML =
+                    "☰";
+
+            }
+
+        }
+    );
+
+
+    /* Close after clicking a link */
+
+    mobileNav
+        .querySelectorAll("a")
+        .forEach(
+            function(link){
+
+                link.addEventListener(
+                    "click",
+                    function(){
+
+                        mobileNav.classList.remove(
+                            "show"
+                        );
+
+
+                        mobileMenuBtn.innerHTML =
+                            "☰";
+
+                    }
+                );
+
+            }
+        );
+
 }
+
+
+/* =====================================================
+   START 3D
+===================================================== */
+
+if(
+    document.readyState ===
+    "loading"
+){
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function(){
+
+            setTimeout(
+                init3D,
+                100
+            );
+
+        }
+    );
+
+}else{
+
+    setTimeout(
+        init3D,
+        100
+    );
+
+}
+
 </script>
 
+
 </body>
+
 </html>
