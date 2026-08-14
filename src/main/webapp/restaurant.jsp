@@ -18,6 +18,16 @@ String userName = (String) session.getAttribute("userName");
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
+<!-- ZestGo PWA -->
+<link rel="manifest"
+      href="<%= request.getContextPath() %>/manifest.json">
+
+<meta name="theme-color"
+      content="#0F2A2E">
+
+<link rel="apple-touch-icon"
+      href="<%= request.getContextPath() %>/Image/ZestGo-192.png">
+
 <title>ZestGo - Food Delivery</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
@@ -41,7 +51,6 @@ String userName = (String) session.getAttribute("userName");
     --accent-blue:#2E9CDB;
 }
 
-
 /* =========================================================
    RESET
 ========================================================= */
@@ -53,7 +62,6 @@ String userName = (String) session.getAttribute("userName");
     font-family:'Space Grotesk',sans-serif;
 }
 
-
 html,
 body{
     width:100%;
@@ -61,12 +69,10 @@ body{
     overflow-x:hidden;
 }
 
-
 body{
     background:var(--paper);
     color:var(--ink);
 }
-
 
 /* =========================================================
    3D CANVAS
@@ -91,7 +97,6 @@ body{
             #1a4b50 100%
         );
 }
-
 
 /* =========================================================
    NAVBAR
@@ -124,7 +129,6 @@ body{
         0 8px 32px rgba(0,0,0,0.2);
 }
 
-
 /* =========================================================
    LOGO
 ========================================================= */
@@ -141,7 +145,6 @@ body{
 
     min-width:0;
 }
-
 
 .logo-img{
 
@@ -168,7 +171,6 @@ body{
         float 3s ease-in-out infinite;
 }
 
-
 @keyframes float{
 
     0%,
@@ -181,7 +183,6 @@ body{
     }
 
 }
-
 
 .logo-text{
 
@@ -204,7 +205,6 @@ body{
     letter-spacing:2px;
 }
 
-
 /* =========================================================
    DESKTOP NAV
 ========================================================= */
@@ -217,7 +217,6 @@ body{
 
     gap:8px;
 }
-
 
 .nav-links a{
 
@@ -237,7 +236,6 @@ body{
     transition:0.3s;
 }
 
-
 .nav-links a:hover{
 
     color:var(--gold);
@@ -245,7 +243,6 @@ body{
     background:
         rgba(201,162,75,0.1);
 }
-
 
 /* =========================================================
    PROFILE
@@ -273,13 +270,11 @@ body{
     transition:0.3s;
 }
 
-
 .avatar-wrap:hover{
 
     background:
         rgba(201,162,75,0.15);
 }
-
 
 .profile-info{
 
@@ -289,7 +284,6 @@ body{
 
     align-items:flex-start;
 }
-
 
 .profile-name{
 
@@ -310,7 +304,6 @@ body{
     white-space:nowrap;
 }
 
-
 .profile-label{
 
     font-size:10px;
@@ -325,7 +318,6 @@ body{
 
     font-weight:600;
 }
-
 
 .avatar-btn{
 
@@ -367,7 +359,6 @@ body{
     flex-shrink:0;
 }
 
-
 .avatar-btn:hover{
 
     transform:scale(1.1);
@@ -375,7 +366,6 @@ body{
     box-shadow:
         0 0 30px rgba(201,162,75,0.8);
 }
-
 
 /* =========================================================
    DESKTOP DROPDOWN
@@ -417,11 +407,9 @@ body{
         slideDown 0.3s ease;
 }
 
-
 .dropdown.show{
     display:flex;
 }
-
 
 @keyframes slideDown{
 
@@ -436,7 +424,6 @@ body{
     }
 
 }
-
 
 .dropdown .mail{
 
@@ -459,7 +446,6 @@ body{
     font-weight:700;
 }
 
-
 .dropdown a{
 
     text-decoration:none;
@@ -478,7 +464,6 @@ body{
     transition:0.2s;
 }
 
-
 .dropdown a:hover{
 
     background:
@@ -488,7 +473,6 @@ body{
 
     padding-left:18px;
 }
-
 
 .dropdown a.logout{
 
@@ -502,13 +486,11 @@ body{
     padding-top:12px;
 }
 
-
 .dropdown a.logout:hover{
 
     background:
         rgba(228,87,46,0.15);
 }
-
 
 /* =========================================================
    MOBILE MENU BUTTON
@@ -544,7 +526,6 @@ body{
     flex-shrink:0;
 }
 
-
 .mobile-menu-btn:hover{
 
     background:
@@ -552,7 +533,6 @@ body{
 
     transform:scale(1.05);
 }
-
 
 /* =========================================================
    MOBILE NAVIGATION
@@ -591,7 +571,6 @@ body{
     z-index:2000;
 }
 
-
 .mobile-nav.show{
 
     display:flex;
@@ -599,7 +578,6 @@ body{
     animation:
         mobileMenuOpen 0.25s ease;
 }
-
 
 @keyframes mobileMenuOpen{
 
@@ -619,7 +597,6 @@ body{
 
 }
 
-
 .mobile-nav a{
 
     text-decoration:none;
@@ -638,7 +615,6 @@ body{
     transition:0.2s;
 }
 
-
 .mobile-nav a:hover{
 
     background:
@@ -648,7 +624,6 @@ body{
 
     padding-left:21px;
 }
-
 
 .mobile-user{
 
@@ -668,7 +643,6 @@ body{
     word-break:break-all;
 }
 
-
 .mobile-nav .mobile-logout{
 
     color:var(--coral);
@@ -678,7 +652,6 @@ body{
 
     margin-top:5px;
 }
-
 
 /* =========================================================
    HERO
@@ -707,12 +680,10 @@ body{
     align-items:center;
 }
 
-
 .hero > div{
 
     width:100%;
 }
-
 
 .hero h1{
 
@@ -739,7 +710,6 @@ body{
         fadeInUp 0.9s ease 0.2s both;
 }
 
-
 .hero .eyebrow{
 
     font-family:'JetBrains Mono',monospace;
@@ -760,7 +730,6 @@ body{
     font-weight:700;
 }
 
-
 @keyframes fadeInUp{
 
     from{
@@ -774,7 +743,6 @@ body{
     }
 
 }
-
 
 /* =========================================================
    SEARCH
@@ -815,13 +783,11 @@ body{
     font-weight:600;
 }
 
-
 .search-box::placeholder{
 
     color:
         rgba(239,233,220,0.45);
 }
-
 
 .search-box:focus{
 
@@ -833,7 +799,6 @@ body{
     box-shadow:
         0 8px 32px rgba(201,162,75,0.25);
 }
-
 
 /* =========================================================
    RESTAURANT GRID
@@ -857,7 +822,6 @@ body{
 
     z-index:5;
 }
-
 
 /* =========================================================
    RESTAURANT CARD
@@ -888,7 +852,6 @@ body{
         slideUp 0.8s ease-out both;
 }
 
-
 @keyframes slideUp{
 
     from{
@@ -902,7 +865,6 @@ body{
     }
 
 }
-
 
 .card:nth-child(1){
     animation-delay:0.1s;
@@ -928,7 +890,6 @@ body{
     animation-delay:0.6s;
 }
 
-
 .card:hover{
 
     transform:translateY(-12px);
@@ -940,7 +901,6 @@ body{
     border-color:
         rgba(201,162,75,0.8);
 }
-
 
 .card img{
 
@@ -955,12 +915,10 @@ body{
     transition:0.6s ease;
 }
 
-
 .card:hover img{
 
     transform:scale(1.08);
 }
-
 
 /* =========================================================
    OFFER
@@ -1004,7 +962,6 @@ body{
 
     z-index:3;
 }
-
 
 /* =========================================================
    FAVORITE
@@ -1050,7 +1007,6 @@ body{
     font-weight:700;
 }
 
-
 .favorite:hover{
 
     transform:scale(1.15);
@@ -1063,7 +1019,6 @@ body{
         0 8px 30px rgba(228,87,46,0.35);
 }
 
-
 /* =========================================================
    CARD CONTENT
 ========================================================= */
@@ -1074,7 +1029,6 @@ body{
 
     position:relative;
 }
-
 
 .card-content::before{
 
@@ -1097,7 +1051,6 @@ body{
         );
 }
 
-
 .title-rating{
 
     display:flex;
@@ -1111,14 +1064,12 @@ body{
     margin-top:8px;
 }
 
-
 .title-rating h3{
 
     font-size:18px;
 
     font-weight:800;
 }
-
 
 .rating{
 
@@ -1144,7 +1095,6 @@ body{
     font-weight:800;
 }
 
-
 .card-content p{
 
     color:#475569;
@@ -1155,7 +1105,6 @@ body{
 
     font-weight:600;
 }
-
 
 .card-content small{
 
@@ -1172,7 +1121,6 @@ body{
     font-weight:700;
 }
 
-
 .card-link{
 
     text-decoration:none;
@@ -1181,7 +1129,6 @@ body{
 
     display:block;
 }
-
 
 /* =========================================================
    FOOTER
@@ -1215,7 +1162,6 @@ footer{
     font-weight:600;
 }
 
-
 /* =========================================================
    MOBILE RESPONSIVE
 ========================================================= */
@@ -1233,7 +1179,6 @@ footer{
         flex-wrap:nowrap;
     }
 
-
     .logo-wrap{
 
         gap:8px;
@@ -1241,13 +1186,11 @@ footer{
         min-width:0;
     }
 
-
     .logo-img{
 
         width:44px;
         height:44px;
     }
-
 
     .logo-text{
 
@@ -1256,14 +1199,12 @@ footer{
         letter-spacing:1px;
     }
 
-
     /* Hide desktop navigation */
 
     .nav-links{
 
         display:none;
     }
-
 
     /* Show hamburger */
 
@@ -1274,7 +1215,6 @@ footer{
         margin-left:auto;
     }
 
-
     /* Hero */
 
     .hero{
@@ -1284,7 +1224,6 @@ footer{
         min-height:55vh;
     }
 
-
     .hero h1{
 
         font-size:32px;
@@ -1292,14 +1231,12 @@ footer{
         line-height:1.15;
     }
 
-
     .hero .eyebrow{
 
         font-size:10px;
 
         letter-spacing:0.14em;
     }
-
 
     .search-box{
 
@@ -1312,7 +1249,6 @@ footer{
         font-size:14px;
     }
 
-
     /* Restaurant cards */
 
     .restaurant-grid{
@@ -1324,12 +1260,10 @@ footer{
         gap:20px;
     }
 
-
     .card img{
 
         height:220px;
     }
-
 
     /* 3D background */
 
@@ -1346,7 +1280,6 @@ footer{
 
 }
 
-
 /* =========================================================
    SMALL PHONES
 ========================================================= */
@@ -1358,13 +1291,11 @@ footer{
         font-size:18px;
     }
 
-
     .logo-img{
 
         width:40px;
         height:40px;
     }
-
 
     .mobile-menu-btn{
 
@@ -1374,30 +1305,25 @@ footer{
         font-size:21px;
     }
 
-
     .hero h1{
 
         font-size:28px;
     }
-
 
     .hero{
 
         padding-top:45px;
     }
 
-
     .card img{
 
         height:200px;
     }
 
-
     .card-content{
 
         padding:18px 16px;
     }
-
 
     .title-rating h3{
 
@@ -1410,9 +1336,7 @@ footer{
 
 </head>
 
-
 <body>
-
 
 <!-- =====================================================
      3D BACKGROUND
@@ -1420,13 +1344,11 @@ footer{
 
 <canvas id="canvas3d"></canvas>
 
-
 <!-- =====================================================
      NAVBAR
 ===================================================== -->
 
 <nav class="navbar">
-
 
     <!-- LOGO -->
 
@@ -1443,7 +1365,6 @@ footer{
 
     </a>
 
-
     <!-- DESKTOP NAVIGATION -->
 
     <div class="nav-links">
@@ -1451,7 +1372,6 @@ footer{
         <a href="callRestaurantServlet">
             Home
         </a>
-
 
         <% if(userName == null){ %>
 
@@ -1463,15 +1383,12 @@ footer{
                 Sign Up
             </a>
 
-
         <% } else { %>
-
 
             <!-- PROFILE -->
 
             <div class="avatar-wrap"
                  id="avatarBtn">
-
 
                 <div class="profile-info">
 
@@ -1484,7 +1401,6 @@ footer{
                     </div>
 
                 </div>
-
 
                 <button type="button"
                         class="avatar-btn">
@@ -1521,37 +1437,30 @@ footer{
 
                 </button>
 
-
                 <!-- DESKTOP DROPDOWN -->
 
                 <div class="dropdown"
                      id="avatarDropdown">
 
-
                     <div class="mail">
                         <%= userName %>
                     </div>
-
 
                     <a href="profile.jsp">
                         👤 My Profile
                     </a>
 
-
                     <a href="orderHistory">
                         📦 My Orders
                     </a>
-
 
                     <a href="favorites">
                         ❤️ Favorites
                     </a>
 
-
                     <a href="cart.jsp">
                         🛒 Cart
                     </a>
-
 
                     <a href="logout"
                        class="logout">
@@ -1564,11 +1473,9 @@ footer{
 
             </div>
 
-
         <% } %>
 
     </div>
-
 
     <!-- MOBILE HAMBURGER -->
 
@@ -1583,7 +1490,6 @@ footer{
 
 </nav>
 
-
 <!-- =====================================================
      MOBILE NAVIGATION
 ===================================================== -->
@@ -1591,57 +1497,45 @@ footer{
 <div class="mobile-nav"
      id="mobileNav">
 
-
     <% if(userName == null){ %>
-
 
         <a href="callRestaurantServlet">
             🏠 Home
         </a>
-
 
         <a href="login.jsp">
             🔐 Login
         </a>
 
-
         <a href="register.jsp">
             ✨ Sign Up
         </a>
 
-
     <% } else { %>
-
 
         <div class="mobile-user">
             👤 <%= userName %>
         </div>
 
-
         <a href="callRestaurantServlet">
             🏠 Home
         </a>
-
 
         <a href="profile.jsp">
             👤 My Profile
         </a>
 
-
         <a href="orderHistory">
             📦 My Orders
         </a>
-
 
         <a href="favorites">
             ❤️ Favorites
         </a>
 
-
         <a href="cart.jsp">
             🛒 Cart
         </a>
-
 
         <a href="logout"
            class="mobile-logout">
@@ -1650,11 +1544,9 @@ footer{
 
         </a>
 
-
     <% } %>
 
 </div>
-
 
 <!-- =====================================================
      HERO
@@ -1668,11 +1560,9 @@ footer{
             ZestGo Premium Delivery
         </span>
 
-
         <h1>
             Every Craving, One Destination.
         </h1>
-
 
         <form action="callRestaurantServlet"
               method="get">
@@ -1688,13 +1578,11 @@ footer{
 
 </section>
 
-
 <!-- =====================================================
      RESTAURANT GRID
 ===================================================== -->
 
 <div class="restaurant-grid">
-
 
 <%
 
@@ -1705,13 +1593,11 @@ List<User> allUsers =
     (List<User>)
     request.getAttribute("allUsers");
 
-
 if(allUsers != null){
 
     for(User user : allUsers){
 
         boolean favorite = false;
-
 
         if(userName != null){
 
@@ -1725,14 +1611,11 @@ if(allUsers != null){
 
 %>
 
-
 <div class="card">
-
 
     <!-- FAVORITE BUTTON -->
 
     <% if(favorite){ %>
-
 
         <form action="removeFavorite"
               method="get"
@@ -1748,7 +1631,6 @@ if(allUsers != null){
                    name="restaurantId"
                    value="<%= user.getRestaurantID() %>">
 
-
             <button class="favorite"
                     type="submit">
 
@@ -1758,9 +1640,7 @@ if(allUsers != null){
 
         </form>
 
-
     <% } else { %>
-
 
         <form action="addFavorite"
               method="get"
@@ -1776,7 +1656,6 @@ if(allUsers != null){
                    name="restaurantId"
                    value="<%= user.getRestaurantID() %>">
 
-
             <button class="favorite"
                     type="submit">
 
@@ -1786,15 +1665,12 @@ if(allUsers != null){
 
         </form>
 
-
     <% } %>
-
 
     <!-- RESTAURANT LINK -->
 
     <a class="card-link"
        href="menu?restaurantId=<%= user.getRestaurantID() %>&Name=<%= user.getName() %>&CuisineType=<%= user.getCuisineType() %>&Rating=<%= user.getRating() %>">
-
 
         <%
 
@@ -1818,7 +1694,6 @@ if(allUsers != null){
 
         };
 
-
         String offer =
             offers[
                 Math.abs(
@@ -1829,26 +1704,20 @@ if(allUsers != null){
 
         %>
 
-
         <span class="offer">
             <%= offer %>
         </span>
 
-
         <img src="<%= user.getImagePath() %>"
              alt="<%= user.getName() %>">
 
-
         <div class="card-content">
 
-
             <div class="title-rating">
-
 
                 <h3>
                     <%= user.getName() %>
                 </h3>
-
 
                 <span class="rating">
 
@@ -1856,33 +1725,25 @@ if(allUsers != null){
 
                 </span>
 
-
             </div>
-
 
             <p>
                 🍽️ <%= user.getCuisineType() %>
             </p>
 
-
             <p>
                 📍 <%= user.getAddress() %>
             </p>
-
 
             <small>
                 ⏱ <%= user.getDeliveryTime() %>
             </small>
 
-
         </div>
-
 
     </a>
 
-
 </div>
-
 
 <%
 
@@ -1892,9 +1753,7 @@ if(allUsers != null){
 
 %>
 
-
 </div>
-
 
 <!-- =====================================================
      FOOTER
@@ -1906,13 +1765,11 @@ if(allUsers != null){
 
 </footer>
 
-
 <!-- =====================================================
      JAVASCRIPT
 ===================================================== -->
 
 <script>
-
 
 /* =====================================================
    3D VARIABLES
@@ -1928,7 +1785,6 @@ let spheres = [];
 
 let time = 0;
 
-
 /* =====================================================
    INITIALIZE 3D
 ===================================================== */
@@ -1940,19 +1796,15 @@ function init3D(){
         const canvas =
             document.getElementById("canvas3d");
 
-
         if(!canvas){
             return;
         }
 
-
         scene =
             new THREE.Scene();
 
-
         scene.background =
             new THREE.Color(0x0a1f22);
-
 
         scene.fog =
             new THREE.Fog(
@@ -1960,7 +1812,6 @@ function init3D(){
                 150,
                 300
             );
-
 
         camera =
             new THREE.PerspectiveCamera(
@@ -1970,7 +1821,6 @@ function init3D(){
                 0.1,
                 1000
             );
-
 
         renderer =
             new THREE.WebGLRenderer({
@@ -1986,12 +1836,10 @@ function init3D(){
 
             });
 
-
         renderer.setSize(
             window.innerWidth,
             window.innerHeight
         );
-
 
         renderer.setPixelRatio(
             Math.min(
@@ -2000,15 +1848,12 @@ function init3D(){
             )
         );
 
-
         renderer.setClearColor(
             0x0a1f22,
             1
         );
 
-
         camera.position.z = 40;
-
 
         createParticles();
 
@@ -2018,15 +1863,12 @@ function init3D(){
 
         setupLighting();
 
-
         animate();
-
 
         window.addEventListener(
             "resize",
             onWindowResize
         );
-
 
     }catch(error){
 
@@ -2039,7 +1881,6 @@ function init3D(){
 
 }
 
-
 /* =====================================================
    PARTICLES
 ===================================================== */
@@ -2049,21 +1890,17 @@ function createParticles(){
     const geometry =
         new THREE.BufferGeometry();
 
-
     const particleCount = 120;
-
 
     const positions =
         new Float32Array(
             particleCount * 3
         );
 
-
     const velocities =
         new Float32Array(
             particleCount * 3
         );
-
 
     for(
         let i = 0;
@@ -2080,7 +1917,6 @@ function createParticles(){
         positions[i+2] =
             (Math.random()-0.5)*100;
 
-
         velocities[i] =
             (Math.random()-0.5)*0.08;
 
@@ -2092,7 +1928,6 @@ function createParticles(){
 
     }
 
-
     geometry.setAttribute(
         "position",
         new THREE.BufferAttribute(
@@ -2101,22 +1936,17 @@ function createParticles(){
         )
     );
 
-
     geometry.userData.velocities =
         velocities;
-
 
     const textureCanvas =
         document.createElement("canvas");
 
-
     textureCanvas.width = 32;
     textureCanvas.height = 32;
 
-
     const ctx =
         textureCanvas.getContext("2d");
-
 
     const gradient =
         ctx.createRadialGradient(
@@ -2128,18 +1958,15 @@ function createParticles(){
             16
         );
 
-
     gradient.addColorStop(
         0,
         "rgba(255,255,255,1)"
     );
 
-
     gradient.addColorStop(
         1,
         "rgba(201,162,75,0)"
     );
-
 
     ctx.fillStyle = gradient;
 
@@ -2150,12 +1977,10 @@ function createParticles(){
         32
     );
 
-
     const texture =
         new THREE.CanvasTexture(
             textureCanvas
         );
-
 
     const material =
         new THREE.PointsMaterial({
@@ -2172,20 +1997,17 @@ function createParticles(){
 
         });
 
-
     particles =
         new THREE.Points(
             geometry,
             material
         );
 
-
     scene.add(
         particles
     );
 
 }
-
 
 /* =====================================================
    TORUS KNOT
@@ -2201,7 +2023,6 @@ function createTorusKnot(){
             20
         );
 
-
     const material =
         new THREE.MeshPhongMaterial({
 
@@ -2215,24 +2036,20 @@ function createTorusKnot(){
 
         });
 
-
     torusKnot =
         new THREE.Mesh(
             geometry,
             material
         );
 
-
     torusKnot.position.z =
         -10;
-
 
     scene.add(
         torusKnot
     );
 
 }
-
 
 /* =====================================================
    SPHERES
@@ -2242,13 +2059,11 @@ function createSpheres(){
 
     spheres = [];
 
-
     const sphereGeometry =
         new THREE.IcosahedronGeometry(
             2,
             2
         );
-
 
     const colors = [
 
@@ -2257,7 +2072,6 @@ function createSpheres(){
         0x2E9CDB
 
     ];
-
 
     for(
         let i=0;
@@ -2278,26 +2092,21 @@ function createSpheres(){
 
             });
 
-
         const sphere =
             new THREE.Mesh(
                 sphereGeometry,
                 material
             );
 
-
         sphere.userData.angle =
             (Math.PI * 2 / 3) * i;
-
 
         sphere.userData.radius =
             18;
 
-
         scene.add(
             sphere
         );
-
 
         spheres.push(
             sphere
@@ -2306,7 +2115,6 @@ function createSpheres(){
     }
 
 }
-
 
 /* =====================================================
    LIGHTING
@@ -2321,18 +2129,15 @@ function setupLighting(){
             120
         );
 
-
     mainLight.position.set(
         30,
         30,
         30
     );
 
-
     scene.add(
         mainLight
     );
-
 
     const secondLight =
         new THREE.PointLight(
@@ -2341,18 +2146,15 @@ function setupLighting(){
             120
         );
 
-
     secondLight.position.set(
         -30,
         -20,
         20
     );
 
-
     scene.add(
         secondLight
     );
-
 
     const ambientLight =
         new THREE.AmbientLight(
@@ -2360,13 +2162,11 @@ function setupLighting(){
             0.4
         );
 
-
     scene.add(
         ambientLight
     );
 
 }
-
 
 /* =====================================================
    ANIMATION
@@ -2378,9 +2178,7 @@ function animate(){
         animate
     );
 
-
     time += 0.005;
-
 
     /* Torus */
 
@@ -2394,7 +2192,6 @@ function animate(){
 
     }
 
-
     /* Spheres */
 
     spheres.forEach(
@@ -2403,28 +2200,24 @@ function animate(){
             sphere.userData.angle +=
                 0.004;
 
-
             sphere.position.x =
                 Math.cos(
                     sphere.userData.angle
                 )
-                *
+                \
                 sphere.userData.radius;
-
 
             sphere.position.z =
                 Math.sin(
                     sphere.userData.angle
                 )
-                *
+                \
                 sphere.userData.radius;
-
 
             sphere.position.y =
                 Math.cos(
                     time * 0.3 + i
                 ) * 2;
-
 
             sphere.rotation.x +=
                 0.002;
@@ -2435,7 +2228,6 @@ function animate(){
         }
     );
 
-
     /* Particles */
 
     if(particles){
@@ -2443,17 +2235,14 @@ function animate(){
         particles.rotation.y +=
             0.0002;
 
-
         const positions =
             particles.geometry
             .getAttribute("position")
             .array;
 
-
         const velocities =
             particles.geometry
             .userData.velocities;
-
 
         for(
             let i=0;
@@ -2470,7 +2259,6 @@ function animate(){
             positions[i+2] +=
                 velocities[i+2];
 
-
             if(
                 Math.abs(
                     positions[i]
@@ -2481,7 +2269,6 @@ function animate(){
 
             }
 
-
             if(
                 Math.abs(
                     positions[i+1]
@@ -2491,7 +2278,6 @@ function animate(){
                 velocities[i+1] *= -1;
 
             }
-
 
             if(
                 Math.abs(
@@ -2505,13 +2291,11 @@ function animate(){
 
         }
 
-
         particles.geometry
             .getAttribute("position")
             .needsUpdate = true;
 
     }
-
 
     renderer.render(
         scene,
@@ -2519,7 +2303,6 @@ function animate(){
     );
 
 }
-
 
 /* =====================================================
    RESIZE
@@ -2531,20 +2314,16 @@ function onWindowResize(){
         return;
     }
 
-
     camera.aspect =
         window.innerWidth /
         window.innerHeight;
 
-
     camera.updateProjectionMatrix();
-
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
-
 
     renderer.setPixelRatio(
         Math.min(
@@ -2555,7 +2334,6 @@ function onWindowResize(){
 
 }
 
-
 /* =====================================================
    DESKTOP PROFILE DROPDOWN
 ===================================================== */
@@ -2565,7 +2343,6 @@ const avatarBtn =
         "avatarBtn"
     );
 
-
 if(avatarBtn){
 
     avatarBtn.addEventListener(
@@ -2574,12 +2351,10 @@ if(avatarBtn){
 
             e.stopPropagation();
 
-
             const dropdown =
                 document.getElementById(
                     "avatarDropdown"
                 );
-
 
             if(dropdown){
 
@@ -2594,7 +2369,6 @@ if(avatarBtn){
 
 }
 
-
 /* Close desktop dropdown */
 
 document.addEventListener(
@@ -2606,12 +2380,10 @@ document.addEventListener(
                 "avatarDropdown"
             );
 
-
         const avatarWrap =
             document.getElementById(
                 "avatarBtn"
             );
-
 
         if(
             dropdown &&
@@ -2630,7 +2402,6 @@ document.addEventListener(
     }
 );
 
-
 /* =====================================================
    MOBILE MENU
 ===================================================== */
@@ -2640,12 +2411,10 @@ const mobileMenuBtn =
         "mobileMenuBtn"
     );
 
-
 const mobileNav =
     document.getElementById(
         "mobileNav"
     );
-
 
 if(
     mobileMenuBtn &&
@@ -2658,11 +2427,9 @@ if(
 
             e.stopPropagation();
 
-
             mobileNav.classList.toggle(
                 "show"
             );
-
 
             if(
                 mobileNav.classList.contains(
@@ -2692,7 +2459,6 @@ if(
 
         }
     );
-
 
     /* Close when clicking outside */
 
@@ -2724,7 +2490,6 @@ if(
                     "show"
                 );
 
-
                 mobileMenuBtn.innerHTML =
                     "☰";
 
@@ -2732,7 +2497,6 @@ if(
 
         }
     );
-
 
     /* Close after clicking a link */
 
@@ -2749,7 +2513,6 @@ if(
                             "show"
                         );
 
-
                         mobileMenuBtn.innerHTML =
                             "☰";
 
@@ -2760,7 +2523,6 @@ if(
         );
 
 }
-
 
 /* =====================================================
    START 3D
@@ -2793,8 +2555,35 @@ if(
 }
 
 </script>
+<script>
+if ('serviceWorker' in navigator) {
 
+    window.addEventListener('load', function () {
 
+        navigator.serviceWorker.register(
+            '<%= request.getContextPath() %>/service-worker.js'
+        )
+        .then(function (registration) {
+
+            console.log(
+                'ZestGo Service Worker registered:',
+                registration.scope
+            );
+
+        })
+        .catch(function (error) {
+
+            console.error(
+                'ZestGo Service Worker registration failed:',
+                error
+            );
+
+        });
+
+    });
+
+}
+</script>
 </body>
 
 </html>
