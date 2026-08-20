@@ -20,157 +20,184 @@ public class LoginDAOimpl implements LoginDAO {
         String query =
                 "SELECT * FROM register WHERE email=?";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement pstmt =
-                     connection.prepareStatement(query)) {
+        Connection connection = null;
 
+        try {
+
+            // Get database connection
+            connection = DBConnection.getConnection();
+
+            // IMPORTANT:
+            // Check connection BEFORE using it
             if (connection == null) {
-                System.out.println("LOGIN ERROR: Database connection is null");
+
+                System.out.println(
+                        "LOGIN ERROR: Database connection is null"
+                );
+
                 return null;
             }
 
-            System.out.println("LOGIN: Checking email = " + email);
+            System.out.println(
+                    "LOGIN: Checking email = " + email
+            );
 
-            pstmt.setString(1, email);
+            try (PreparedStatement pstmt =
+                         connection.prepareStatement(query)) {
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+                pstmt.setString(1, email);
 
-                if (!rs.next()) {
+                try (ResultSet rs =
+                             pstmt.executeQuery()) {
 
-                    System.out.println(
-                            "LOGIN: No user found for email = " + email
-                    );
-
-                    return null;
-                }
-
-                String dbPassword =
-                        rs.getString("password");
-
-                if (dbPassword == null ||
-                        dbPassword.trim().isEmpty()) {
-
-                    System.out.println(
-                            "LOGIN ERROR: Password is empty in database"
-                    );
-
-                    return null;
-                }
-
-                boolean passwordMatched = false;
-
-                /*
-                 * New users:
-                 * Password is stored using BCrypt.
-                 */
-                if (dbPassword.startsWith("$2a$")
-                        || dbPassword.startsWith("$2b$")
-                        || dbPassword.startsWith("$2y$")) {
-
-                    try {
-
-                        passwordMatched =
-                                BCrypt.checkpw(
-                                        password,
-                                        dbPassword
-                                );
-
-                    } catch (IllegalArgumentException e) {
+                    // User not found
+                    if (!rs.next()) {
 
                         System.out.println(
-                                "LOGIN ERROR: Invalid BCrypt password"
+                                "LOGIN: No user found for email = "
+                                + email
                         );
-
-                        e.printStackTrace();
 
                         return null;
                     }
 
-                } else {
+                    String dbPassword =
+                            rs.getString("password");
 
-                    /*
-                     * Compatibility for old users whose passwords
-                     * were stored before BCrypt was added.
-                     */
-                    passwordMatched =
-                            password.equals(dbPassword);
+                    // Password missing in database
+                    if (dbPassword == null ||
+                            dbPassword.trim().isEmpty()) {
+
+                        System.out.println(
+                                "LOGIN ERROR: Password is empty in database"
+                        );
+
+                        return null;
+                    }
+
+                    boolean passwordMatched = false;
+
+                    // =================================================
+                    // BCrypt PASSWORD
+                    // =================================================
+
+                    if (dbPassword.startsWith("$2a$")
+                            || dbPassword.startsWith("$2b$")
+                            || dbPassword.startsWith("$2y$")) {
+
+                        try {
+
+                            passwordMatched =
+                                    BCrypt.checkpw(
+                                            password,
+                                            dbPassword
+                                    );
+
+                        } catch (IllegalArgumentException e) {
+
+                            System.out.println(
+                                    "LOGIN ERROR: Invalid BCrypt password"
+                            );
+
+                            e.printStackTrace();
+
+                            return null;
+                        }
+
+                    }
+
+                    // =================================================
+                    // OLD PLAIN TEXT PASSWORD
+                    // =================================================
+
+                    else {
+
+                        passwordMatched =
+                                password.equals(dbPassword);
+
+                        /*
+                         * If old plain-text password matches,
+                         * upgrade it to BCrypt.
+                         */
+
+                        if (passwordMatched) {
+
+                            String newHash =
+                                    BCrypt.hashpw(
+                                            password,
+                                            BCrypt.gensalt(12)
+                                    );
+
+                            String updateQuery =
+                                    "UPDATE register " +
+                                    "SET password=? " +
+                                    "WHERE register_id=?";
+
+                            try (PreparedStatement updatePs =
+                                         connection.prepareStatement(
+                                                 updateQuery)) {
+
+                                updatePs.setString(
+                                        1,
+                                        newHash
+                                );
+
+                                updatePs.setInt(
+                                        2,
+                                        rs.getInt("register_id")
+                                );
+
+                                updatePs.executeUpdate();
+
+                                System.out.println(
+                                        "LOGIN: Old password upgraded to BCrypt"
+                                );
+                            }
+                        }
+                    }
+
+                    // =================================================
+                    // LOGIN SUCCESS
+                    // =================================================
 
                     if (passwordMatched) {
 
+                        System.out.println(
+                                "LOGIN: Password matched successfully"
+                        );
+
+                        user = new Login();
+
+                        user.setRegister_id(
+                                rs.getInt("register_id")
+                        );
+
+                        user.setName(
+                                rs.getString("name")
+                        );
+
+                        user.setEmail(
+                                rs.getString("email")
+                        );
+
                         /*
-                         * Automatically convert old plain-text
-                         * password to BCrypt.
+                         * Store database password hash only if
+                         * your Login model requires it.
                          */
-                        String newHash =
-                                BCrypt.hashpw(
-                                        password,
-                                        BCrypt.gensalt(12)
-                                );
+                        user.setPassword(
+                                dbPassword
+                        );
 
-                        String updateQuery =
-                                "UPDATE register " +
-                                "SET password=? " +
-                                "WHERE register_id=?";
+                        System.out.println(
+                                "LOGIN: User login successful"
+                        );
 
-                        try (PreparedStatement updatePs =
-                                     connection.prepareStatement(
-                                             updateQuery)) {
+                    } else {
 
-                            updatePs.setString(
-                                    1,
-                                    newHash
-                            );
-
-                            updatePs.setInt(
-                                    2,
-                                    rs.getInt("register_id")
-                            );
-
-                            updatePs.executeUpdate();
-
-                            System.out.println(
-                                    "LOGIN: Old password upgraded to BCrypt"
-                            );
-                        }
+                        System.out.println(
+                                "LOGIN: Incorrect password"
+                        );
                     }
-                }
-
-                if (passwordMatched) {
-
-                    System.out.println(
-                            "LOGIN: Password matched successfully"
-                    );
-
-                    user = new Login();
-
-                    user.setRegister_id(
-                            rs.getInt("register_id")
-                    );
-
-                    user.setName(
-                            rs.getString("name")
-                    );
-
-                    user.setEmail(
-                            rs.getString("email")
-                    );
-
-                    /*
-                     * Don't expose the actual password.
-                     * Store the database hash only if your
-                     * Login model requires it.
-                     */
-                    user.setPassword(dbPassword);
-
-                    System.out.println(
-                            "LOGIN: User login successful"
-                    );
-
-                } else {
-
-                    System.out.println(
-                            "LOGIN: Incorrect password"
-                    );
                 }
             }
 
@@ -181,11 +208,30 @@ public class LoginDAOimpl implements LoginDAO {
             );
 
             e.printStackTrace();
+
+        } finally {
+
+            // Close database connection
+            if (connection != null) {
+
+                try {
+
+                    connection.close();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+            }
         }
 
         return user;
     }
 
+
+    // =============================================================
+    // CHANGE PASSWORD
+    // =============================================================
 
     public boolean changePassword(
             String email,
@@ -198,72 +244,114 @@ public class LoginDAOimpl implements LoginDAO {
         String updateQuery =
                 "UPDATE register SET password=? WHERE email=?";
 
-        try (Connection con =
-                     DBConnection.getConnection();
-             PreparedStatement selectPs =
-                     con.prepareStatement(selectQuery)) {
+        Connection con = null;
 
-            selectPs.setString(1, email);
+        try {
 
-            String dbPassword;
+            con = DBConnection.getConnection();
 
-            try (ResultSet rs =
-                         selectPs.executeQuery()) {
+            // Check connection
+            if (con == null) {
 
-                if (!rs.next()) {
+                System.out.println(
+                        "CHANGE PASSWORD ERROR: Database connection is null"
+                );
+
+                return false;
+            }
+
+            // =====================================================
+            // GET CURRENT PASSWORD
+            // =====================================================
+
+            try (PreparedStatement selectPs =
+                         con.prepareStatement(selectQuery)) {
+
+                selectPs.setString(1, email);
+
+                String dbPassword;
+
+                try (ResultSet rs =
+                             selectPs.executeQuery()) {
+
+                    if (!rs.next()) {
+
+                        return false;
+                    }
+
+                    dbPassword =
+                            rs.getString("password");
+                }
+
+                if (dbPassword == null ||
+                        dbPassword.trim().isEmpty()) {
+
                     return false;
                 }
 
-                dbPassword =
-                        rs.getString("password");
-            }
+                boolean oldPasswordCorrect;
 
-            if (dbPassword == null) {
-                return false;
-            }
+                // =================================================
+                // BCrypt PASSWORD
+                // =================================================
 
-            boolean oldPasswordCorrect;
+                if (dbPassword.startsWith("$2a$")
+                        || dbPassword.startsWith("$2b$")
+                        || dbPassword.startsWith("$2y$")) {
 
-            if (dbPassword.startsWith("$2a$")
-                    || dbPassword.startsWith("$2b$")
-                    || dbPassword.startsWith("$2y$")) {
+                    oldPasswordCorrect =
+                            BCrypt.checkpw(
+                                    oldPassword,
+                                    dbPassword
+                            );
 
-                oldPasswordCorrect =
-                        BCrypt.checkpw(
-                                oldPassword,
-                                dbPassword
+                }
+
+                // =================================================
+                // OLD PLAIN TEXT PASSWORD
+                // =================================================
+
+                else {
+
+                    oldPasswordCorrect =
+                            oldPassword.equals(dbPassword);
+                }
+
+                // Old password incorrect
+                if (!oldPasswordCorrect) {
+
+                    return false;
+                }
+
+                // =================================================
+                // HASH NEW PASSWORD
+                // =================================================
+
+                String hashedNewPassword =
+                        BCrypt.hashpw(
+                                newPassword,
+                                BCrypt.gensalt(12)
                         );
 
-            } else {
+                // =================================================
+                // UPDATE PASSWORD
+                // =================================================
 
-                oldPasswordCorrect =
-                        oldPassword.equals(dbPassword);
-            }
+                try (PreparedStatement updatePs =
+                             con.prepareStatement(updateQuery)) {
 
-            if (!oldPasswordCorrect) {
-                return false;
-            }
-
-            String hashedNewPassword =
-                    BCrypt.hashpw(
-                            newPassword,
-                            BCrypt.gensalt(12)
+                    updatePs.setString(
+                            1,
+                            hashedNewPassword
                     );
 
-            try (PreparedStatement updatePs =
-                         con.prepareStatement(updateQuery)) {
+                    updatePs.setString(
+                            2,
+                            email
+                    );
 
-                updatePs.setString(
-                        1,
-                        hashedNewPassword
-                );
-
-                updatePs.setString(
-                        2,
-                        email
-                );
-
-                return updatePs.executeUpdate() > 0;
+                    return updatePs.executeUpdate() > 0;
+                }
             }
 
         } catch (Exception e) {
@@ -275,6 +363,20 @@ public class LoginDAOimpl implements LoginDAO {
             e.printStackTrace();
 
             return false;
+
+        } finally {
+
+            if (con != null) {
+
+                try {
+
+                    con.close();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -26,19 +26,11 @@ public class LoginServlet extends HttpServlet {
 
         System.out.println("===== LOGIN REQUEST =====");
         System.out.println("LOGIN EMAIL = " + email);
-        System.out.println(
-                "LOGIN PASSWORD RECEIVED = "
-                + (password != null && !password.isEmpty())
-        );
 
         if (email == null ||
                 email.trim().isEmpty() ||
                 password == null ||
                 password.isEmpty()) {
-
-            System.out.println(
-                    "LOGIN FAILED: Email or password empty"
-            );
 
             resp.sendRedirect("login.jsp");
             return;
@@ -59,6 +51,9 @@ public class LoginServlet extends HttpServlet {
                     "LOGIN SUCCESS: " + user.getEmail()
             );
 
+            /*
+             * Create/reuse the user's session.
+             */
             HttpSession session =
                     req.getSession(true);
 
@@ -72,8 +67,16 @@ public class LoginServlet extends HttpServlet {
                     user
             );
 
+            /*
+             * Redirect to Home.
+             *
+             * RestaurantServlet now uses the restaurant
+             * cache, so Home does not need to query all
+             * restaurants every time.
+             */
             resp.sendRedirect(
-                    "callRestaurantServlet"
+                    req.getContextPath()
+                    + "/callRestaurantServlet"
             );
 
         } else {
@@ -82,12 +85,9 @@ public class LoginServlet extends HttpServlet {
                     "LOGIN FAILED: Invalid email or password"
             );
 
-            /*
-             * Redirect with an error message so we know
-             * why the login page was opened again.
-             */
             resp.sendRedirect(
-                    "login.jsp?error=invalid"
+                    req.getContextPath()
+                    + "/login.jsp?error=invalid"
             );
         }
     }

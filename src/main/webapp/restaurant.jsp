@@ -248,88 +248,71 @@ body{
    PROFILE
 ========================================================= */
 
-.avatar-wrap{
-
+.avatar-details{
     position:relative;
+    display:block;
+    margin:0;
+    padding:0;
+}
 
+.avatar-details > summary{
+    list-style:none;
+}
+
+.avatar-details > summary::-webkit-details-marker{
+    display:none;
+}
+
+.avatar-wrap{
+    position:relative;
     display:flex;
-
     align-items:center;
-
     gap:12px;
-
     padding:8px 12px;
-
     border-radius:12px;
-
-    background:
-        rgba(201,162,75,0.1);
-
+    background:rgba(201,162,75,0.1);
     cursor:pointer;
-
     transition:0.3s;
+    user-select:none;
+    -webkit-user-select:none;
 }
 
 .avatar-wrap:hover{
-
-    background:
-        rgba(201,162,75,0.15);
+    background:rgba(201,162,75,0.15);
 }
 
 .profile-info{
-
     display:flex;
-
     flex-direction:column;
-
     align-items:flex-start;
+    pointer-events:none;
 }
 
 .profile-name{
-
     font-size:13px;
-
     font-weight:700;
-
     color:var(--paper);
-
     letter-spacing:0.5px;
-
     max-width:150px;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
-
     white-space:nowrap;
 }
 
 .profile-label{
-
     font-size:10px;
-
     color:var(--gold);
-
     font-family:'JetBrains Mono',monospace;
-
     letter-spacing:0.08em;
-
     text-transform:uppercase;
-
     font-weight:600;
 }
 
 .avatar-btn{
-
     width:44px;
     height:44px;
-
     border-radius:50%;
-
     border:2px solid var(--gold);
-
-    cursor:pointer;
-
     background:
         conic-gradient(
             from 210deg,
@@ -338,33 +321,21 @@ body{
             var(--accent-blue),
             var(--coral)
         );
-
     color:var(--ink);
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
-    box-shadow:
-        0 0 20px rgba(201,162,75,0.4);
-
+    box-shadow:0 0 20px rgba(201,162,75,0.4);
     transition:0.3s;
-
     font-weight:700;
-
     font-size:14px;
-
     flex-shrink:0;
+    pointer-events:none;
 }
 
-.avatar-btn:hover{
-
+.avatar-wrap:hover .avatar-btn{
     transform:scale(1.1);
-
-    box-shadow:
-        0 0 30px rgba(201,162,75,0.8);
+    box-shadow:0 0 30px rgba(201,162,75,0.8);
 }
 
 /* =========================================================
@@ -372,124 +343,75 @@ body{
 ========================================================= */
 
 .dropdown{
-
     position:absolute;
-
-    top:60px;
-
+    top:calc(100% + 8px);
     right:0;
-
     width:260px;
-
-    background:
-        rgba(15,42,46,0.97);
-
+    background:rgba(15,42,46,0.97);
     backdrop-filter:blur(20px);
     -webkit-backdrop-filter:blur(20px);
-
-    border:
-        1px solid rgba(201,162,75,0.4);
-
+    border:1px solid rgba(201,162,75,0.4);
     border-radius:16px;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,0.4);
-
+    box-shadow:0 20px 60px rgba(0,0,0,0.4);
     padding:12px;
-
     display:none;
-
     flex-direction:column;
-
-    z-index:1100;
-
-    animation:
-        slideDown 0.3s ease;
+    z-index:99999;
+    animation:slideDown 0.2s ease;
 }
 
-.dropdown.show{
+.avatar-details[open] > .dropdown{
     display:flex;
 }
 
 @keyframes slideDown{
-
     from{
         opacity:0;
-        transform:translateY(-10px);
+        transform:translateY(-6px);
     }
-
     to{
         opacity:1;
         transform:translateY(0);
     }
-
 }
 
 .dropdown .mail{
-
     font-family:'JetBrains Mono',monospace;
-
     font-size:11px;
-
-    color:
-        rgba(239,233,220,0.6);
-
+    color:rgba(239,233,220,0.6);
     padding:12px 14px;
-
-    border-bottom:
-        1px solid rgba(201,162,75,0.2);
-
+    border-bottom:1px solid rgba(201,162,75,0.2);
     margin-bottom:8px;
-
     word-break:break-all;
-
     font-weight:700;
 }
 
 .dropdown a{
-
     text-decoration:none;
-
-    color:
-        rgba(239,233,220,0.85);
-
+    color:rgba(239,233,220,0.85);
     font-size:14px;
-
     font-weight:600;
-
     padding:12px 14px;
-
     border-radius:10px;
-
     transition:0.2s;
+    display:block;
 }
 
 .dropdown a:hover{
-
-    background:
-        rgba(201,162,75,0.15);
-
+    background:rgba(201,162,75,0.15);
     color:var(--gold);
-
     padding-left:18px;
 }
 
 .dropdown a.logout{
-
     color:var(--coral);
-
     margin-top:8px;
-
-    border-top:
-        1px solid rgba(228,87,46,0.2);
-
+    border-top:1px solid rgba(228,87,46,0.2);
     padding-top:12px;
 }
 
 .dropdown a.logout:hover{
-
-    background:
-        rgba(228,87,46,0.15);
+    background:rgba(228,87,46,0.15);
 }
 
 /* =========================================================
@@ -1387,23 +1309,22 @@ footer{
 
             <!-- PROFILE -->
 
-            <div class="avatar-wrap"
-                 id="avatarBtn">
+            <details class="avatar-details" id="avatarDetails">
 
-                <div class="profile-info">
+                <summary class="avatar-wrap"
+                         aria-label="Open user menu">
 
-                    <div class="profile-label">
-                        User
+                    <div class="profile-info">
+
+                        <div class="profile-label">
+                            User
+                        </div>
+
+                        <div class="profile-name">
+                            <%= userName %>
+                        </div>
+
                     </div>
-
-                    <div class="profile-name">
-                        <%= userName %>
-                    </div>
-
-                </div>
-
-                <button type="button"
-                        class="avatar-btn">
 
                     <%
 
@@ -1413,7 +1334,7 @@ footer{
                        && userName.length() > 0){
 
                         String[] names =
-                            userName.split(" ");
+                            userName.trim().split("\\s+");
 
                         initials =
                             names[0]
@@ -1433,9 +1354,12 @@ footer{
 
                     %>
 
-                    <%= initials %>
+                    <span class="avatar-btn"
+                          aria-hidden="true">
+                        <%= initials %>
+                    </span>
 
-                </button>
+                </summary>
 
                 <!-- DESKTOP DROPDOWN -->
 
@@ -1464,14 +1388,12 @@ footer{
 
                     <a href="logout"
                        class="logout">
-
                         🚪 Logout
-
                     </a>
 
                 </div>
 
-            </div>
+            </details>
 
         <% } %>
 
@@ -2336,71 +2258,24 @@ function onWindowResize(){
 
 /* =====================================================
    DESKTOP PROFILE DROPDOWN
-===================================================== */
+   ---------------------------------------------------------
+   Uses native HTML <details>/<summary>.
+   No JavaScript click handler is required.
+========================================================= */
 
-const avatarBtn =
-    document.getElementById(
-        "avatarBtn"
-    );
+const avatarDetails =
+    document.getElementById("avatarDetails");
 
-if(avatarBtn){
+if(avatarDetails){
 
-    avatarBtn.addEventListener(
+    avatarDetails.addEventListener(
         "click",
-        function(e){
-
-            e.stopPropagation();
-
-            const dropdown =
-                document.getElementById(
-                    "avatarDropdown"
-                );
-
-            if(dropdown){
-
-                dropdown.classList.toggle(
-                    "show"
-                );
-
-            }
-
+        function(event){
+            event.stopPropagation();
         }
     );
 
 }
-
-/* Close desktop dropdown */
-
-document.addEventListener(
-    "click",
-    function(event){
-
-        const dropdown =
-            document.getElementById(
-                "avatarDropdown"
-            );
-
-        const avatarWrap =
-            document.getElementById(
-                "avatarBtn"
-            );
-
-        if(
-            dropdown &&
-            !event.target.closest(
-                ".avatar-wrap"
-            ) &&
-            avatarWrap
-        ){
-
-            dropdown.classList.remove(
-                "show"
-            );
-
-        }
-
-    }
-);
 
 /* =====================================================
    MOBILE MENU
@@ -2555,35 +2430,7 @@ if(
 }
 
 </script>
-<script>
-if ('serviceWorker' in navigator) {
 
-    window.addEventListener('load', function () {
-
-        navigator.serviceWorker.register(
-            '<%= request.getContextPath() %>/service-worker.js'
-        )
-        .then(function (registration) {
-
-            console.log(
-                'ZestGo Service Worker registered:',
-                registration.scope
-            );
-
-        })
-        .catch(function (error) {
-
-            console.error(
-                'ZestGo Service Worker registration failed:',
-                error
-            );
-
-        });
-
-    });
-
-}
-</script>
 </body>
 
 </html>

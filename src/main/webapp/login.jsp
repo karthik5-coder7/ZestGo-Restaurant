@@ -7,1702 +7,2067 @@
 
 <head>
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>ZestGo | Login</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet">
+    <title>ZestGo | Login</title>
 
-<style>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+          rel="stylesheet">
 
-/* =========================================================
-   RESET
-========================================================= */
+    <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        /* =====================================================
+           RESET
+        ===================================================== */
 
-html,
-body{
-    width:100%;
-    min-height:100%;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body{
-    font-family:'DM Sans',sans-serif;
-    background:#071416;
-    color:#f5efe3;
-    overflow-x:hidden;
-}
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
 
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #071416;
+            color: #f5efe3;
+            overflow-x: hidden;
+        }
 
-/* =========================================================
-   MAIN PAGE
-========================================================= */
 
-.page{
-    min-height:100vh;
-    width:100%;
+        /* =====================================================
+           MAIN PAGE
+        ===================================================== */
 
-    display:grid;
-    grid-template-columns:50% 50%;
+        .page {
+            width: 100%;
+            min-height: 100vh;
 
-    position:relative;
-    overflow:hidden;
-}
+            display: grid;
+            grid-template-columns: 50% 50%;
 
+            position: relative;
 
-/* =========================================================
-   LEFT VISUAL SIDE
-========================================================= */
+            overflow: hidden;
+        }
 
-.visual-side{
-    position:relative;
-    min-height:100vh;
-    overflow:hidden;
 
-    background:
-        radial-gradient(
-            circle at 50% 45%,
-            rgba(201,162,75,0.16),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(228,87,46,0.13),
-            transparent 30%
-        ),
-        linear-gradient(
-            145deg,
-            #061214 0%,
-            #0b2225 45%,
-            #071416 100%
-        );
-}
+        /* =====================================================
+           LEFT VISUAL SIDE
+        ===================================================== */
 
+        .visual-side {
 
-/* Ambient glow */
+            position: relative;
 
-.visual-side::before{
-    content:"";
+            min-height: 100vh;
 
-    position:absolute;
+            overflow: hidden;
 
-    width:500px;
-    height:500px;
+            background:
+                radial-gradient(
+                    circle at 50% 45%,
+                    rgba(201,162,75,0.16),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(228,87,46,0.13),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    145deg,
+                    #061214 0%,
+                    #0b2225 45%,
+                    #071416 100%
+                );
+        }
 
-    left:50%;
-    top:45%;
 
-    transform:translate(-50%,-50%);
+        /* Ambient glow */
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(201,162,75,0.18),
-            rgba(201,162,75,0.05) 35%,
-            transparent 70%
-        );
+        .visual-side::before {
 
-    filter:blur(20px);
+            content: "";
 
-    animation:ambientPulse 5s ease-in-out infinite;
+            position: absolute;
 
-    pointer-events:none;
-}
+            width: 500px;
+            height: 500px;
 
-@keyframes ambientPulse{
+            left: 50%;
+            top: 45%;
 
-    0%,
-    100%{
-        transform:
-            translate(-50%,-50%)
-            scale(.9);
+            transform: translate(-50%, -50%);
 
-        opacity:.6;
-    }
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(201,162,75,0.18),
+                    rgba(201,162,75,0.05) 35%,
+                    transparent 70%
+                );
 
-    50%{
-        transform:
-            translate(-50%,-50%)
-            scale(1.12);
+            filter: blur(20px);
 
-        opacity:1;
-    }
-}
+            animation:
+                ambientPulse 5s ease-in-out infinite;
 
+            pointer-events: none;
+        }
 
-/* =========================================================
-   BRAND
-========================================================= */
 
-.brand{
-    position:absolute;
+        @keyframes ambientPulse {
 
-    top:42px;
-    left:48px;
+            0%,
+            100% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.9);
 
-    display:flex;
-    align-items:center;
+                opacity: 0.6;
+            }
 
-    gap:12px;
+            50% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.12);
 
-    z-index:20;
-}
+                opacity: 1;
+            }
+        }
 
-.brand-mark{
-    width:42px;
-    height:42px;
 
-    border-radius:12px;
+        /* =====================================================
+           BRAND
+        ===================================================== */
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+        .brand {
 
-    background:
-        linear-gradient(
-            135deg,
-            #d9b45c,
-            #a67d2f
-        );
+            position: absolute;
 
-    color:#081719;
+            top: 42px;
+            left: 48px;
 
-    font-family:'Space Grotesk',sans-serif;
+            display: flex;
 
-    font-weight:800;
-    font-size:14px;
+            align-items: center;
 
-    box-shadow:
-        0 8px 30px rgba(201,162,75,.2);
-}
+            gap: 12px;
 
-.brand-name{
-    font-family:'Space Grotesk',sans-serif;
+            z-index: 20;
+        }
 
-    font-size:20px;
-    font-weight:700;
 
-    letter-spacing:.04em;
-}
+        .brand-mark {
 
+            width: 42px;
+            height: 42px;
 
-/* =========================================================
-   LEFT TEXT
-========================================================= */
+            border-radius: 12px;
 
-.visual-copy{
-    position:absolute;
+            display: flex;
 
-    left:48px;
-    bottom:50px;
+            align-items: center;
+            justify-content: center;
 
-    z-index:15;
+            background:
+                linear-gradient(
+                    135deg,
+                    #d9b45c,
+                    #a67d2f
+                );
 
-    max-width:430px;
-}
+            color: #081719;
 
-.visual-copy .mini{
-    color:#c9a24b;
+            font-family:
+                'Space Grotesk',
+                sans-serif;
 
-    font-family:'Space Grotesk',sans-serif;
+            font-weight: 800;
 
-    font-size:11px;
-    font-weight:600;
+            font-size: 14px;
 
-    letter-spacing:.22em;
+            box-shadow:
+                0 8px 30px
+                rgba(201,162,75,0.2);
+        }
 
-    text-transform:uppercase;
 
-    margin-bottom:14px;
-}
+        .brand-name {
 
-.visual-copy h1{
-    font-family:'Space Grotesk',sans-serif;
+            font-family:
+                'Space Grotesk',
+                sans-serif;
 
-    font-size:clamp(34px,4vw,58px);
+            font-size: 20px;
 
-    line-height:1.02;
+            font-weight: 700;
 
-    letter-spacing:-.045em;
+            letter-spacing: 0.04em;
+        }
 
-    font-weight:700;
 
-    color:#f5efe3;
-}
+        /* =====================================================
+           VISUAL TEXT
+        ===================================================== */
 
-.visual-copy h1 span{
-    color:#c9a24b;
-}
+        .visual-copy {
 
-.visual-copy p{
-    margin-top:16px;
+            position: absolute;
 
-    max-width:370px;
+            left: 48px;
+            bottom: 50px;
 
-    color:rgba(245,239,227,.52);
+            z-index: 15;
 
-    font-size:14px;
+            max-width: 430px;
+        }
 
-    line-height:1.7;
-}
 
+        .visual-copy .mini {
 
-/* =========================================================
-   3D STAGE
-========================================================= */
+            color: #c9a24b;
 
-.stage{
-    position:absolute;
+            font-family:
+                'Space Grotesk',
+                sans-serif;
 
-    width:430px;
-    height:430px;
+            font-size: 11px;
 
-    left:50%;
-    top:48%;
+            font-weight: 600;
 
-    transform:
-        translate(-50%,-50%)
-        perspective(1000px);
+            letter-spacing: 0.22em;
 
-    transform-style:preserve-3d;
-}
+            text-transform: uppercase;
 
+            margin-bottom: 14px;
+        }
 
-/* =========================================================
-   ORBIT RINGS
-========================================================= */
 
-.orbit{
-    position:absolute;
+        .visual-copy h1 {
 
-    left:50%;
-    top:50%;
+            font-family:
+                'Space Grotesk',
+                sans-serif;
 
-    border:1px solid rgba(201,162,75,.28);
+            font-size:
+                clamp(34px, 4vw, 58px);
 
-    border-radius:50%;
+            line-height: 1.02;
 
-    transform-style:preserve-3d;
+            letter-spacing: -0.045em;
 
-    pointer-events:none;
-}
+            font-weight: 700;
 
-.orbit.one{
-    width:360px;
-    height:145px;
+            color: #f5efe3;
+        }
 
-    transform:
-        translate(-50%,-50%)
-        rotateX(65deg)
-        rotateZ(-12deg);
 
-    animation:orbitSpin 12s linear infinite;
-}
+        .visual-copy h1 span {
 
-.orbit.two{
-    width:300px;
-    height:120px;
+            color: #c9a24b;
+        }
 
-    transform:
-        translate(-50%,-50%)
-        rotateX(68deg)
-        rotateZ(45deg);
 
-    border-color:rgba(228,87,46,.22);
+        .visual-copy p {
 
-    animation:orbitSpinReverse 16s linear infinite;
-}
+            margin-top: 16px;
 
-.orbit.three{
-    width:230px;
-    height:92px;
+            max-width: 370px;
 
-    transform:
-        translate(-50%,-50%)
-        rotateX(72deg)
-        rotateZ(-30deg);
+            color:
+                rgba(245,239,227,0.52);
 
-    border-color:rgba(245,239,227,.12);
+            font-size: 14px;
 
-    animation:orbitSpin 20s linear infinite;
-}
+            line-height: 1.7;
+        }
 
-@keyframes orbitSpin{
 
-    from{
-        transform:
-            translate(-50%,-50%)
-            rotateX(65deg)
-            rotateZ(0deg);
-    }
+        /* =====================================================
+           3D STAGE
+        ===================================================== */
 
-    to{
-        transform:
-            translate(-50%,-50%)
-            rotateX(65deg)
-            rotateZ(360deg);
-    }
-}
+        .stage {
 
-@keyframes orbitSpinReverse{
+            position: absolute;
 
-    from{
-        transform:
-            translate(-50%,-50%)
-            rotateX(68deg)
-            rotateZ(360deg);
-    }
+            width: 430px;
+            height: 430px;
 
-    to{
-        transform:
-            translate(-50%,-50%)
-            rotateX(68deg)
-            rotateZ(0deg);
-    }
-}
+            left: 50%;
+            top: 48%;
 
+            transform:
+                translate(-50%, -50%)
+                perspective(1000px);
 
-/* =========================================================
-   CENTRAL PLATE
-========================================================= */
+            transform-style: preserve-3d;
+        }
 
-.plate{
-    position:absolute;
 
-    left:50%;
-    top:55%;
+        /* =====================================================
+           ORBITS
+        ===================================================== */
 
-    width:220px;
-    height:220px;
+        .orbit {
 
-    transform:
-        translate(-50%,-50%)
-        rotateX(62deg)
-        rotateZ(-8deg);
+            position: absolute;
 
-    border-radius:50%;
+            left: 50%;
+            top: 50%;
 
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #f2d99b,
-            #c49b46 38%,
-            #6c4b1e 70%,
-            #251a0b 100%
-        );
+            border:
+                1px solid
+                rgba(201,162,75,0.28);
 
-    box-shadow:
-        0 35px 60px rgba(0,0,0,.55),
-        0 0 40px rgba(201,162,75,.12);
+            border-radius: 50%;
 
-    animation:plateFloat 4s ease-in-out infinite;
-}
+            transform-style: preserve-3d;
 
-@keyframes plateFloat{
+            pointer-events: none;
+        }
 
-    0%,
-    100%{
-        transform:
-            translate(-50%,-50%)
-            rotateX(62deg)
-            rotateZ(-8deg)
-            translateZ(0);
-    }
 
-    50%{
-        transform:
-            translate(-50%,-50%)
-            rotateX(62deg)
-            rotateZ(-8deg)
-            translateZ(18px);
-    }
-}
+        .orbit.one {
 
-.plate::before{
-    content:"";
+            width: 360px;
+            height: 145px;
 
-    position:absolute;
+            transform:
+                translate(-50%, -50%)
+                rotateX(65deg)
+                rotateZ(-12deg);
 
-    width:178px;
-    height:178px;
+            animation:
+                orbitSpin 12s linear infinite;
+        }
 
-    left:21px;
-    top:21px;
 
-    border-radius:50%;
+        .orbit.two {
 
-    background:
-        radial-gradient(
-            circle at 40% 30%,
-            #fff4d4,
-            #e4d3aa 55%,
-            #b99b65 100%
-        );
+            width: 300px;
+            height: 120px;
 
-    box-shadow:
-        inset 0 0 20px rgba(0,0,0,.18);
-}
+            transform:
+                translate(-50%, -50%)
+                rotateX(68deg)
+                rotateZ(45deg);
 
+            border-color:
+                rgba(228,87,46,0.22);
 
-/* =========================================================
-   BURGER
-========================================================= */
+            animation:
+                orbitSpinReverse 16s linear infinite;
+        }
 
-.food{
-    position:absolute;
 
-    left:50%;
-    top:49%;
+        .orbit.three {
 
-    width:105px;
-    height:75px;
+            width: 230px;
+            height: 92px;
 
-    transform:
-        translate(-50%,-50%)
-        translateZ(45px);
+            transform:
+                translate(-50%, -50%)
+                rotateX(72deg)
+                rotateZ(-30deg);
 
-    z-index:5;
+            border-color:
+                rgba(245,239,227,0.12);
 
-    animation:foodFloat 3.8s ease-in-out infinite;
-}
+            animation:
+                orbitSpin 20s linear infinite;
+        }
 
-@keyframes foodFloat{
 
-    0%,
-    100%{
-        transform:
-            translate(-50%,-50%)
-            translateZ(45px)
-            rotateZ(-2deg);
-    }
+        @keyframes orbitSpin {
 
-    50%{
-        transform:
-            translate(-50%,-50%)
-            translateZ(75px)
-            rotateZ(3deg);
-    }
-}
+            from {
 
-.bun-top{
-    position:absolute;
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(65deg)
+                    rotateZ(0deg);
+            }
 
-    left:5px;
-    top:0;
+            to {
 
-    width:95px;
-    height:42px;
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(65deg)
+                    rotateZ(360deg);
+            }
+        }
 
-    border-radius:
-        55px 55px 20px 20px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #f0c56b,
-            #c27b29
-        );
+        @keyframes orbitSpinReverse {
 
-    box-shadow:
-        inset 0 -8px 0 rgba(94,48,12,.2),
-        0 12px 18px rgba(0,0,0,.3);
-}
+            from {
 
-.bun-top::before{
-    content:"•  •   •  •   •";
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(68deg)
+                    rotateZ(360deg);
+            }
 
-    position:absolute;
+            to {
 
-    width:100%;
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(68deg)
+                    rotateZ(0deg);
+            }
+        }
 
-    top:10px;
-    left:0;
 
-    text-align:center;
+        /* =====================================================
+           PLATE
+        ===================================================== */
 
-    color:#ffe6a7;
+        .plate {
 
-    font-size:14px;
+            position: absolute;
 
-    letter-spacing:5px;
-}
+            left: 50%;
+            top: 55%;
 
-.food::before{
-    content:"";
+            width: 220px;
+            height: 220px;
 
-    position:absolute;
+            transform:
+                translate(-50%, -50%)
+                rotateX(62deg)
+                rotateZ(-8deg);
 
-    left:3px;
-    top:43px;
+            border-radius: 50%;
 
-    width:100px;
-    height:16px;
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #f2d99b,
+                    #c49b46 38%,
+                    #6c4b1e 70%,
+                    #251a0b 100%
+                );
 
-    border-radius:5px;
+            box-shadow:
+                0 35px 60px rgba(0,0,0,0.55),
+                0 0 40px
+                rgba(201,162,75,0.12);
 
-    background:
-        linear-gradient(
-            180deg,
-            #6d2415,
-            #35130e
-        );
+            animation:
+                plateFloat 4s ease-in-out infinite;
+        }
 
-    box-shadow:
-        0 5px 0 #d9a23e;
-}
 
-.food::after{
-    content:"";
+        @keyframes plateFloat {
 
-    position:absolute;
+            0%,
+            100% {
 
-    left:8px;
-    top:36px;
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(62deg)
+                    rotateZ(-8deg)
+                    translateZ(0);
+            }
 
-    width:90px;
-    height:12px;
+            50% {
 
-    border-radius:50%;
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(62deg)
+                    rotateZ(-8deg)
+                    translateZ(18px);
+            }
+        }
 
-    background:#527c42;
 
-    z-index:3;
-}
+        .plate::before {
 
+            content: "";
 
-/* =========================================================
-   FLOATING FOOD CARDS
-========================================================= */
+            position: absolute;
 
-.food-card{
-    position:absolute;
+            width: 178px;
+            height: 178px;
 
-    width:92px;
-    height:92px;
+            left: 21px;
+            top: 21px;
 
-    border-radius:24px;
+            border-radius: 50%;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+            background:
+                radial-gradient(
+                    circle at 40% 30%,
+                    #fff4d4,
+                    #e4d3aa 55%,
+                    #b99b65 100%
+                );
 
-    font-size:42px;
+            box-shadow:
+                inset 0 0 20px
+                rgba(0,0,0,0.18);
+        }
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.12),
-            rgba(255,255,255,.025)
-        );
 
-    border:1px solid rgba(255,255,255,.13);
+        /* =====================================================
+           BURGER
+        ===================================================== */
 
-    box-shadow:
-        0 25px 50px rgba(0,0,0,.35),
-        inset 0 1px 0 rgba(255,255,255,.12);
+        .food {
 
-    backdrop-filter:blur(14px);
+            position: absolute;
 
-    z-index:10;
-}
+            left: 50%;
+            top: 49%;
 
-.food-card.one{
-    left:7%;
-    top:26%;
+            width: 105px;
+            height: 75px;
 
-    animation:cardOne 5s ease-in-out infinite;
-}
+            transform:
+                translate(-50%, -50%)
+                translateZ(45px);
 
-.food-card.two{
-    right:6%;
-    top:23%;
+            z-index: 5;
 
-    animation:cardTwo 6s ease-in-out infinite;
-}
+            animation:
+                foodFloat 3.8s ease-in-out infinite;
+        }
 
-.food-card.three{
-    right:9%;
-    bottom:24%;
 
-    animation:cardThree 5.5s ease-in-out infinite;
-}
+        @keyframes foodFloat {
 
-@keyframes cardOne{
+            0%,
+            100% {
 
-    0%,
-    100%{
-        transform:
-            translateY(0)
-            rotate(-8deg)
-            translateZ(20px);
-    }
+                transform:
+                    translate(-50%, -50%)
+                    translateZ(45px)
+                    rotateZ(-2deg);
+            }
 
-    50%{
-        transform:
-            translateY(-20px)
-            rotate(5deg)
-            translateZ(60px);
-    }
-}
+            50% {
 
-@keyframes cardTwo{
+                transform:
+                    translate(-50%, -50%)
+                    translateZ(75px)
+                    rotateZ(3deg);
+            }
+        }
 
-    0%,
-    100%{
-        transform:
-            translateY(0)
-            rotate(8deg);
-    }
 
-    50%{
-        transform:
-            translateY(-26px)
-            rotate(-5deg);
-    }
-}
+        .bun-top {
 
-@keyframes cardThree{
+            position: absolute;
 
-    0%,
-    100%{
-        transform:
-            translateY(0)
-            rotate(6deg);
-    }
+            left: 5px;
+            top: 0;
 
-    50%{
-        transform:
-            translateY(-18px)
-            rotate(-7deg);
-    }
-}
+            width: 95px;
+            height: 42px;
 
+            border-radius:
+                55px 55px 20px 20px;
 
-/* =========================================================
-   PARTICLES
-========================================================= */
+            background:
+                linear-gradient(
+                    145deg,
+                    #f0c56b,
+                    #c27b29
+                );
 
-.particle{
-    position:absolute;
+            box-shadow:
+                inset 0 -8px 0
+                rgba(94,48,12,0.2),
 
-    width:5px;
-    height:5px;
+                0 12px 18px
+                rgba(0,0,0,0.3);
+        }
 
-    border-radius:50%;
 
-    background:#c9a24b;
+        .bun-top::before {
 
-    box-shadow:
-        0 0 15px rgba(201,162,75,.8);
+            content: "•  •   •  •   •";
 
-    animation:
-        particleFloat 5s ease-in-out infinite;
-}
+            position: absolute;
 
-.p1{
-    left:18%;
-    top:45%;
-}
+            width: 100%;
 
-.p2{
-    left:75%;
-    top:40%;
-    animation-delay:1s;
-}
+            top: 10px;
+            left: 0;
 
-.p3{
-    left:35%;
-    top:27%;
-    animation-delay:2s;
-}
+            text-align: center;
 
-.p4{
-    left:68%;
-    top:67%;
-    animation-delay:3s;
-}
+            color: #ffe6a7;
 
-.p5{
-    left:50%;
-    top:18%;
-    animation-delay:1.5s;
-}
+            font-size: 14px;
 
-@keyframes particleFloat{
+            letter-spacing: 5px;
+        }
 
-    0%,
-    100%{
-        transform:translateY(0);
-        opacity:.3;
-    }
 
-    50%{
-        transform:translateY(-25px);
-        opacity:1;
-    }
-}
+        .food::before {
 
+            content: "";
 
-/* =========================================================
-   RIGHT LOGIN SIDE
-========================================================= */
+            position: absolute;
 
-.login-side{
-    min-height:100vh;
+            left: 3px;
+            top: 43px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+            width: 100px;
+            height: 16px;
 
-    position:relative;
+            border-radius: 5px;
 
-    background:
-        radial-gradient(
-            circle at 80% 20%,
-            rgba(201,162,75,.07),
-            transparent 30%
-        ),
-        linear-gradient(
-            145deg,
-            #0b1d20,
-            #081416
-        );
+            background:
+                linear-gradient(
+                    180deg,
+                    #6d2415,
+                    #35130e
+                );
 
-    padding:40px;
-}
+            box-shadow:
+                0 5px 0 #d9a23e;
+        }
 
 
-/* Divider */
+        .food::after {
 
-.login-side::before{
-    content:"";
+            content: "";
 
-    position:absolute;
+            position: absolute;
 
-    left:0;
-    top:10%;
+            left: 8px;
+            top: 36px;
 
-    width:1px;
-    height:80%;
+            width: 90px;
+            height: 12px;
 
-    background:
-        linear-gradient(
-            transparent,
-            rgba(201,162,75,.45),
-            transparent
-        );
-}
+            border-radius: 50%;
 
+            background: #527c42;
 
-/* =========================================================
-   LOGIN CARD
-========================================================= */
+            z-index: 3;
+        }
 
-.login-container{
-    position:relative;
 
-    width:440px;
-    max-width:100%;
+        /* =====================================================
+           FLOATING FOOD CARDS
+        ===================================================== */
 
-    padding:48px 44px 38px;
+        .food-card {
 
-    border-radius:28px;
+            position: absolute;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.075),
-            rgba(255,255,255,.025)
-        );
+            width: 92px;
+            height: 92px;
 
-    border:1px solid rgba(255,255,255,.10);
+            border-radius: 24px;
 
-    box-shadow:
-        0 40px 100px rgba(0,0,0,.55),
-        inset 0 1px 0 rgba(255,255,255,.08);
+            display: flex;
 
-    backdrop-filter:blur(25px);
+            align-items: center;
+            justify-content: center;
 
-    animation:loginAppear .8s ease both;
-}
+            font-size: 42px;
 
-@keyframes loginAppear{
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.12),
+                    rgba(255,255,255,0.025)
+                );
 
-    from{
-        opacity:0;
+            border:
+                1px solid
+                rgba(255,255,255,0.13);
 
-        transform:
-            translateY(25px)
-            scale(.97);
-    }
+            box-shadow:
+                0 25px 50px
+                rgba(0,0,0,0.35),
 
-    to{
-        opacity:1;
+                inset 0 1px 0
+                rgba(255,255,255,0.12);
 
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
+            backdrop-filter: blur(14px);
 
+            z-index: 10;
+        }
 
-/* Gold top line */
 
-.login-container::before{
-    content:"";
+        .food-card.one {
 
-    position:absolute;
+            left: 7%;
+            top: 26%;
 
-    top:-1px;
-    right:45px;
+            animation:
+                cardOne 5s ease-in-out infinite;
+        }
 
-    width:90px;
-    height:2px;
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #c9a24b,
-            transparent
-        );
+        .food-card.two {
 
-    box-shadow:
-        0 0 20px rgba(201,162,75,.5);
-}
+            right: 6%;
+            top: 23%;
 
+            animation:
+                cardTwo 6s ease-in-out infinite;
+        }
 
-/* =========================================================
-   LOGIN HEADER
-========================================================= */
 
-.login-header{
-    text-align:center;
+        .food-card.three {
 
-    margin-bottom:34px;
-}
+            right: 9%;
+            bottom: 24%;
 
-.emblem{
-    width:62px;
-    height:62px;
+            animation:
+                cardThree 5.5s ease-in-out infinite;
+        }
 
-    margin:0 auto 20px;
 
-    border-radius:19px;
+        @keyframes cardOne {
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+            0%,
+            100% {
 
-    font-family:'Space Grotesk',sans-serif;
+                transform:
+                    translateY(0)
+                    rotate(-8deg)
+                    translateZ(20px);
+            }
 
-    font-weight:800;
-    font-size:17px;
+            50% {
 
-    color:#091618;
+                transform:
+                    translateY(-20px)
+                    rotate(5deg)
+                    translateZ(60px);
+            }
+        }
 
-    background:
-        linear-gradient(
-            135deg,
-            #e1c16d,
-            #a87c2c
-        );
 
-    box-shadow:
-        0 15px 35px rgba(201,162,75,.22);
+        @keyframes cardTwo {
 
-    transform:rotate(-3deg);
+            0%,
+            100% {
 
-    transition:.4s;
-}
+                transform:
+                    translateY(0)
+                    rotate(8deg);
+            }
 
-.login-container:hover .emblem{
-    transform:
-        rotate(0deg)
-        scale(1.05);
-}
+            50% {
 
-.eyebrow{
-    display:block;
+                transform:
+                    translateY(-26px)
+                    rotate(-5deg);
+            }
+        }
 
-    font-family:'Space Grotesk',sans-serif;
 
-    color:#c9a24b;
+        @keyframes cardThree {
 
-    font-size:10px;
-    font-weight:600;
+            0%,
+            100% {
 
-    letter-spacing:.22em;
+                transform:
+                    translateY(0)
+                    rotate(6deg);
+            }
 
-    text-transform:uppercase;
+            50% {
 
-    margin-bottom:9px;
-}
+                transform:
+                    translateY(-18px)
+                    rotate(-7deg);
+            }
+        }
 
-.login-container h2{
-    color:#f7f1e5;
 
-    font-family:'Space Grotesk',sans-serif;
+        /* =====================================================
+           PARTICLES
+        ===================================================== */
 
-    font-size:32px;
+        .particle {
 
-    letter-spacing:-.04em;
+            position: absolute;
 
-    margin-bottom:8px;
-}
+            width: 5px;
+            height: 5px;
 
-.subtext{
-    color:rgba(245,239,227,.45);
+            border-radius: 50%;
 
-    font-size:13px;
+            background: #c9a24b;
 
-    line-height:1.6;
-}
+            box-shadow:
+                0 0 15px
+                rgba(201,162,75,0.8);
 
+            animation:
+                particleFloat 5s ease-in-out infinite;
+        }
 
-/* =========================================================
-   INPUTS
-========================================================= */
 
-.input-group{
-    margin-bottom:21px;
-}
+        .p1 {
+            left: 18%;
+            top: 45%;
+        }
 
-.input-group label{
-    display:block;
+        .p2 {
+            left: 75%;
+            top: 40%;
+            animation-delay: 1s;
+        }
 
-    margin-bottom:9px;
+        .p3 {
+            left: 35%;
+            top: 27%;
+            animation-delay: 2s;
+        }
 
-    color:rgba(245,239,227,.68);
+        .p4 {
+            left: 68%;
+            top: 67%;
+            animation-delay: 3s;
+        }
 
-    font-size:11px;
-    font-weight:600;
+        .p5 {
+            left: 50%;
+            top: 18%;
+            animation-delay: 1.5s;
+        }
 
-    letter-spacing:.12em;
 
-    text-transform:uppercase;
-}
+        @keyframes particleFloat {
 
-.input-group input{
-    width:100%;
+            0%,
+            100% {
 
-    padding:16px 17px;
+                transform: translateY(0);
 
-    border-radius:13px;
+                opacity: 0.3;
+            }
 
-    border:1px solid rgba(255,255,255,.09);
+            50% {
 
-    background:
-        rgba(255,255,255,.045);
+                transform: translateY(-25px);
 
-    color:#f5efe3;
+                opacity: 1;
+            }
+        }
 
-    font-family:'DM Sans',sans-serif;
 
-    font-size:15px;
+        /* =====================================================
+           LOGIN SIDE
+        ===================================================== */
 
-    outline:none;
+        .login-side {
 
-    transition:
-        border-color .3s,
-        background .3s,
-        box-shadow .3s,
-        transform .3s;
-}
+            min-height: 100vh;
 
-.input-group input::placeholder{
-    color:rgba(245,239,227,.25);
-}
+            display: flex;
 
-.input-group input:hover{
-    background:
-        rgba(255,255,255,.06);
-}
+            align-items: center;
+            justify-content: center;
 
-.input-group input:focus{
-    border-color:
-        rgba(201,162,75,.75);
+            position: relative;
 
-    background:
-        rgba(201,162,75,.055);
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(201,162,75,0.07),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    145deg,
+                    #0b1d20,
+                    #081416
+                );
 
-    box-shadow:
-        0 0 0 4px rgba(201,162,75,.07),
-        0 10px 30px rgba(0,0,0,.15);
+            padding: 40px;
+        }
 
-    transform:
-        translateY(-1px);
-}
 
+        /* Divider */
 
-/* Prevent Chrome autofill */
+        .login-side::before {
 
-.input-group input:-webkit-autofill,
-.input-group input:-webkit-autofill:hover,
-.input-group input:-webkit-autofill:focus,
-.input-group input:-webkit-autofill:active{
+            content: "";
 
-    -webkit-text-fill-color:#f5efe3 !important;
+            position: absolute;
 
-    -webkit-box-shadow:
-        0 0 0 1000px #102326 inset !important;
+            left: 0;
+            top: 10%;
 
-    box-shadow:
-        0 0 0 1000px #102326 inset !important;
+            width: 1px;
+            height: 80%;
 
-    transition:
-        background-color 9999s ease-in-out 0s;
-}
+            background:
+                linear-gradient(
+                    transparent,
+                    rgba(201,162,75,0.45),
+                    transparent
+                );
+        }
 
 
-/* =========================================================
-   BUTTON
-========================================================= */
+        /* =====================================================
+           LOGIN CONTAINER
+        ===================================================== */
 
-button{
-    width:100%;
+        .login-container {
 
-    padding:16px;
+            position: relative;
 
-    border:none;
+            width: 440px;
 
-    border-radius:13px;
+            max-width: 100%;
 
-    cursor:pointer;
+            padding: 48px 44px 38px;
 
-    color:#0a1718;
+            border-radius: 28px;
 
-    font-family:'Space Grotesk',sans-serif;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.075),
+                    rgba(255,255,255,0.025)
+                );
 
-    font-size:14px;
-    font-weight:700;
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
 
-    letter-spacing:.04em;
+            box-shadow:
+                0 40px 100px
+                rgba(0,0,0,0.55),
 
-    background:
-        linear-gradient(
-            135deg,
-            #e0bd67,
-            #b98b36
-        );
+                inset 0 1px 0
+                rgba(255,255,255,0.08);
 
-    box-shadow:
-        0 15px 35px rgba(201,162,75,.16);
+            backdrop-filter: blur(25px);
 
-    transition:
-        transform .25s,
-        box-shadow .25s,
-        filter .25s;
-}
+            animation:
+                loginAppear 0.8s ease both;
+        }
 
-button:hover{
-    transform:
-        translateY(-3px);
 
-    box-shadow:
-        0 20px 40px rgba(201,162,75,.28);
+        @keyframes loginAppear {
 
-    filter:
-        brightness(1.06);
-}
+            from {
 
-button:active{
-    transform:
-        translateY(-1px);
-}
+                opacity: 0;
 
+                transform:
+                    translateY(25px)
+                    scale(0.97);
+            }
 
-/* =========================================================
-   REGISTER
-========================================================= */
+            to {
 
-.register-link{
-    margin-top:24px;
+                opacity: 1;
 
-    text-align:center;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
 
-    color:rgba(245,239,227,.38);
 
-    font-size:13px;
-}
+        .login-container::before {
 
-.register-link a{
-    color:#c9a24b;
+            content: "";
 
-    text-decoration:none;
+            position: absolute;
 
-    font-weight:600;
+            top: -1px;
+            right: 45px;
 
-    margin-left:3px;
+            width: 90px;
+            height: 2px;
 
-    transition:.2s;
-}
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #c9a24b,
+                    transparent
+                );
 
-.register-link a:hover{
-    color:#f5efe3;
-}
+            box-shadow:
+                0 0 20px
+                rgba(201,162,75,0.5);
+        }
 
 
-/* =========================================================
-   FOOTER
-========================================================= */
+        /* =====================================================
+           LOGIN HEADER
+        ===================================================== */
 
-.mrz{
-    margin-top:28px;
+        .login-header {
 
-    padding-top:18px;
+            text-align: center;
 
-    border-top:
-        1px solid rgba(255,255,255,.07);
+            margin-bottom: 34px;
+        }
 
-    text-align:center;
 
-    font-family:
-        'JetBrains Mono',
-        monospace;
+        .emblem {
 
-    font-size:9px;
+            width: 62px;
+            height: 62px;
 
-    letter-spacing:.16em;
+            margin: 0 auto 20px;
 
-    color:
-        rgba(245,239,227,.19);
-}
+            border-radius: 19px;
 
+            display: flex;
 
-/* =========================================================
-   MOBILE
-========================================================= */
+            align-items: center;
+            justify-content: center;
 
-@media(max-width:900px){
+            font-family:
+                'Space Grotesk',
+                sans-serif;
 
-    .page{
-        grid-template-columns:1fr;
-    }
+            font-weight: 800;
 
-    .visual-side{
-        min-height:480px;
-        height:480px;
-    }
+            font-size: 17px;
 
-    .login-side{
-        min-height:auto;
+            color: #091618;
 
-        padding:
-            45px 20px 60px;
-    }
+            background:
+                linear-gradient(
+                    135deg,
+                    #e1c16d,
+                    #a87c2c
+                );
 
-    .login-side::before{
-        display:none;
-    }
+            box-shadow:
+                0 15px 35px
+                rgba(201,162,75,0.22);
 
-    .stage{
-        width:350px;
-        height:350px;
+            transform: rotate(-3deg);
 
-        top:50%;
-    }
+            transition: 0.4s;
+        }
 
-    .plate{
-        width:180px;
-        height:180px;
-    }
 
-    .plate::before{
-        width:145px;
-        height:145px;
+        .login-container:hover .emblem {
 
-        left:17px;
-        top:17px;
-    }
+            transform:
+                rotate(0deg)
+                scale(1.05);
+        }
 
-    .food-card{
-        width:70px;
-        height:70px;
 
-        font-size:31px;
+        .eyebrow {
 
-        border-radius:18px;
-    }
+            display: block;
 
-    .visual-copy{
-        left:25px;
-        bottom:25px;
+            font-family:
+                'Space Grotesk',
+                sans-serif;
 
-        max-width:330px;
-    }
+            color: #c9a24b;
 
-    .visual-copy h1{
-        font-size:35px;
-    }
+            font-size: 10px;
 
-    .visual-copy p{
-        display:none;
-    }
+            font-weight: 600;
 
-    .brand{
-        top:22px;
-        left:25px;
-    }
+            letter-spacing: 0.22em;
 
-    .login-container{
-        width:440px;
-    }
-}
+            text-transform: uppercase;
 
+            margin-bottom: 9px;
+        }
 
-@media(max-width:500px){
 
-    .visual-side{
-        min-height:420px;
-        height:420px;
-    }
+        .login-container h2 {
 
-    .stage{
-        transform:
-            translate(-50%,-50%)
-            scale(.78);
-    }
+            color: #f7f1e5;
 
-    .login-side{
-        padding:
-            30px 15px 45px;
-    }
+            font-family:
+                'Space Grotesk',
+                sans-serif;
 
-    .login-container{
-        padding:
-            38px 25px 30px;
+            font-size: 32px;
 
-        border-radius:22px;
-    }
+            letter-spacing: -0.04em;
 
-    .login-container h2{
-        font-size:28px;
-    }
+            margin-bottom: 8px;
+        }
 
-    .brand-name{
-        font-size:18px;
-    }
 
-    .visual-copy h1{
-        font-size:31px;
-    }
-}
+        .subtext {
 
-</style>
+            color:
+                rgba(245,239,227,0.45);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           INPUTS
+        ===================================================== */
+
+        .input-group {
+
+            margin-bottom: 21px;
+        }
+
+
+        .input-group label {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color:
+                rgba(245,239,227,0.68);
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+        }
+
+
+        .input-group input {
+
+            width: 100%;
+
+            padding: 16px 17px;
+
+            border-radius: 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            background:
+                rgba(255,255,255,0.045);
+
+            color: #f5efe3;
+
+            font-family:
+                'DM Sans',
+                sans-serif;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition:
+                border-color 0.3s,
+                background 0.3s,
+                box-shadow 0.3s,
+                transform 0.3s;
+        }
+
+
+        .input-group input::placeholder {
+
+            color:
+                rgba(245,239,227,0.25);
+        }
+
+
+        .input-group input:hover {
+
+            background:
+                rgba(255,255,255,0.06);
+        }
+
+
+        .input-group input:focus {
+
+            border-color:
+                rgba(201,162,75,0.75);
+
+            background:
+                rgba(201,162,75,0.055);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(201,162,75,0.07),
+
+                0 10px 30px
+                rgba(0,0,0,0.15);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =====================================================
+           AUTOFILL
+        ===================================================== */
+
+        .input-group input:-webkit-autofill,
+        .input-group input:-webkit-autofill:hover,
+        .input-group input:-webkit-autofill:focus {
+
+            -webkit-text-fill-color: #f5efe3;
+
+            transition:
+                background-color 5000s ease-in-out 0s;
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON
+        ===================================================== */
+
+        .login-button {
+
+            width: 100%;
+
+            padding: 16px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            cursor: pointer;
+
+            color: #0a1718;
+
+            font-family:
+                'Space Grotesk',
+                sans-serif;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.04em;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e0bd67,
+                    #b98b36
+                );
+
+            box-shadow:
+                0 15px 35px
+                rgba(201,162,75,0.16);
+
+            transition:
+                transform 0.25s,
+                box-shadow 0.25s,
+                filter 0.25s;
+        }
+
+
+        .login-button:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 20px 40px
+                rgba(201,162,75,0.28);
+
+            filter:
+                brightness(1.06);
+        }
+
+
+        .login-button:active {
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =====================================================
+           REGISTER
+        ===================================================== */
+
+        .register-link {
+
+            margin-top: 24px;
+
+            text-align: center;
+
+            color:
+                rgba(245,239,227,0.38);
+
+            font-size: 13px;
+        }
+
+
+        .register-link a {
+
+            color: #c9a24b;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            margin-left: 3px;
+
+            transition: 0.2s;
+        }
+
+
+        .register-link a:hover {
+
+            color: #f5efe3;
+        }
+
+
+        /* =====================================================
+           FOOTER CODE
+        ===================================================== */
+
+        .mrz {
+
+            margin-top: 28px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            text-align: center;
+
+            font-family:
+                'JetBrains Mono',
+                monospace;
+
+            font-size: 9px;
+
+            letter-spacing: 0.16em;
+
+            color:
+                rgba(245,239,227,0.19);
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .page {
+
+                grid-template-columns: 1fr;
+
+                overflow: visible;
+            }
+
+
+            .visual-side {
+
+                min-height: 420px;
+
+                height: 420px;
+            }
+
+
+            .login-side {
+
+                min-height: auto;
+
+                padding:
+                    40px 20px 50px;
+            }
+
+
+            .login-side::before {
+
+                display: none;
+            }
+
+
+            .stage {
+
+                width: 350px;
+                height: 350px;
+
+                top: 50%;
+            }
+
+
+            .plate {
+
+                width: 180px;
+                height: 180px;
+            }
+
+
+            .plate::before {
+
+                width: 145px;
+                height: 145px;
+
+                left: 17px;
+                top: 17px;
+            }
+
+
+            .food-card {
+
+                width: 70px;
+                height: 70px;
+
+                font-size: 31px;
+
+                border-radius: 18px;
+            }
+
+
+            .visual-copy {
+
+                left: 25px;
+                bottom: 25px;
+
+                max-width: 330px;
+            }
+
+
+            .visual-copy h1 {
+
+                font-size: 35px;
+            }
+
+
+            .visual-copy p {
+
+                display: none;
+            }
+
+
+            .brand {
+
+                top: 22px;
+                left: 25px;
+            }
+
+
+            .login-container {
+
+                width: 440px;
+
+                max-width: 100%;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE PHONE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            html,
+            body {
+
+                width: 100%;
+
+                min-height: 100%;
+
+                overflow-x: hidden;
+            }
+
+
+            .page {
+
+                width: 100%;
+
+                min-height: 100vh;
+
+                display: block;
+
+                overflow: visible;
+            }
+
+
+            /* -------------------------------------------------
+               Hide visual side on phones
+            ------------------------------------------------- */
+
+            .visual-side {
+
+                display: none;
+            }
+
+
+            /* -------------------------------------------------
+               Full screen login
+            ------------------------------------------------- */
+
+            .login-side {
+
+                width: 100%;
+
+                min-height: 100vh;
+
+                padding:
+                    20px 14px 24px;
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                background:
+                    radial-gradient(
+                        circle at 80% 10%,
+                        rgba(201,162,75,0.10),
+                        transparent 30%
+                    ),
+                    linear-gradient(
+                        145deg,
+                        #0b1d20,
+                        #071416
+                    );
+            }
+
+
+            /* -------------------------------------------------
+               Login card
+            ------------------------------------------------- */
+
+            .login-container {
+
+                width: 100%;
+
+                max-width: 430px;
+
+                padding:
+                    30px 20px 24px;
+
+                border-radius: 22px;
+
+                margin: 0 auto;
+            }
+
+
+            .login-container::before {
+
+                right: 30px;
+
+                width: 70px;
+            }
+
+
+            /* -------------------------------------------------
+               Header
+            ------------------------------------------------- */
+
+            .login-header {
+
+                margin-bottom: 25px;
+            }
+
+
+            .emblem {
+
+                width: 54px;
+                height: 54px;
+
+                margin-bottom: 16px;
+
+                border-radius: 16px;
+
+                font-size: 15px;
+            }
+
+
+            .eyebrow {
+
+                font-size: 9px;
+
+                letter-spacing: 0.17em;
+
+                margin-bottom: 7px;
+            }
+
+
+            .login-container h2 {
+
+                font-size: 27px;
+
+                line-height: 1.15;
+
+                margin-bottom: 7px;
+            }
+
+
+            .subtext {
+
+                font-size: 12px;
+
+                line-height: 1.5;
+            }
+
+
+            /* -------------------------------------------------
+               Inputs
+            ------------------------------------------------- */
+
+            .input-group {
+
+                margin-bottom: 17px;
+            }
+
+
+            .input-group label {
+
+                font-size: 10px;
+
+                margin-bottom: 7px;
+            }
+
+
+            .input-group input {
+
+                width: 100%;
+
+                min-width: 0;
+
+                padding:
+                    14px 13px;
+
+                font-size: 14px;
+
+                border-radius: 11px;
+            }
+
+
+            /* -------------------------------------------------
+               Button
+            ------------------------------------------------- */
+
+            .login-button {
+
+                width: 100%;
+
+                padding: 14px;
+
+                font-size: 13px;
+
+                border-radius: 11px;
+            }
+
+
+            /* -------------------------------------------------
+               Register
+            ------------------------------------------------- */
+
+            .register-link {
+
+                margin-top: 18px;
+
+                font-size: 12px;
+            }
+
+
+            /* -------------------------------------------------
+               Footer text
+            ------------------------------------------------- */
+
+            .mrz {
+
+                margin-top: 20px;
+
+                padding-top: 13px;
+
+                font-size: 7px;
+
+                letter-spacing: 0.10em;
+
+                word-break: break-word;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL PHONES
+        ===================================================== */
+
+        @media (max-width: 400px) {
+
+            .login-side {
+
+                padding:
+                    14px 10px 18px;
+            }
+
+
+            .login-container {
+
+                padding:
+                    25px 16px 20px;
+
+                border-radius: 19px;
+            }
+
+
+            .login-header {
+
+                margin-bottom: 21px;
+            }
+
+
+            .emblem {
+
+                width: 48px;
+                height: 48px;
+
+                margin-bottom: 13px;
+
+                border-radius: 14px;
+
+                font-size: 14px;
+            }
+
+
+            .login-container h2 {
+
+                font-size: 24px;
+            }
+
+
+            .subtext {
+
+                font-size: 11px;
+            }
+
+
+            .input-group input {
+
+                padding:
+                    13px 12px;
+
+                font-size: 13px;
+            }
+
+
+            .login-button {
+
+                padding: 13px;
+
+                font-size: 12px;
+            }
+
+
+            .register-link {
+
+                font-size: 11px;
+            }
+        }
+
+
+        /* =====================================================
+           VERY SMALL PHONES - 320px
+        ===================================================== */
+
+        @media (max-width: 340px) {
+
+            .login-side {
+
+                padding:
+                    10px 7px 14px;
+            }
+
+
+            .login-container {
+
+                padding:
+                    22px 13px 18px;
+
+                border-radius: 17px;
+            }
+
+
+            .login-container h2 {
+
+                font-size: 22px;
+            }
+
+
+            .input-group input {
+
+                padding:
+                    12px 10px;
+
+                font-size: 12px;
+            }
+
+
+            .login-button {
+
+                padding: 12px;
+            }
+        }
+
+    </style>
 
 </head>
+
 
 <body>
 
 <div class="page">
 
 
-<!-- =====================================================
-     LEFT 3D RESTAURANT SIDE
-====================================================== -->
+    <!-- =====================================================
+         LEFT VISUAL SIDE
+    ====================================================== -->
 
-<section class="visual-side">
-
-
-    <!-- BRAND -->
-
-    <div class="brand">
-
-        <div class="brand-mark">
-            ZG
-        </div>
-
-        <div class="brand-name">
-            ZestGo
-        </div>
-
-    </div>
+    <section class="visual-side">
 
 
-    <!-- PARTICLES -->
+        <!-- BRAND -->
 
-    <div class="particle p1"></div>
-    <div class="particle p2"></div>
-    <div class="particle p3"></div>
-    <div class="particle p4"></div>
-    <div class="particle p5"></div>
+        <div class="brand">
 
-
-    <!-- 3D STAGE -->
-
-    <div class="stage">
-
-        <div class="orbit one"></div>
-
-        <div class="orbit two"></div>
-
-        <div class="orbit three"></div>
-
-
-        <!-- PLATE -->
-
-        <div class="plate"></div>
-
-
-        <!-- BURGER -->
-
-        <div class="food">
-
-            <div class="bun-top"></div>
-
-        </div>
-
-
-        <!-- FLOATING FOOD -->
-
-        <div class="food-card one">
-            🍕
-        </div>
-
-        <div class="food-card two">
-            🍜
-        </div>
-
-        <div class="food-card three">
-            🥤
-        </div>
-
-    </div>
-
-
-    <!-- LEFT TEXT -->
-
-    <div class="visual-copy">
-
-        <div class="mini">
-            Your table awaits
-        </div>
-
-        <h1>
-            Taste the
-            <br>
-            <span>extraordinary.</span>
-        </h1>
-
-        <p>
-            Discover restaurants, explore delicious dishes
-            and enjoy every moment with ZestGo.
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     RIGHT LOGIN SIDE
-====================================================== -->
-
-<section class="login-side">
-
-
-    <div class="login-container">
-
-
-        <!-- LOGIN HEADER -->
-
-        <div class="login-header">
-
-            <div class="emblem">
+            <div class="brand-mark">
                 ZG
             </div>
 
-            <span class="eyebrow">
-                Passport Control
-            </span>
-
-            <h2>
-                Welcome back
-            </h2>
-
-            <p class="subtext">
-                Sign in to continue your ZestGo journey.
-            </p>
+            <div class="brand-name">
+                ZestGo
+            </div>
 
         </div>
 
 
-        <!-- LOGIN FORM -->
+        <!-- PARTICLES -->
 
-        <form
-            action="callLoginServlet"
-            method="post"
-            autocomplete="off"
-            id="loginForm"
-            novalidate>
+        <div class="particle p1"></div>
 
+        <div class="particle p2"></div>
 
-            <!-- EMAIL -->
+        <div class="particle p3"></div>
 
-            <div class="input-group">
+        <div class="particle p4"></div>
 
-                <label for="loginEmail">
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    id="loginEmail"
-                    name="email"
-                    placeholder="Enter your email"
-                    value=""
-                    autocomplete="off"
-                    readonly
-                    required>
-
-            </div>
+        <div class="particle p5"></div>
 
 
-            <!-- PASSWORD -->
+        <!-- 3D STAGE -->
 
-            <div class="input-group">
+        <div class="stage">
 
-                <label for="loginPassword">
-                    Password
-                </label>
+            <div class="orbit one"></div>
 
-                <input
-                    type="password"
-                    id="loginPassword"
-                    name="password"
-                    placeholder="Enter your password"
-                    value=""
-                    autocomplete="new-password"
-                    readonly
-                    required>
+            <div class="orbit two"></div>
+
+            <div class="orbit three"></div>
+
+
+            <!-- PLATE -->
+
+            <div class="plate"></div>
+
+
+            <!-- BURGER -->
+
+            <div class="food">
+
+                <div class="bun-top"></div>
 
             </div>
 
 
-            <!-- LOGIN BUTTON -->
+            <!-- FLOATING FOOD -->
 
-            <button type="submit">
-                Enter ZestGo
-            </button>
+            <div class="food-card one">
+                🍕
+            </div>
 
-        </form>
+            <div class="food-card two">
+                🍜
+            </div>
+
+            <div class="food-card three">
+                🥤
+            </div>
+
+        </div>
 
 
-        <!-- REGISTER -->
+        <!-- LEFT TEXT -->
 
-        <div class="register-link">
+        <div class="visual-copy">
+
+            <div class="mini">
+                Your table awaits
+            </div>
+
+            <h1>
+                Taste the
+                <span>extraordinary.</span>
+            </h1>
 
             <p>
-
-                Don't have an account?
-
-                <!-- FIXED REGISTER LINK -->
-
-                <a href="${pageContext.request.contextPath}/register.jsp">
-                    Create one
-                </a>
-
+                Discover restaurants, explore delicious dishes
+                and enjoy every moment with ZestGo.
             </p>
 
         </div>
 
+    </section>
 
-        <!-- FOOTER -->
 
-        <div class="mrz">
-            ZESTGO · SECURE DINING EXPERIENCE
+    <!-- =====================================================
+         RIGHT LOGIN SIDE
+    ====================================================== -->
+
+    <section class="login-side">
+
+
+        <div class="login-container">
+
+
+            <!-- LOGIN HEADER -->
+
+            <div class="login-header">
+
+
+                <div class="emblem">
+                    ZG
+                </div>
+
+
+                <span class="eyebrow">
+                    Passport Control
+                </span>
+
+
+                <h2>
+                    Welcome back
+                </h2>
+
+
+                <p class="subtext">
+                    Sign in to continue your ZestGo journey.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================= -->
+
+            <form action="callLoginServlet"
+                  method="post"
+                  autocomplete="off">
+
+
+                <!-- EMAIL -->
+
+                <div class="input-group">
+
+                    <label for="loginEmail">
+                        Email
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="new-password"
+                        required>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="login-button">
+
+                    Enter ZestGo
+
+                </button>
+
+
+            </form>
+
+
+            <!-- REGISTER -->
+
+            <div class="register-link">
+
+                <p>
+
+                    Don't have an account?
+
+                    <a href="register.jsp">
+                        Create one
+                    </a>
+
+                </p>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="mrz">
+
+                ZESTGO · SECURE DINING EXPERIENCE
+
+            </div>
+
+
         </div>
 
-
-    </div>
-
-</section>
+    </section>
 
 </div>
 
-
-
-<!-- =====================================================
-     LOGIN FIELD PROTECTION
-====================================================== -->
-
-<script>
-
-(function(){
-
-    const email =
-        document.getElementById("loginEmail");
-
-    const password =
-        document.getElementById("loginPassword");
-
-    const form =
-        document.getElementById("loginForm");
-
-
-    /*
-     * Clear both fields
-     */
-
-    function clearLoginFields(){
-
-        if(email){
-            email.value = "";
-        }
-
-        if(password){
-            password.value = "";
-        }
-
-    }
-
-
-    /*
-     * Page opens completely empty
-     */
-
-    clearLoginFields();
-
-
-    /*
-     * Prevent browser autofill initially
-     */
-
-    if(email){
-        email.readOnly = true;
-    }
-
-    if(password){
-        password.readOnly = true;
-    }
-
-
-    /*
-     * Allow typing when user clicks Email
-     */
-
-    if(email){
-
-        email.addEventListener(
-            "focus",
-            function(){
-
-                this.readOnly = false;
-
-            }
-        );
-
-    }
-
-
-    /*
-     * Allow typing when user clicks Password
-     */
-
-    if(password){
-
-        password.addEventListener(
-            "focus",
-            function(){
-
-                this.readOnly = false;
-
-            }
-        );
-
-    }
-
-
-    /*
-     * Handle browser Back/Forward cache
-     */
-
-    window.addEventListener(
-        "pageshow",
-        function(){
-
-            clearLoginFields();
-
-            if(email){
-                email.readOnly = true;
-            }
-
-            if(password){
-                password.readOnly = true;
-            }
-
-        }
-    );
-
-
-    /*
-     * Chrome may autofill shortly after page load.
-     * Clear fields again.
-     */
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function(){
-
-            clearLoginFields();
-
-            setTimeout(
-                clearLoginFields,
-                100
-            );
-
-            setTimeout(
-                clearLoginFields,
-                500
-            );
-
-            setTimeout(
-                clearLoginFields,
-                1500
-            );
-
-        }
-    );
-
-
-    /*
-     * Before submitting, allow actual values
-     * to be sent normally.
-     */
-
-    if(form){
-
-        form.addEventListener(
-            "submit",
-            function(){
-
-                if(email){
-                    email.readOnly = false;
-                }
-
-                if(password){
-                    password.readOnly = false;
-                }
-
-            }
-        );
-
-    }
-
-})();
-
-</script>
-
 </body>
+
 </html>
