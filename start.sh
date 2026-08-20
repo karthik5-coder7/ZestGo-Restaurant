@@ -2,16 +2,19 @@
 
 echo "======================================"
 echo "Starting FoodApp"
-echo "Render PORT = ${PORT:-8080}"
+echo "Render PORT = ${PORT}"
 echo "======================================"
 
-# Use Render's PORT.
-# If PORT is not provided, use 8080.
-TOMCAT_PORT=${PORT:-8080}
+PORT=${PORT:-8080}
 
-echo "Configuring Tomcat to use port $TOMCAT_PORT"
+echo "Configuring Tomcat to use port ${PORT}"
 
-sed -i "s/port=\"8080\"/port=\"$TOMCAT_PORT\" address=\"0.0.0.0\"/" \
+# Configure Tomcat HTTP connector
+sed -i "s/port=\"8080\"/port=\"${PORT}\" address=\"0.0.0.0\"/" \
+    /usr/local/tomcat/conf/server.xml
+
+# Disable Tomcat shutdown port
+sed -i 's/port="8005"/port="-1"/' \
     /usr/local/tomcat/conf/server.xml
 
 echo "Starting Tomcat..."
