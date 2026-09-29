@@ -30,6 +30,9 @@ String userName = (String) session.getAttribute("userName");
 
 <title>ZestGo - Food Delivery</title>
 
+<!-- Enables scroll-reveal styles only when JS is available -->
+<script>document.documentElement.classList.add('js');</script>
+
 <!-- PERFORMANCE FIX: preconnects cut ~100-300ms of TLS handshake
      before the first byte of fonts and the 3D library arrive -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -632,8 +635,23 @@ body{
 
     margin-bottom:12px;
 
+    background-size:200% 200%;
+
     animation:
-        fadeInUp 0.9s ease 0.2s both;
+        fadeInUp 0.9s ease 0.2s both,
+        gradientShift 7s ease-in-out 1.2s infinite;
+}
+
+@keyframes gradientShift{
+
+    0%,100%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
 }
 
 .hero .eyebrow{
@@ -772,53 +790,40 @@ body{
     border:
         2px solid rgba(201,162,75,0.4);
 
-    transition:0.5s ease;
-
-    animation:
-        slideUp 0.8s ease-out both;
+    transition:
+        transform 0.5s ease,
+        box-shadow 0.5s ease,
+        border-color 0.5s ease,
+        opacity 0.7s ease;
 }
 
-@keyframes slideUp{
+/* =========================================================
+   SCROLL REVEAL
+   'js' class is added to <html> by a tiny head script;
+   an IntersectionObserver adds .card-visible as each card
+   scrolls into view. No JS = cards stay fully visible.
+========================================================= */
 
-    from{
-        opacity:0;
-        transform:translateY(50px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
+html.js .card{
+    opacity:0;
+    transform:translateY(46px) scale(0.97);
 }
 
-.card:nth-child(1){
-    animation-delay:0.1s;
+html.js .card-visible{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    transition-delay:calc(var(--d, 0) * 70ms);
 }
 
-.card:nth-child(2){
-    animation-delay:0.2s;
-}
+/* Higher specificity so hover snappiness always wins over
+   the scroll-reveal stagger delay. */
 
-.card:nth-child(3){
-    animation-delay:0.3s;
-}
-
-.card:nth-child(4){
-    animation-delay:0.4s;
-}
-
-.card:nth-child(5){
-    animation-delay:0.5s;
-}
-
-.card:nth-child(6){
-    animation-delay:0.6s;
-}
-
-.card:hover{
+.card:hover,
+.card.card-visible:hover{
 
     transform:translateY(-12px);
+
+    transition-delay:0s;
 
     box-shadow:
         0 30px 80px rgba(15,42,46,0.4),
@@ -885,6 +890,8 @@ body{
 
     box-shadow:
         0 6px 20px rgba(201,162,75,0.35);
+
+    overflow:hidden;
 
     z-index:3;
 }
@@ -1086,6 +1093,100 @@ footer{
     z-index:5;
 
     font-weight:600;
+}
+
+/* =========================================================
+   OFFER BADGE SHIMMER
+========================================================= */
+
+.offer::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+        115deg,
+        transparent 30%,
+        rgba(255,255,255,0.5) 50%,
+        transparent 70%
+    );
+
+    transform:translateX(-130%);
+
+    animation:offerShine 4.5s ease-in-out infinite;
+}
+
+@keyframes offerShine{
+
+    0%,55%{
+        transform:translateX(-130%);
+    }
+
+    75%,100%{
+        transform:translateX(130%);
+    }
+
+}
+
+/* =========================================================
+   FAVORITED HEART - GENTLE HEARTBEAT
+========================================================= */
+
+.favorite.is-fav{
+    animation:heartbeat 1.8s ease-in-out infinite;
+}
+
+@keyframes heartbeat{
+
+    0%,100%{
+        transform:scale(1);
+    }
+
+    12%{
+        transform:scale(1.15);
+    }
+
+    24%{
+        transform:scale(1);
+    }
+
+}
+
+/* =========================================================
+   NAVBAR SCROLLED STATE
+========================================================= */
+
+.navbar.scrolled{
+
+    box-shadow:
+        0 14px 44px rgba(0,0,0,0.38),
+        0 0 24px rgba(201,162,75,0.12);
+
+    border-bottom-color:rgba(201,162,75,0.55);
+}
+
+/* =========================================================
+   REDUCED MOTION - respect user preference
+========================================================= */
+
+@media (prefers-reduced-motion: reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+    }
+
+    html.js .card{
+        opacity:1;
+        transform:none;
+    }
+
 }
 
 /* =========================================================
@@ -2442,6 +2543,104 @@ if(
         );
 
 }
+
+/* =====================================================
+   SCROLL REVEAL
+===================================================== */
+
+(function initReveal(){
+
+    var cards =
+        document.querySelectorAll(".card");
+
+    if(!("IntersectionObserver" in window)){
+
+        for(var i=0;i<cards.length;i++){
+            cards[i].classList.add("card-visible");
+        }
+
+        return;
+    }
+
+    var observer =
+        new IntersectionObserver(
+            function(entries){
+
+                entries.forEach(
+                    function(entry){
+
+                        if(entry.isIntersecting){
+
+                            entry.target.classList.add(
+                                "card-visible"
+                            );
+
+                            observer.unobserve(
+                                entry.target
+                            );
+                        }
+                    }
+                );
+            },
+            {
+                rootMargin:"0px 0px -60px 0px",
+                threshold:0.08
+            }
+        );
+
+    for(var j=0;j<cards.length;j++){
+
+        /* Stagger: 0/1/2 repeating gives a left-to-right rhythm */
+        cards[j].style.setProperty("--d", j % 3);
+
+        observer.observe(cards[j]);
+    }
+
+})();
+
+/* =====================================================
+   FAVORITED HEART HEARTBEAT
+===================================================== */
+
+(function initHeartbeat(){
+
+    var buttons =
+        document.querySelectorAll(".favorite");
+
+    for(var i=0;i<buttons.length;i++){
+
+        if(buttons[i].textContent.indexOf("\u2764") !== -1){
+            buttons[i].classList.add("is-fav");
+        }
+    }
+
+})();
+
+/* =====================================================
+   NAVBAR SCROLL EFFECT
+===================================================== */
+
+(function initNavbarScroll(){
+
+    var navbar =
+        document.querySelector(".navbar");
+
+    if(!navbar){
+        return;
+    }
+
+    window.addEventListener(
+        "scroll",
+        function(){
+            navbar.classList.toggle(
+                "scrolled",
+                window.scrollY > 10
+            );
+        },
+        { passive:true }
+    );
+
+})();
 
 /* =====================================================
    START 3D
