@@ -10,7 +10,29 @@
 List<Order> orders =
         (List<Order>) request.getAttribute("orders");
 
-OrderDAOimpl dao = new OrderDAOimpl();
+/*
+   PERFORMANCE FIX (N+1):
+   Item lists used to be fetched with one database query PER order.
+   They are now fetched for ALL orders in a single query before the
+   rendering loop starts.
+*/
+
+java.util.Map<Integer, java.util.List<OrderItem>> itemsByOrder =
+        new java.util.HashMap<>();
+
+if(orders != null && !orders.isEmpty()){
+
+    java.util.List<Integer> orderIds =
+            new java.util.ArrayList<>();
+
+    for(Order o : orders){
+        orderIds.add(o.getOrderId());
+    }
+
+    itemsByOrder =
+        new OrderDAOimpl()
+            .getOrderItemsByOrderIds(orderIds);
+}
 %>
 
 <!DOCTYPE html>
@@ -1999,8 +2021,17 @@ else
 
 <%
 
-    List<OrderItem> items =
-        dao.getOrderItems(order.getOrderId());
+    /* PERFORMANCE FIX: items come from the single pre-fetched batch,
+       no per-order query anymore. */
+
+    java.util.List<OrderItem> items =
+        itemsByOrder.get(
+            order.getOrderId()
+        );
+
+    if(items == null){
+        items = java.util.Collections.emptyList();
+    }
 
     for(OrderItem item : items)
     {
@@ -2017,7 +2048,9 @@ else
 
             <img
                 src="<%= item.getImagePath() %>"
-                alt="<%= item.getItemName() %>">
+                alt="<%= item.getItemName() %>"
+                loading="lazy"
+                decoding="async">
 
 
 

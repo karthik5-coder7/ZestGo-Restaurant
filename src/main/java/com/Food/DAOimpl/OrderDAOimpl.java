@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.Food.DAO.OrderDAO;
 import com.Food.Model.Order;
@@ -54,6 +56,69 @@ public class OrderDAOimpl implements OrderDAO {
         }
 
         return orders;
+    }
+
+    /**
+     * PERFORMANCE FIX (N+1): fetches the items of many orders in ONE
+     * query instead of one query per order.
+     */
+    public Map<Integer, List<OrderItem>> getOrderItemsByOrderIds(
+            List<Integer> orderIds) {
+
+        Map<Integer, List<OrderItem>> byOrder = new HashMap<>();
+
+        if (orderIds == null || orderIds.isEmpty()) {
+            return byOrder;
+        }
+
+        StringBuilder in = new StringBuilder();
+        for (int i = 0; i < orderIds.size(); i++) {
+            if (i > 0) {
+                in.append(",");
+            }
+            in.append("?");
+        }
+
+        String query =
+                "SELECT orderId, itemName, price, quantity, imagePath "
+                + "FROM orders_items WHERE orderId IN (" + in + ")";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            for (int i = 0; i < orderIds.size(); i++) {
+                ps.setInt(i + 1, orderIds.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    int orderId = rs.getInt("orderId");
+
+                    OrderItem item = new OrderItem();
+
+                    item.setItemName(rs.getString("itemName"));
+                    item.setPrice(rs.getDouble("price"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setImagePath(rs.getString("imagePath"));
+
+                    List<OrderItem> items = byOrder.get(orderId);
+
+                    if (items == null) {
+                        items = new ArrayList<>();
+                        byOrder.put(orderId, items);
+                    }
+
+                    items.add(item);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return byOrder;
     }
 
     public List<OrderItem> getOrderItems(int orderId) {

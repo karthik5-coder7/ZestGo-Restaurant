@@ -1395,7 +1395,9 @@ if(allMenusByRestaurant != null)
 
             <img
                 src="<%= menu.getImagePath() %>"
-                alt="<%= menu.getItemName() %>">
+                alt="<%= menu.getItemName() %>"
+                loading="lazy"
+                decoding="async">
 
 
             <div class="menu-content">

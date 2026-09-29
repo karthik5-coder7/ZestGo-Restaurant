@@ -30,10 +30,14 @@ String userName = (String) session.getAttribute("userName");
 
 <title>ZestGo - Food Delivery</title>
 
+<!-- PERFORMANCE FIX: preconnects cut ~100-300ms of TLS handshake
+     before the first byte of fonts and the 3D library arrive -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
 
@@ -1508,8 +1512,22 @@ footer{
 
 <%
 
-FavoriteDAOimpl favDao =
-    new FavoriteDAOimpl();
+/*
+   PERFORMANCE FIX (N+1):
+   The favorite state of ALL restaurants used to be fetched with one
+   database query PER restaurant card, each opening its own connection
+   to the remote cloud database. Now it is ONE query up front.
+*/
+
+java.util.Set<Integer> favoriteIds =
+    new java.util.HashSet<>();
+
+if(userName != null){
+
+    favoriteIds =
+        new FavoriteDAOimpl()
+            .getFavoriteIds(userName);
+}
 
 List<User> allUsers =
     (List<User>)
@@ -1519,17 +1537,10 @@ if(allUsers != null){
 
     for(User user : allUsers){
 
-        boolean favorite = false;
-
-        if(userName != null){
-
-            favorite =
-                favDao.isFavorite(
-                    userName,
-                    user.getRestaurantID()
-                );
-
-        }
+        boolean favorite =
+            favoriteIds.contains(
+                user.getRestaurantID()
+            );
 
 %>
 
@@ -1630,8 +1641,11 @@ if(allUsers != null){
             <%= offer %>
         </span>
 
+        <!-- PERFORMANCE FIX: images below the fold no longer block first paint -->
         <img src="<%= user.getImagePath() %>"
-             alt="<%= user.getName() %>">
+             alt="<%= user.getName() %>"
+             loading="lazy"
+             decoding="async">
 
         <div class="card-content">
 
@@ -1690,6 +1704,29 @@ if(allUsers != null){
 <!-- =====================================================
      JAVASCRIPT
 ===================================================== -->
+
+<!-- PERFORMANCE FIX: Three.js (~600KB from CDN) used to be a blocking
+     script tag that froze the page until it downloaded. It is now
+     loaded AFTER the restaurant list has rendered. -->
+<script>
+(function loadThreeDeferred(){
+
+    var start = function(){
+
+        var s = document.createElement("script");
+
+        s.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+
+        document.head.appendChild(s);
+    };
+
+    if("requestIdleCallback" in window){
+        requestIdleCallback(start, { timeout: 2500 });
+    } else {
+        setTimeout(start, 800);
+    }
+})();
+</script>
 
 <script>
 
@@ -2100,6 +2137,13 @@ function animate(){
         animate
     );
 
+    /* PERFORMANCE FIX: stop rendering while the tab is hidden so the
+       3D background stops burning CPU and battery in the background. */
+
+    if(document.hidden){
+        return;
+    }
+
     time += 0.005;
 
     /* Torus */
@@ -2403,31 +2447,53 @@ if(
    START 3D
 ===================================================== */
 
-if(
-    document.readyState ===
-    "loading"
-){
+/*
+   PERFORMANCE FIX: 3D now starts only once the deferred Three.js
+   library is actually available, so the restaurant list never waits
+   for it. If the library fails to load, the page simply continues
+   without the 3D background.
+*/
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function(){
+(function start3DWhenReady(){
 
-            setTimeout(
-                init3D,
-                100
+    var attempts = 0;
+
+    function tryStart(){
+
+        attempts++;
+
+        if(typeof THREE !== "undefined"){
+
+            init3D();
+
+        } else if(attempts < 60){
+
+            setTimeout(tryStart, 200);
+
+        } else {
+
+            console.warn(
+                "Three.js did not load - skipping 3D background"
             );
-
         }
-    );
+    }
 
-}else{
+    if(
+        document.readyState ===
+        "loading"
+    ){
 
-    setTimeout(
-        init3D,
-        100
-    );
+        document.addEventListener(
+            "DOMContentLoaded",
+            tryStart
+        );
 
-}
+    } else {
+
+        tryStart();
+    }
+
+})();
 
 </script>
 

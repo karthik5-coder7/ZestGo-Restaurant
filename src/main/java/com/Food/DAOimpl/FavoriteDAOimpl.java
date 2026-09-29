@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.Food.Model.User;
 import com.Food.utility.DBConnection;
@@ -92,6 +94,36 @@ public class FavoriteDAOimpl {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * PERFORMANCE FIX (N+1): loads every restaurantId the user has
+     * favorited in ONE query, so listing pages can check favorites with a
+     * single DB round trip instead of one query per restaurant card.
+     */
+    public Set<Integer> getFavoriteIds(String userName) {
+
+        Set<Integer> ids = new HashSet<>();
+
+        String query =
+                "SELECT restaurantId FROM favorites WHERE userName=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, userName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getInt("restaurantId"));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ids;
     }
 
     public boolean isFavorite(String userName, int restaurantId) {
