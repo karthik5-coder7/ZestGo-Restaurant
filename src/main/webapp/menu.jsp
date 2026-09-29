@@ -18,6 +18,9 @@
 
 <title>ZestGo - Restaurant Menu</title>
 
+<!-- Enables scroll-reveal styles only when JS is available -->
+<script>document.documentElement.classList.add('js');</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet">
 
@@ -638,7 +641,8 @@ body::after{
 
     transition:
         transform 0.28s ease,
-        box-shadow 0.28s ease;
+        box-shadow 0.28s ease,
+        opacity 0.55s ease;
 
     will-change:transform;
 }
@@ -930,6 +934,106 @@ footer{
     letter-spacing:0.10em;
 }
 
+
+/* =========================================================
+   PAGE ANIMATIONS
+   'js' class is added to <html> by a tiny head script;
+   an IntersectionObserver adds .menu-card-visible as each
+   card scrolls into view. No JS = cards stay fully visible.
+========================================================= */
+
+html.js .menu-card{
+
+    opacity:0;
+
+    transform:translateY(36px);
+}
+
+html.js .menu-card.menu-card-visible{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+    transition-delay:calc(var(--d, 0) * 70ms);
+}
+
+/* Hover snappiness always wins over the stagger delay */
+
+html.js .menu-card.menu-card-visible:hover{
+
+    transition-delay:0s;
+}
+
+/* Header entrance */
+
+html.js .header{
+
+    animation:menuHeaderIn 0.7s ease both;
+}
+
+@keyframes menuHeaderIn{
+
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* Button micro-interactions */
+
+.add-btn,
+.favorite-btn{
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.add-btn:hover,
+.favorite-btn:hover{
+
+    transform:translateY(-2px);
+
+    filter:brightness(1.06);
+
+    box-shadow:
+        0 10px 24px -10px rgba(201,162,75,0.55);
+}
+
+.add-btn:active,
+.favorite-btn:active{
+
+    transform:translateY(0) scale(0.97);
+}
+
+/* =========================================================
+   REDUCED MOTION - respect user preference
+========================================================= */
+
+@media (prefers-reduced-motion: reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+    }
+
+    html.js .menu-card{
+        opacity:1;
+        transform:none;
+    }
+
+}
 
 /* =========================================================
    TABLET
@@ -1531,6 +1635,63 @@ if(allMenusByRestaurant != null)
 
 </footer>
 
+
+<script>
+
+/* =====================================================
+   SCROLL REVEAL
+===================================================== */
+
+(function initMenuReveal(){
+
+    var cards =
+        document.querySelectorAll(".menu-card");
+
+    if(!("IntersectionObserver" in window)){
+
+        for(var i=0;i<cards.length;i++){
+            cards[i].classList.add("menu-card-visible");
+        }
+
+        return;
+    }
+
+    var observer =
+        new IntersectionObserver(
+            function(entries){
+
+                entries.forEach(
+                    function(entry){
+
+                        if(entry.isIntersecting){
+
+                            entry.target.classList.add(
+                                "menu-card-visible"
+                            );
+
+                            observer.unobserve(
+                                entry.target
+                            );
+                        }
+                    }
+                );
+            },
+            {
+                rootMargin:"0px 0px -50px 0px",
+                threshold:0.08
+            }
+        );
+
+    for(var j=0;j<cards.length;j++){
+
+        cards[j].style.setProperty("--d", j % 3);
+
+        observer.observe(cards[j]);
+    }
+
+})();
+
+</script>
 
 </body>
 
