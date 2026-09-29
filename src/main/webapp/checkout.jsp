@@ -14,6 +14,11 @@
 
 <title>ZestGo | Checkout</title>
 
+<!-- ZestGo PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F2A2E">
+<link rel="apple-touch-icon" href="Image/ZestGo-192.png">
+
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet">
 
@@ -1901,6 +1906,9 @@ if(deliveryFee == 0){
 
 </div>
 
+
+<!-- ZestGo PWA: service worker + install prompt -->
+<script src="js/pwa.js" defer></script>
 
 </body>
 </html>

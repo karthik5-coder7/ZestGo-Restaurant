@@ -19,6 +19,11 @@ List<User> favorites =
 
 <title>ZestGo | My Favorites</title>
 
+<!-- ZestGo PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F2A2E">
+<link rel="apple-touch-icon" href="Image/ZestGo-192.png">
+
 
 <!-- =====================================================
      GOOGLE FONTS
@@ -2322,6 +2327,9 @@ for(User user : favorites){
 
 </div>
 
+
+<!-- ZestGo PWA: service worker + install prompt -->
+<script src="js/pwa.js" defer></script>
 
 </body>
 

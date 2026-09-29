@@ -2675,6 +2675,9 @@ if(
 
 </script>
 
+<!-- ZestGo PWA: service worker + install prompt -->
+<script src="js/pwa.js" defer></script>
+
 </body>
 
 </html>
