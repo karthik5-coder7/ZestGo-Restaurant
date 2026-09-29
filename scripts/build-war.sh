@@ -11,7 +11,9 @@
 
 set -e
 
-cd "$(dirname "$0")"
+# Always run from the repository root, no matter where the script
+# is invoked from (CI runs: sh ./scripts/build-war.sh)
+cd "$(dirname "$0")/.."
 
 SERVLET_JAR=".github/build-tools/javax.servlet-api-4.0.1.jar"
 
