@@ -30,9 +30,6 @@ String userName = (String) session.getAttribute("userName");
 
 <title>ZestGo - Food Delivery</title>
 
-<!-- Enables scroll-reveal styles only when JS is available -->
-<script>document.documentElement.classList.add('js');</script>
-
 <!-- PERFORMANCE FIX: preconnects cut ~100-300ms of TLS handshake
      before the first byte of fonts and the 3D library arrive -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -798,28 +795,41 @@ body{
 }
 
 /* =========================================================
-   SCROLL REVEAL
-   'js' class is added to <html> by a tiny head script;
-   an IntersectionObserver adds .card-visible as each card
-   scrolls into view. No JS = cards stay fully visible.
+   PAGE ANIMATIONS - FAIL-SAFE REVEAL
+   Cards animate in via a pure CSS keyframe. No rule keeps a
+   card hidden - if the animation never runs (old browser,
+   JS off, anything), the card is simply visible. A tiny
+   script only sets --d for the left-to-right stagger.
 ========================================================= */
 
-html.js .card{
-    opacity:0;
-    transform:translateY(46px) scale(0.97);
+@keyframes cardReveal{
+
+    from{
+        opacity:0;
+        transform:translateY(46px) scale(0.97);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+
 }
 
-html.js .card-visible{
-    opacity:1;
-    transform:translateY(0) scale(1);
-    transition-delay:calc(var(--d, 0) * 70ms);
+.card{
+
+    /* backwards: hidden only during the stagger delay, then the
+       element returns to its normal styles so hover keeps working */
+    animation:
+        cardReveal 0.7s ease backwards;
+
+    animation-delay:
+        calc(var(--d, 0) * 70ms);
 }
 
-/* Higher specificity so hover snappiness always wins over
-   the scroll-reveal stagger delay. */
+/* Hover lift replaces the reveal animation cleanly */
 
-.card:hover,
-.card.card-visible:hover{
+.card:hover{
 
     transform:translateY(-12px);
 
@@ -1182,7 +1192,8 @@ footer{
         transition-duration:0.01ms !important;
     }
 
-    html.js .card{
+    .card{
+        animation:none;
         opacity:1;
         transform:none;
     }
@@ -2545,55 +2556,23 @@ if(
 }
 
 /* =====================================================
-   SCROLL REVEAL
+   REVEAL STAGGER
+   The CSS animation reveals cards on its own - this only
+   adds the 0/1/2 rhythm for a nicer left-to-right cascade.
+   If this script fails, cards still appear (un-staggered).
 ===================================================== */
 
-(function initReveal(){
+(function initCardStagger(){
 
     var cards =
         document.querySelectorAll(".card");
 
-    if(!("IntersectionObserver" in window)){
+    for(var i=0;i<cards.length;i++){
 
-        for(var i=0;i<cards.length;i++){
-            cards[i].classList.add("card-visible");
-        }
-
-        return;
-    }
-
-    var observer =
-        new IntersectionObserver(
-            function(entries){
-
-                entries.forEach(
-                    function(entry){
-
-                        if(entry.isIntersecting){
-
-                            entry.target.classList.add(
-                                "card-visible"
-                            );
-
-                            observer.unobserve(
-                                entry.target
-                            );
-                        }
-                    }
-                );
-            },
-            {
-                rootMargin:"0px 0px -60px 0px",
-                threshold:0.08
-            }
+        cards[i].style.setProperty(
+            "--d",
+            String(i % 3)
         );
-
-    for(var j=0;j<cards.length;j++){
-
-        /* Stagger: 0/1/2 repeating gives a left-to-right rhythm */
-        cards[j].style.setProperty("--d", j % 3);
-
-        observer.observe(cards[j]);
     }
 
 })();

@@ -18,9 +18,6 @@
 
 <title>ZestGo - Restaurant Menu</title>
 
-<!-- Enables scroll-reveal styles only when JS is available -->
-<script>document.documentElement.classList.add('js');</script>
-
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet">
 
@@ -937,37 +934,42 @@ footer{
 
 /* =========================================================
    PAGE ANIMATIONS
-   'js' class is added to <html> by a tiny head script;
-   an IntersectionObserver adds .menu-card-visible as each
-   card scrolls into view. No JS = cards stay fully visible.
+
+   FAIL-SAFE REVEAL:
+   Cards animate in via a pure CSS keyframe. No rule keeps a
+   card hidden - if the animation never runs (old browser,
+   JS off, anything), the card is simply visible. A tiny
+   script only sets --d for the left-to-right stagger.
 ========================================================= */
 
-html.js .menu-card{
+@keyframes menuCardReveal{
 
-    opacity:0;
+    from{
+        opacity:0;
+        transform:translateY(36px);
+    }
 
-    transform:translateY(36px);
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
 }
 
-html.js .menu-card.menu-card-visible{
+.menu-card{
 
-    opacity:1;
+    /* backwards: hidden only during the stagger delay, then the
+       element returns to its normal styles so hover keeps working */
+    animation:
+        menuCardReveal 0.6s ease backwards;
 
-    transform:translateY(0);
-
-    transition-delay:calc(var(--d, 0) * 70ms);
-}
-
-/* Hover snappiness always wins over the stagger delay */
-
-html.js .menu-card.menu-card-visible:hover{
-
-    transition-delay:0s;
+    animation-delay:
+        calc(var(--d, 0) * 70ms);
 }
 
 /* Header entrance */
 
-html.js .header{
+.header{
 
     animation:menuHeaderIn 0.7s ease both;
 }
@@ -1028,9 +1030,10 @@ html.js .header{
         transition-duration:0.01ms !important;
     }
 
-    html.js .menu-card{
+    .menu-card{
         opacity:1;
         transform:none;
+        animation:none;
     }
 
 }
@@ -1639,54 +1642,23 @@ if(allMenusByRestaurant != null)
 <script>
 
 /* =====================================================
-   SCROLL REVEAL
+   REVEAL STAGGER
+   The CSS animation reveals cards on its own - this only
+   adds the 0/1/2 rhythm for a nicer left-to-right cascade.
+   If this script fails, cards still appear (un-staggered).
 ===================================================== */
 
-(function initMenuReveal(){
+(function initMenuStagger(){
 
     var cards =
         document.querySelectorAll(".menu-card");
 
-    if(!("IntersectionObserver" in window)){
+    for(var i=0;i<cards.length;i++){
 
-        for(var i=0;i<cards.length;i++){
-            cards[i].classList.add("menu-card-visible");
-        }
-
-        return;
-    }
-
-    var observer =
-        new IntersectionObserver(
-            function(entries){
-
-                entries.forEach(
-                    function(entry){
-
-                        if(entry.isIntersecting){
-
-                            entry.target.classList.add(
-                                "menu-card-visible"
-                            );
-
-                            observer.unobserve(
-                                entry.target
-                            );
-                        }
-                    }
-                );
-            },
-            {
-                rootMargin:"0px 0px -50px 0px",
-                threshold:0.08
-            }
+        cards[i].style.setProperty(
+            "--d",
+            String(i % 3)
         );
-
-    for(var j=0;j<cards.length;j++){
-
-        cards[j].style.setProperty("--d", j % 3);
-
-        observer.observe(cards[j]);
     }
 
 })();
