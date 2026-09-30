@@ -2282,14 +2282,14 @@ function animate(){
                 Math.cos(
                     sphere.userData.angle
                 )
-                \
+                *
                 sphere.userData.radius;
 
             sphere.position.z =
                 Math.sin(
                     sphere.userData.angle
                 )
-                \
+                *
                 sphere.userData.radius;
 
             sphere.position.y =
